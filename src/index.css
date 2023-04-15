@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&family=Vollkorn:wght@500&display=swap');
+
+@font-face {
+  font-family: 'Dancing Script', serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Vollkorn', serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
 *{
   margin: 0;
   padding:0;
@@ -13,11 +27,11 @@
   --lightpurple:#F2F0FF;
   --lightgrey:#F3F6F9;
   --grey:#7A7A7A;
-  --font-family: 'Roboto', sans-serif;
+  --font-family: 'Vollkorn', serif;
 }
 
-h1, h2, h3, h3, h5, h6 {
-  font-family: 'Merriweather', serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Dancing Script', serif;
 }
 
 body{
