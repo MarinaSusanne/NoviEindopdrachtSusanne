@@ -1,7 +1,7 @@
 import React from "react";
 import './GroupPage.css';
 
-function GroupPage(props) {
+function GroupPage1(props) {
     return (
         <div>
             <h2> test group pagina </h2>
@@ -9,4 +9,4 @@ function GroupPage(props) {
     );
 }
 
-export default GroupPage;
+export default GroupPage1;

@@ -18,24 +18,22 @@
   box-sizing:border-box;
 }
 
-/*hieronder aanpassen! */
-
 :root {
   --default-margin: 16px;
-  --purple:#5722CD;
-  --blue:#4845E4;
-  --lightpurple:#F2F0FF;
-  --lightgrey:#F3F6F9;
-  --grey:#7A7A7A;
+  --lightgold:rgba(178, 151, 0, 0.1);
+  --midgold:rgba(178, 151, 0, 0.25);
+  --grey: rgba(122, 122, 122, 0.3);
   --font-family: 'Vollkorn', serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Dancing Script', serif;
+  color: black;
 }
 
 body{
   font-family: var(--font-family);
+  font-size:14px;
 }
 
 h1 {
@@ -43,5 +41,5 @@ h1 {
 }
 
 h2 {
-  font-size: 1.2em;
+  font-size: 0.8em;
 }
