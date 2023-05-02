@@ -1,5 +1,5 @@
 import React from "react";
-import './GroupPage.css';
+import styles from './GroupPage.module.css';
 
 function GroupPage1(props) {
     return (

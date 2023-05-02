@@ -29,7 +29,7 @@ function App() {
               <Route path="/admin/groep-aanmaken" element={<CreateGroupAdmin/>}/>
               <Route path="/admin/lees-pagina" element={<ReadingPageAdmin/>}/>
               TODO:maak-een-NotFound-pagina!
-              TODO:pas-groepspagina's-aan-naar-dynamische-pagins--zoals-ah-productpagina
+              TODO:pas-groepspagina's-aan-naar-dynamische-paginas--zoals-ah-productpagina
               {/*<Route path="*" element={<NotFound/>}/>*/}
           </Routes>
           </div>

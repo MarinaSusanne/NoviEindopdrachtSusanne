@@ -1,4 +1,4 @@
-import './AssignmentsAdmin.css';
+import styles from './AssignmentsAdmin.module.css';
 import React from 'react';
 
 function AssignmentsAdmin(props) {

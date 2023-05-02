@@ -1,0 +1,50 @@
+@media screen and (min-width: 576px) {
+
+    .navigation-bar {
+        display: flex;
+        justify-content: space-between;
+        background-color: var(--grey);
+        width: 100%;
+    }
+
+    .navigation-text {
+        padding: 10px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: baseline;
+        flex-basis: 1100px;
+        flex-shrink: 1;
+        flex-grow: 0;
+        font-size: 2em;
+        font-family: "Dancing Script", serif;
+        margin-top: 50px;
+    }
+
+    .logo {
+        margin: 15px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        max-width: 10em;
+    }
+
+    a,
+    a:visited,
+    a:link {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover{
+        color:rebeccapurple;
+        text-decoration: none;
+    }
+
+   .active-menu-link::after {
+       border-bottom: 2px solid black;
+   }
+
+    .default-menu-link {
+        border-bottom: none;
+    }
+  }

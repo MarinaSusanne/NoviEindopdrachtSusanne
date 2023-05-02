@@ -22,7 +22,7 @@
   --default-margin: 16px;
   --lightgold:rgba(178, 151, 0, 0.1);
   --midgold:rgba(178, 151, 0, 0.25);
-  --grey: rgba(122, 122, 122, 0.3);
+  --grey: rgba(122, 122, 122, 0.06);
   --font-family: 'Vollkorn', serif;
 }
 
@@ -38,8 +38,24 @@ body{
 
 h1 {
   font-size: 30px;
+  padding: 16px 0;
 }
 
 h2 {
-  font-size: 0.8em;
+  font-size: 0.9em;
+  padding: 12px 0;
+}
+
+h3{
+  font-size: 0.6em;
+  padding: 12px 0;
+}
+
+h4{
+  font-size: 0.4em;
+  padding: 12px 0;
+}
+
+p{
+  margin:12px 0;
 }

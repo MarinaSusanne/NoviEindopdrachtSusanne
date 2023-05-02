@@ -1,5 +1,5 @@
 import React from "react";
-import './RegistrerUser.css'
+import styles from './RegistrerUser.module.css'
 
 function RegistrerUser (){
     return (

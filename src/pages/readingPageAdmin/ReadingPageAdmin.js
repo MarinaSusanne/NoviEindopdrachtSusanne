@@ -1,5 +1,5 @@
 import React from "react";
-import './ReadingPageAdmin.css'
+import styles from './ReadingPageAdmin.module.css'
 
 function ReadingPageAdmin(props) {
     return (

@@ -1,4 +1,4 @@
-import './AssignmentsUser.css';
+import styles from './AssignmentsUser.module.css';
 import React from 'react';
 
 function AssignmentsUser(props) {

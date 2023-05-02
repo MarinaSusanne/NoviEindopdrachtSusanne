@@ -1,4 +1,4 @@
-import './CreateGroupAdmin.css';
+import styles from './CreateGroupAdmin.module.css';
 import React from 'react';
 
 function CreateGroupAdmin(props) {
