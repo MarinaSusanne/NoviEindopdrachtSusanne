@@ -1,5 +1,10 @@
 @media screen and (min-width: 576px) {
 
-
+.login-page {
+        background-image: url("") ;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 
 }

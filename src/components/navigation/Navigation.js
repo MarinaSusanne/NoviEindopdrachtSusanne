@@ -54,6 +54,5 @@ function Navigation(props) {
     );
 }
 
-
 export default Navigation;
 

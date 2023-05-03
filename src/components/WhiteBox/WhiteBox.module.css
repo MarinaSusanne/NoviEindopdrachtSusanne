@@ -1,0 +1,7 @@
+.white-box {
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 10px;
+    box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
