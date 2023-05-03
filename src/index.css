@@ -22,6 +22,7 @@
   --default-margin: 16px;
   --lightgold:rgba(178, 151, 0, 0.1);
   --midgold:rgba(178, 151, 0, 0.25);
+  --darkgold:rgba(178, 151, 0, 0.85);
   --grey: rgba(122, 122, 122, 0.06);
   --font-family: 'Vollkorn', serif;
 }
