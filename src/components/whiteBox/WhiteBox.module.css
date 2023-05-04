@@ -1,14 +1,15 @@
 .white-box {
+    display: flex;
+    flex-direction: column;
     background-color: white;
-    border: 1px solid gray;
+    border: 1px solid var(--grey);
     border-radius: 10px;
-    box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.1);
+    padding:30px;
 }
 
 .login-box {
-    width: 400px;
+    width: 28vw;
     height:60vh;
-    align-items: center;
-    color:green;
+    gap:30px;
 }

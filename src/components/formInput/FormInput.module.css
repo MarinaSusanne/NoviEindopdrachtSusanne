@@ -1,14 +1,15 @@
 .input {
     width: 100%;
-    padding: 5px;
-    color: black;
-}
+    padding: 10px;
+    color: black
+    }
 
 .error-message {
     color: red;
 }
 
-/*label {*/
-/*    font-family: var(--font-family);*/
-/*    font-weight: 100;*/
-/*}*/
+label {
+    font-family: var(--font-family);
+    font-weight: 100;
+    background-color: var(--midgold);
+}
