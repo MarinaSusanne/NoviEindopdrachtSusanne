@@ -1,5 +1,5 @@
 import './App.css';
-import React from "react";
+import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import LogIn from './pages/logIn/LogIn';
 import AssignmentsAdmin from './pages/assignmentsAdmin/AssignmentsAdmin';
@@ -8,9 +8,9 @@ import AssignmentsUser from './pages/assignmentsUser/AssignmentsUser';
 import ReadingPageAdmin from './pages/readingPageAdmin/ReadingPageAdmin';
 import RegistrerUser from './pages/registrerUser/RegistrerUser';
 import Navigation from './components/navigation/Navigation';
-import GroupPage1 from "./pages/groupPages/GroupPage1";
-import GroupPage2 from "./pages/groupPages/GroupPage2";
-import GroupPage3 from "./pages/groupPages/GroupPage3";
+import GroupPage1 from './pages/groupPages/GroupPage1';
+import GroupPage2 from './pages/groupPages/GroupPage2';
+import GroupPage3 from './pages/groupPages/GroupPage3';
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <Navigation/>
           <div className="content">
           <Routes>
-              <Route path="/" element={<LogIn/>}/>
+              <Route path="/login" element={<LogIn/>}/>
               <Route path="/registreer" element={<RegistrerUser/>}/>
               <Route path="/groepspagina1" element={<GroupPage1/>}/>
               <Route path="/groepspagina2" element={<GroupPage2/>}/>
@@ -28,8 +28,8 @@ function App() {
               <Route path="/admin/opdrachten" element={<AssignmentsAdmin/>}/>
               <Route path="/admin/groep-aanmaken" element={<CreateGroupAdmin/>}/>
               <Route path="/admin/lees-pagina" element={<ReadingPageAdmin/>}/>
-              TODO:maak-een-NotFound-pagina!
-              TODO:pas-groepspagina's-aan-naar-dynamische-paginas--zoals-ah-productpagina
+              {/*TODO:maak-een-NotFound-pagina!*/}
+              {/*TODO:pas-groepspagina's-aan-naar-dynamische-paginas--zoals-ah-productpagina*/}
               {/*<Route path="*" element={<NotFound/>}/>*/}
           </Routes>
           </div>

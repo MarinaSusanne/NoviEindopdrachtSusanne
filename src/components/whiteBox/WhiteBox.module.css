@@ -5,3 +5,10 @@
     box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.2);
     padding: 20px;
 }
+
+.login-box {
+    width: 400px;
+    height:60vh;
+    align-items: center;
+    color:green;
+}
