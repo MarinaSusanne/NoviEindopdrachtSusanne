@@ -1,7 +1,9 @@
 .input {
     width: 100%;
     padding: 10px;
-    color: black
+    color: black;
+    margin-bottom:20px;
+    background-color: var(--midgold);
     }
 
 .error-message {
@@ -11,5 +13,4 @@
 label {
     font-family: var(--font-family);
     font-weight: 100;
-    background-color: var(--midgold);
 }

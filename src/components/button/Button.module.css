@@ -1,0 +1,12 @@
+.buttonStyle {
+    border: 2px solid white;
+    background-color: var(--darkgold);
+    color: black;
+    font-family: var(--font-family);
+    font-size: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    /*display: block;*/
+}
+
+
