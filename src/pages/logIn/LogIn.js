@@ -5,9 +5,10 @@ import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
 import {useForm} from "react-hook-form";
 import {Link} from "react-router-dom";
+import Navigation from "../../components/navigation/Navigation";
 
 
-export default function LogIn() {
+function LogIn() {
     const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});
 
     function handleFormSubmit(data){
@@ -15,9 +16,10 @@ export default function LogIn() {
     }
 
     return (
-        <body className={styles["page-body"]}>
-           <section className="outer-container">
-              <section className="inner-container">
+        <body className="outer-container">
+        <Navigation/>
+        <section className={styles["page-body"]}>
+            <section className="inner-container">
                <WhiteBox className={'login-box'}>
                   <h2> Welkom bij Vulva Adventures!</h2>
 
@@ -72,3 +74,4 @@ export default function LogIn() {
         </body>
     );
 };
+export default LogIn;

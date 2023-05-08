@@ -6,7 +6,8 @@
     font-size: 20px;
     text-transform: uppercase;
     cursor: pointer;
-    /*display: block;*/
+    margin-top:10px;
+    display: block;
 }
 
 

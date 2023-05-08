@@ -21,8 +21,8 @@
 :root {
   --default-margin: 16px;
   --lightgold:rgba(178, 151, 0, 0.1);
-  --midgold:rgba(178, 151, 0, 0.25);
-  --darkgold:rgba(178, 151, 0, 0.65);
+  --midgold:rgba(176, 150, 118, 0.15);
+  --darkgold:rgba(176, 150, 118, 0.5);
   --grey: rgba(122, 122, 122, 0.06);
   --font-family: 'Vollkorn', serif;
 }
@@ -65,7 +65,7 @@ p{
   display: flex;
   justify-content: center;
   flex-grow: 1;
-  height:85vh;
+  /*height:100%;*/
   width: 100%;
 }
 
@@ -76,5 +76,5 @@ p{
   justify-content: center;
   flex-shrink: 1;
   flex-grow: 1;
-  margin: 30px 0 30px;
+  margin: 0 30px 0 30px;
 }

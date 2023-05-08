@@ -9,7 +9,7 @@ function FormInput({ htmlFor, register, labelText, type, id, registerName, valid
                 type={type}
                 id={id}
                 {...register(registerName, validationRules)}
-                className={className}
+                className={styles[className]}
             />
             {errors[registerName] && <p className={styles['error-message']}>{errors[registerName].message}</p>}
         </label>

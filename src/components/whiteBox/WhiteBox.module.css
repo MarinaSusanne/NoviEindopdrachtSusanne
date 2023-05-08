@@ -5,11 +5,21 @@
     border: 1px solid var(--grey);
     border-radius: 10px;
     box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.1);
-    padding:30px;
+    padding: 10px 30px;
+    box-sizing: border-box;
 }
 
 .login-box {
     width: 28vw;
     height:60vh;
     gap:30px;
+    box-sizing: border-box;
+}
+
+.registrer-box{
+    width: 30vw;
+    height:auto;
+    box-sizing: border-box;
+    margin-top: 200px;
+
 }

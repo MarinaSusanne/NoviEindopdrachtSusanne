@@ -16,7 +16,6 @@ import GroupPage3 from './pages/groupPages/GroupPage3';
 function App() {
   return (
       <>
-      <Navigation/>
           <div className="content">
           <Routes>
               <Route path="/login" element={<LogIn/>}/>
