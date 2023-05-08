@@ -20,9 +20,8 @@ function LogIn() {
         <Navigation/>
         <section className={styles["page-body"]}>
             <section className="inner-container">
-               <WhiteBox className={'login-box'}>
+               <WhiteBox className="login-box">
                   <h2> Welkom bij Vulva Adventures!</h2>
-
                   <form className="form-login" onSubmit={handleSubmit(handleFormSubmit) }>
                       <FormInput
                           htmlFor="email-field"

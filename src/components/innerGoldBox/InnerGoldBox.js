@@ -8,4 +8,4 @@ function InnerGoldBox({children, className}) {
     );
 }
 
-export default WhiteBox;
+export default InnerGoldBox;

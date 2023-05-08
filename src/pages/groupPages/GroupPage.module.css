@@ -1,4 +1,30 @@
 @media screen and (min-width: 576px) {
 
+.page-body {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Achtergrond login en registreer.png");
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
+        overflow-y: scroll;
+        width:100%;
+        border-top:100px;
+    }
+
+.three-boxes{
+        display:flex;
+        flex-direction: row;
+        padding:100px;
+        gap:100px;
+        border: black dotted 2px;
+    }
+
+.two-boxes{
+        display:flex;
+        flex-direction: column;
+        margin:200px;
+        gap:100px;
+}
+
 
 }

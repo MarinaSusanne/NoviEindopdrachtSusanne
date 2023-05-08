@@ -5,16 +5,16 @@
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
-        background-position: center;
-        overflow-y: scroll;
-        width:100%;
-        border-top:100px;
+        background-position: bottom;
+        /*!*overflow-y: scroll;*!*/
+        /*overflow: hidden;*/
+        width: 100vw;
+        max-height: 120vh;
+        /*border-top:100px;*/
 }
 
-.registrer-box {
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        }
+
+
+
 
 }

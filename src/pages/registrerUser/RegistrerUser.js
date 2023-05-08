@@ -17,10 +17,11 @@ function RegistrerUser (){
 
     return (
         <body className="outer-container">
-         <Navigation/>
-         <section className={styles["page-body"]}>
+        <Navigation/>
+        <section className={styles["page-body"]}>
              <section className="inner-container">
-                  <WhiteBox className={'registrer-box'}>
+
+                  <WhiteBox className='registrer-box'>
                     <h2> Registratie formulier</h2>
                     <form className="form-registration" onSubmit={handleSubmit(handleFormSubmit) }>
                         <FormInput

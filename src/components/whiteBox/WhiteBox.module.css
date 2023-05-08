@@ -17,9 +17,18 @@
 }
 
 .registrer-box{
+    display: flex;
+    flex-direction: column;
     width: 30vw;
     height:auto;
     box-sizing: border-box;
     margin-top: 200px;
-
+    overflow:hidden;
 }
+
+.group-members{
+    width:10vw;
+    height:auto;
+    box-sizing: border-box;
+}
+
