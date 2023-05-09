@@ -19,10 +19,10 @@ function GroupPage1() {
                     <section className={styles["two-boxes"]}>
                     <WhiteBox className="group-members">
                     <h2> Groepsleden </h2>
-                     functie haal de groepsleden op
-                     zet in de state en die hierin gooien om te mappen
-                     map over deze lijst en geef foto weer met naam
-                     //span en span en daar gewoon styling op
+                     {/*functie haal de groepsleden op*/}
+                     {/*zet in de state en die hierin gooien om te mappen*/}
+                     {/*map over deze lijst en geef foto weer met naam*/}
+                     {/*//span en span en daar gewoon styling op*/}
                     </WhiteBox>
 
                     < WhiteBox>

@@ -17,7 +17,7 @@ function App() {
   return (
       <>
           <div className="content">
-          <Routes>
+            <Routes>
               <Route path="/login" element={<LogIn/>}/>
               <Route path="/registreer" element={<RegistrerUser/>}/>
               <Route path="/groepspagina1" element={<GroupPage1/>}/>
