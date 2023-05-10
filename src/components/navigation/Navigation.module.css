@@ -5,7 +5,7 @@
         justify-content: space-between;
         background-color: var(--grey);
         width: 100%;
-        position: fixed;
+        position: sticky;
         height:16vh;
     }
 

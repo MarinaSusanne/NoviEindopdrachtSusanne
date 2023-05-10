@@ -18,7 +18,7 @@ function App() {
       <>
           <div className="content">
             <Routes>
-              <Route path="/login" element={<LogIn/>}/>
+              <Route path="/" element={<LogIn/>}/>
               <Route path="/registreer" element={<RegistrerUser/>}/>
               <Route path="/groepspagina1" element={<GroupPage1/>}/>
               <Route path="/groepspagina2" element={<GroupPage2/>}/>

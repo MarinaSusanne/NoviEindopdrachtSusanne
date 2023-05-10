@@ -17,6 +17,7 @@ function LogIn() {
 
     return (
         <body className="outer-container">
+        <div className={styles["combine-nav-page"]}>
         <Navigation/>
         <section className={styles["page-body"]}>
             <section className="inner-container">
@@ -70,6 +71,7 @@ function LogIn() {
                 </WhiteBox>
               </section>
           </section>
+        </div>
         </body>
     );
 };
