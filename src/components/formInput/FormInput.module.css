@@ -20,5 +20,15 @@
 
 .input-photo{
     height:40px;
+}
 
+
+.input-mesage{
+    width: 100%;
+    padding: 10px;
+    color: black;
+    margin-bottom:10px;
+    border-color:var(--lightgold);
+    background-color: var(--lightgold);
+    box-sizing: border-box;
 }

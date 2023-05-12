@@ -1,9 +1,15 @@
-.white-box {
+.inner-box {
     display: flex;
     flex-direction: column;
     background-color: var(--lightgold);
     border: 1px solid var(--grey);
     border-radius: 10px;
     padding: 10px 30px;
+    box-sizing: border-box;
+}
+
+.sent-message{
+    width:22vw;
+    height: 20vh;
     box-sizing: border-box;
 }

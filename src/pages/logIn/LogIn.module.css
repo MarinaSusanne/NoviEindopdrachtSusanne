@@ -3,18 +3,16 @@
 .page-body {
                 background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Achtergrond login en registreer.png");
                 background-size: cover;
-                /*background-attachment: fixed;*/
+                background-attachment: fixed;
                 background-repeat: no-repeat;
                 background-position: bottom;
                 /*overflow: hidden;*/
                 width: 100vw;
-                min-height: 100vh;
+                min-height: 90vh;
                 /*border-top:100px;*/
         }
-.combine-nav-page{
-       display: flex;
-       flex-direction: column;
-}
+
+
 
 
 .form-login {
