@@ -32,3 +32,17 @@
     background-color: var(--lightgold);
     box-sizing: border-box;
 }
+
+.input-uploadfield{
+    height:30px;
+}
+
+.input-bigger {
+    width: 100%;
+    height:100px;
+    padding: 10px;
+    color: black;
+    margin-bottom:10px;
+    background-color: var(--midgold);
+    box-sizing: border-box;
+}

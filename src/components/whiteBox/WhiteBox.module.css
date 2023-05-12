@@ -7,22 +7,24 @@
     box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.1);
     padding: 10px 30px;
     box-sizing: border-box;
+    flex-shrink: 1;
+    flex-grow:1;
+    margin:20px;
 }
+
 
 .login-box {
     max-width: 25vw;
     min-height:30vh;
     gap:30px;
-    box-sizing: border-box;
     justify-content: center;
 }
 
-.registrer-box{
+.register-box{
     display: flex;
     flex-direction: column;
     width: 25vw;
     height:auto;
-    box-sizing: border-box;
     margin-top: 50px;
     overflow:hidden;
 }
@@ -30,25 +32,23 @@
 .group-members{
     width:20vw;
     height: 40vh;
-    box-sizing: border-box;
-    flex-shrink: 1;
-    flex-grow:1;
 }
 
 .sent-message{
     width:20vw;
     height: 30vh;
-    box-sizing: border-box;
-    flex-shrink: 1;
-    flex-grow:1;
 }
 
-.message-board{
-    width:40vw;
-    height: 75vh;
-    box-sizing: border-box;
-    flex-shrink: 1;
-    flex-grow:1;
+.message-board {
+    width: 40vw;
+    height: auto;
+    overflow:hidden;
 }
+
+.assignment-box{
+    width: 25vw;
+    height: 60vh;
+}
+
 
 
