@@ -79,12 +79,12 @@ function AssignmentsUser() {
                              />
 
                              <FormInput
-                                 htmlFor="password-field"
-                                 labelText="Wachtwoord:"
+                                 htmlFor="info-field"
+                                 labelText="Extra info:"
                                  type="text"
-                                 id="password-field"
+                                 id="info-field"
                                  register={register}
-                                 registerName="password"
+                                 registerName="info"
                                  validationRules= {{
                                      required: "Dit veld is verplicht",
                                      minlength: {
