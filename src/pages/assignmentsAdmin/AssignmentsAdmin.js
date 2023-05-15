@@ -1,12 +1,11 @@
 import styles from './AssignmentsAdmin.module.css';
 import React, {useEffect, useState} from 'react';
-import Navigation from "../../components/navigation/Navigation";
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import FormInput from "../../components/formInput/FormInput";
 import Button from "../../components/button/Button";
 import {useForm} from "react-hook-form";
 
-function AssignmentsAdmin(props) {
+function AssignmentsAdmin() {
 
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});

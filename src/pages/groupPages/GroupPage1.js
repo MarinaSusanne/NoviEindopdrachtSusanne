@@ -13,9 +13,9 @@ function GroupPage1() {
     const [messages, setMessages] = useState([]);
     const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});
 
-            function handleFormSubmit(data){
-                console.log(data)
-            }
+    function handleFormSubmit(data){
+       console.log(data)
+    }
 
    async function fetchGroupMembers(){
      const outcomefunction=["bla", "blabla"];

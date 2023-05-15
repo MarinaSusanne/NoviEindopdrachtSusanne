@@ -56,3 +56,5 @@ function Navigation(props) {
 
 export default Navigation;
 
+//UseParams maken voor de verschillende pagina's?
+
