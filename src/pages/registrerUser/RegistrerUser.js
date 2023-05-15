@@ -17,8 +17,6 @@ function RegistrerUser() {
 
     return (
         <body className="outer-container">
-        <div className={styles["combine-nav-page"]}>
-            <Navigation/>
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <WhiteBox className='register-box'>
@@ -218,7 +216,6 @@ function RegistrerUser() {
                     </WhiteBox>
                 </section>
             </section>
-        </div>
         </body>
     )
 }

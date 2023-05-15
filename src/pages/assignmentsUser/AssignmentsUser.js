@@ -41,11 +41,9 @@ function AssignmentsUser() {
 
     return (
         <body className="outer-container">
-        <div className="combine-nav-page">
-            <Navigation/>
             <section className={styles["page-body"]}>
                 <section className="inner-container">
-                 <section className={styles["two-boxes"]}>
+                  <article className={styles["two-boxes"]}>
                     <WhiteBox className="assignment-box">
                      <h2> Opdrachten </h2>
                         {/*   {assignments.map((assignment) => (*/}
@@ -127,10 +125,9 @@ function AssignmentsUser() {
                              buttonStyle="buttonStyle"
                          />
                     </WhiteBox>
-                 </section>
+                 </article>
                 </section>
             </section>
-        </div>
        </body>
     );
 }

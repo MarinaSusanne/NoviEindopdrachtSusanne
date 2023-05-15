@@ -16,10 +16,8 @@ function LogIn() {
     }
 
     return (
-        <body className="outer-container">
-        <div className="combine-nav-page">
-        <Navigation/>
-        <section className={styles["page-body"]}>
+      <body className="outer-container">
+         <section className={styles["page-body"]}>
             <section className="inner-container">
                <WhiteBox className="login-box">
                   <h2> Welkom bij Vulva Adventures!</h2>
@@ -70,8 +68,7 @@ function LogIn() {
                    <p> Heb je nog geen account? <Link to="/registreer"> Klik dan hier! </Link>  </p>
                 </WhiteBox>
               </section>
-          </section>
-        </div>
+         </section>
         </body>
     );
 };

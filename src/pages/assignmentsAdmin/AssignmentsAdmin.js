@@ -28,11 +28,9 @@ function AssignmentsAdmin(props) {
 
     return (
         <body className="outer-container">
-        <div className="combine-nav-page">
-            <Navigation/>
             <section className={styles["page-body"]}>
                 <section className="inner-container">
-                    <section className={styles["two-boxes"]}>
+                    <article className={styles["two-boxes"]}>
                         <WhiteBox className="assignment-box">
                             <h2> De volgende opdrachten staan online </h2>
                             {/*Aanpassen wat hieronder staat!*/}
@@ -108,19 +106,32 @@ function AssignmentsAdmin(props) {
                                     className="input-uploadfield"
                                     accept=".pdf .word"
                                 />
-                               //TODO:-keuze-menu-aan-toevoegen!!!
-
+                                <br></br>
+                                <label htmlFor="assignment-field" className={styles["selection-field"]}>
+                                    {"Selecteer een opdracht:      "}
+                                    <select id="assignment-field" {...register("opdracht")} >
+                                        <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
+                                        <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
+                                        <option value="opdracht3">Opdracht 3 - Stap voor Stap </option>
+                                        <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
+                                        <option value="opdracht5">Opdracht 5 - Onstspannen in intimiteit</option>
+                                        <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
+                                        <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
+                                        <option value="opdracht8" >Opdracht 8 - Jouw seksuele blauwdruk</option>
+                                        <option value="opdracht9" >Opdracht 9 - Op weg naar intimiteit</option>
+                                    </select>
+                                </label>
                             </form>
+                            <br></br>
                             <Button
                                 buttonType="submit"
                                 buttonText="verzenden"
                                 buttonStyle="buttonStyle"
                             />
                         </WhiteBox>
-                    </section>
+                    </article>
                 </section>
             </section>
-        </div>
         </body>
     );
 }

@@ -36,12 +36,10 @@ function GroupPage1() {
 
     return (
         <body className="outer-container">
-        <div className="combine-nav-page">
-        <Navigation/>
-        <section className={styles["page-body"]}>
+         <section className={styles["page-body"]}>
             <section className="inner-container">
-                <section className={styles["three-boxes"]}>
-                    <section className={styles["two-boxes"]}>
+                <article className={styles["three-boxes"]}>
+                    <div className={styles["two-boxes"]}>
                     <WhiteBox className="group-members">
                     <h2> Groepsleden </h2>
                      {/*   {members.map((member) => (*/}
@@ -75,7 +73,7 @@ function GroupPage1() {
                         </Innerbox>
 
                     </WhiteBox>
-                    </section>
+                    </div>
                     <WhiteBox className="message-board">
                         <h2> Prikbord VOEG TOE GROEPNAAM </h2>
                         <Innerbox>
@@ -86,10 +84,9 @@ function GroupPage1() {
                              <p>"{message.content}"</p> </span>*/}
                         </Innerbox>
                     </WhiteBox>
+                     </article>
                 </section>
             </section>
-        </section>
-       </div>
       </body>
     );
 
