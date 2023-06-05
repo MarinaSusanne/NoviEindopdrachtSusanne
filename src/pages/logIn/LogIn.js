@@ -16,7 +16,7 @@ function LogIn() {
     }
 
     return (
-      <body className="outer-container">
+      <div className="outer-container">
          <section className={styles["page-body"]}>
             <section className="inner-container">
                <WhiteBox className="login-box">
@@ -69,7 +69,7 @@ function LogIn() {
                 </WhiteBox>
               </section>
          </section>
-        </body>
+        </div>
     );
 };
 export default LogIn;
