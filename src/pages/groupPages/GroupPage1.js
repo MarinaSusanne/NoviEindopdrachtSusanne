@@ -35,7 +35,7 @@ function GroupPage1() {
 
 
     return (
-        <body className="outer-container">
+        <div className="outer-container">
          <section className={styles["page-body"]}>
             <section className="inner-container">
                 <article className={styles["three-boxes"]}>
@@ -87,7 +87,7 @@ function GroupPage1() {
                      </article>
                 </section>
             </section>
-      </body>
+      </div>
     );
 
 }

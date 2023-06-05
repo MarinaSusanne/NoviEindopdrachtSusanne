@@ -6,7 +6,7 @@ import AssignmentsAdmin from './pages/assignmentsAdmin/AssignmentsAdmin';
 import CreateGroupAdmin from './pages/createGroupAdmin/CreateGroupAdmin';
 import AssignmentsUser from './pages/assignmentsUser/AssignmentsUser';
 import ReadingPageAdmin from './pages/readingPageAdmin/ReadingPageAdmin';
-import RegistrerUser from './pages/registrerUser/RegistrerUser';
+import RegisterUser from './pages/registerUser/RegisterUser';
 import Navigation from './components/navigation/Navigation';
 import GroupPage1 from './pages/groupPages/GroupPage1';
 import GroupPage2 from './pages/groupPages/GroupPage2';
@@ -17,14 +17,14 @@ function App() {
   return (
       <>
         <div className="outer-container">
-            <div className="inner-container">
-                <Navigation/>
-            </div>
+              <div className="inner-container">
+                  <Navigation/>
+                </div>
             </div>
           <div className="content">
             <Routes>
               <Route path="/" element={<LogIn/>}/>
-              <Route path="/registreer" element={<RegistrerUser/>}/>
+              <Route path="/registreer" element={<RegisterUser/>}/>
               <Route path="/groepspagina1" element={<GroupPage1/>}/>
               <Route path="/groepspagina2" element={<GroupPage2/>}/>
               <Route path="/groepspagina3" element={<GroupPage3/>}/>
@@ -35,7 +35,7 @@ function App() {
               {/*TODO:maak-een-NotFound-pagina!*/}
               {/*TODO:pas-groepspagina's-aan-naar-dynamische-paginas--zoals-ah-productpagina*/}
               {/*<Route path="*" element={<NotFound/>}/>*/}
-          </Routes>
+            </Routes>
           </div>
       </>
   );

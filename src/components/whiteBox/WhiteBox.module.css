@@ -54,7 +54,7 @@
     min-width: 35vw;
     min-height:50vh;
     gap:30px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 

@@ -1,22 +1,50 @@
-import React from 'react';
-import styles from './RegistrerUser.module.css'
+import React, {useState} from 'react';
+import styles from './RegisterUser.module.css'
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Navigation from "../../components/navigation/Navigation";
+import axios from "axios";
 
-function RegistrerUser() {
+function RegisterUser() {
 
     const {register, handleSubmit, watch, formState: {errors}} = useForm({mode: "onSubmit"});
+    const navigate = useNavigate();
+    const [error, toggleError] = useState(false);
+    const [loading, toggleLoading] = useState(false);
 
-    function handleFormSubmit(data) {
-        console.log(data)
+
+    async function handleFormSubmit(data) {
+        console.log(data);
+        toggleLoading(true);
+        toggleError(false);
+        try {
+            const result = await axios.post('http://localhost:8081/users', {
+                firstName:data.firstName,
+                lastName:data.lastName,
+                streetName:data.streetName,
+                houseNumber: data.houseNumber,
+                zipcode: data.zipcode,
+                city: data.city,
+                dateOfBirth: data.dateOfBirth,
+                photo: data.photo,
+                email: data.email,
+                password: data.password,
+                username: data.username,
+            })
+            navigate('/');
+        } catch (e) {
+            console.log(e)
+            toggleError(true);
+
+        }
+        toggleLoading(false);
     }
 
     return (
-        <body className="outer-container">
+        <div className="outer-container">
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <WhiteBox className='register-box'>
@@ -28,7 +56,7 @@ function RegistrerUser() {
                                 type="text"
                                 id="firstname-field"
                                 register={register}
-                                registerName="firstname"
+                                registerName="firstName"
                                 validationRules={{
                                     required: {
                                         value: true,
@@ -45,7 +73,7 @@ function RegistrerUser() {
                                 type="text"
                                 id="lastname-field"
                                 register={register}
-                                registerName="lastname"
+                                registerName="lastName"
                                 validationRules={{
                                     required: {
                                         value: true,
@@ -62,7 +90,7 @@ function RegistrerUser() {
                                 type="text"
                                 id="streetname-field"
                                 register={register}
-                                registerName="streetname"
+                                registerName="streetName"
                                 validationRules={{
                                     required: {
                                         value: true,
@@ -79,7 +107,7 @@ function RegistrerUser() {
                                 type="text"
                                 id="housenumber-field"
                                 register={register}
-                                registerName="housenumber"
+                                registerName="houseNumber"
                                 validationRules={{
                                     required: {
                                         value: true,
@@ -110,6 +138,22 @@ function RegistrerUser() {
                                 className="input"
                                 errors={errors}
                             />
+                            <FormInput
+                                htmlFor="city-field"
+                                labelText="Woonplaats:"
+                                type="text"
+                                id="city-field"
+                                register={register}
+                                registerName="city"
+                                validationRules={{
+                                    required: {
+                                        value: true,
+                                        message: 'Dit veld is verplicht',
+                                    }
+                                }}
+                                className="input"
+                                errors={errors}
+                            />
 
                             <FormInput
                                 htmlFor="birthdate-field"
@@ -117,7 +161,7 @@ function RegistrerUser() {
                                 type="date"
                                 id="birthdate-field"
                                 register={register}
-                                registerName="birthdate"
+                                registerName="dateOfBirth"
                                 validationRules={{
                                     required: {
                                         value: true,
@@ -136,9 +180,8 @@ function RegistrerUser() {
                                 id="profile-picture-field"
                                 register={register}
                                 errors={errors}
-                                registerName="profilePicture"
+                                registerName="photo"
                                 validationRules={{
-                                    required: true,
                                     validate: {
                                         fileType: (value) =>
                                             value[0] && ["image/jpeg", "image/png"].includes(value[0].type),
@@ -163,6 +206,27 @@ function RegistrerUser() {
                                         message: 'Dit veld is verplicht',
                                     },
                                     validate: (value) => value.includes('@') || 'Email moet een @ bevatten',
+                                }}
+                                className="input"
+                                errors={errors}
+                            />
+
+                            <FormInput
+                                htmlFor="username-field"
+                                labelText="Kies een usernaam:"
+                                type="text"
+                                id="username-field"
+                                register={register}
+                                registerName="username"
+                                validationRules={{
+                                    required: {
+                                        value: true,
+                                        message: 'Dit veld is verplicht',
+                                    },
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Usernaam moet minstens 8 karakters lang zijn',
+                                    },
                                 }}
                                 className="input"
                                 errors={errors}
@@ -206,20 +270,20 @@ function RegistrerUser() {
                                 errors={errors}
                             />
 
-
-                        </form>
                         <Button
                             buttonType="submit"
                             buttonText="Registreer"
                             buttonStyle="buttonStyle"
                         />
+                       </form>
+                        <p>Heb je al een account? Je kunt je <Link to="/">hier</Link> inloggen.</p>
                     </WhiteBox>
                 </section>
             </section>
-        </body>
+        </div>
     )
 }
 
-export default RegistrerUser;
+export default RegisterUser;
 
 //TODO:gouden-kraan-preview-foto-weergeven

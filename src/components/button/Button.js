@@ -10,6 +10,4 @@ export default function Button({buttonText, onClick, buttonStyle, buttonType}) {
             onClick={onClick}
             className={`${styles[buttonStyle]}`}>{buttonText}</button>
     )
-
-
 }

@@ -26,7 +26,7 @@ function AssignmentsAdmin() {
 
 
     return (
-        <body className="outer-container">
+        <div className="outer-container">
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <article className={styles["two-boxes"]}>
@@ -131,7 +131,7 @@ function AssignmentsAdmin() {
                     </article>
                 </section>
             </section>
-        </body>
+        </div>
     );
 }
 

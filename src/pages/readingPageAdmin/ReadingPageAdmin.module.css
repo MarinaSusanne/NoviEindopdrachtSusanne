@@ -10,12 +10,5 @@
         width: 100vw;
 }
 
-    .form-login {
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-    }
-
-
 }
 

@@ -4,12 +4,12 @@ import WhiteBox from '../../components/whiteBox/WhiteBox';
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import Button from "../../components/button/Button";
 
-export default function ReadingPageAdmin() {
-    const [groups, setGroups] = useState([]);
-    const [selectedGroup, setSelectedGroup] = useState(null);
-    const [members, setMembers] = useState([]);
-    const [selectedMember, setSelectedMember] = useState(null);
-    const [assignments, setAssignments] = useState([]);
+function ReadingPageAdmin() {
+    // const [groups, setGroups] = useState([]);
+    // const [selectedGroup, setSelectedGroup] = useState(null);
+    // const [members, setMembers] = useState([]);
+    // const [selectedMember, setSelectedMember] = useState(null);
+    // const [assignments, setAssignments] = useState([]);
 
 
     // useEffect(() => {
@@ -51,7 +51,7 @@ export default function ReadingPageAdmin() {
 
 
     return (
-        <body className="outer-container">
+        <div className="outer-container">
         <section className={styles["page-body"]}>
             <section className="inner-container">
                 <WhiteBox className="reading-box">
@@ -81,7 +81,7 @@ export default function ReadingPageAdmin() {
                             {/*    ))}*/}
                             {/*</select>*/}
                     </div>
-                        <InnerGoldBox>
+                        <InnerGoldBox className="assignment-readingpage">
                                 {/*<div>*/}
                                 {/*    <h3>Opdrachten</h3>*/}
                                 {/*    {assignments.map((assignment) => (*/}
@@ -106,6 +106,8 @@ export default function ReadingPageAdmin() {
                       </WhiteBox>
                     </section>
                 </section>
-        </body>
+        </div>
     )
  }
+
+export default ReadingPageAdmin();
