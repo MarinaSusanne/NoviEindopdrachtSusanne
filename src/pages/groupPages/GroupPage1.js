@@ -8,6 +8,8 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 
 function GroupPage1() {
+    const [group, setGroup] = useState({});
+    const [messageBoardId, setMessageBoardId] = useState({});
     const [members, setMembers] = useState([]);
     const [memberImages, setMemberImages] = useState({});
     const [messages, setMessages] = useState([]);
@@ -22,39 +24,53 @@ function GroupPage1() {
         try {
             const {data} = await axios.get('http://localhost:8081/groups/users/1/group');
             console.log(data);
-            const outcome = data.userLeanOutputDtos;
+            setGroup(data);
+            setMessageBoardId(data.messageBoardId);
+            const outcome = data.userPictureOutputDto;
             setMembers(outcome);
+            console.log(outcome);
         } catch (e) {
             console.log(e)
         }
     }
 
+
     function getImage(member) {
         const base64Photo = member.photo;
-        console.log(base64Photo);
-        const img = new Image();
-        img.src = `data:image/jpeg;base64,${base64Photo}`;
+        // console.log(base64Photo);
         setMemberImages((prevImages) => ({
             ...prevImages,
-            [member.id]: img,
+            [member.id]: `data:image/png;base64,${base64Photo}`,
         }));
+        console.log(memberImages);
     }
+    //TODO: aanpassen van image! gaat iets mis met de encode64
 
 
-// async function fetchMessagesMessageBoard() {
-//     const outcomeMessages = "bla";
-//     setMessages(outcomeMessages);
-// }
+
+
+    async function fetchMessagesMessageBoard() {
+        try {
+            const {data} = await axios.get(`http://localhost:8081/messageboards/${messageBoardId}`);
+            console.log(data);
+            setMessages(data);
+        } catch (e) {
+            console.log(e)
+        }
+}
 
 
     useEffect(() => {
         fetchGroupMembers();
-        // fetchMessagesMessageBoard();
     }, []);
 
     useEffect(() => {
         members.forEach((member) => getImage(member));
     }, [members]);
+
+    useEffect(() => {
+        fetchMessagesMessageBoard();
+    }, [messages]);
 
     return (
         <div className="outer-container">
@@ -64,14 +80,18 @@ function GroupPage1() {
                         <div className={styles["two-boxes"]}>
                             <WhiteBox className="group-members">
                                 <h2> Groepsleden </h2>
-                                {members.map((member) => (
-                                    <span key={member.id}>
-                                   {memberImages[member.id] && (
-                                   <img src={memberImages[member.id].src} alt={member.firstName}/>
-                                   )}
-                                   <h3>{member.firstName}</h3>
-                                    </span>
-                                ))}
+                                {Object.keys(members).length > 0 && (
+                                    <>
+                                        {Object.values(members).map((member) => (
+                                            <span key={member.id}>
+                                             {memberImages[member.id] && (
+                                             <img src={memberImages[member.id].src} alt={member.firstName}/>
+                                                 )}
+                                                <h3>{member.firstName}</h3>
+                                             </span>
+                                        ))}
+                                    </>
+                                )}
                             </WhiteBox>
 
                             < WhiteBox className="sent-message">
@@ -102,13 +122,18 @@ function GroupPage1() {
                             </WhiteBox>
                         </div>
                         <WhiteBox className="message-board">
-                            <h2> Prikbord VOEG TOE GROEPNAAM </h2>
+                            <h2> Prikbord van {group.groupName} </h2>
                             <Innerbox>
-                                {/*   {messages.map((message) => (*/}
-                                {/*   <span key={message.id}>*/}
-                                {/*<p>{message.author}</p>
-                             <p>{new Date(message.createdAt).toLocaleString()}</p>
-                             <p>"{message.content}"</p> </span>*/}
+                                {(messages).length > 0 && (
+                                    <>
+                                        {(messages).map((message) => (
+                                   <span key={message.id}>
+                                <p>{message.author}</p>
+                             <p>"{message.content}"</p>
+                                   </span>
+                                     ))}
+                                        </>
+                                )}
                             </Innerbox>
                         </WhiteBox>
                     </article>
