@@ -15,9 +15,10 @@
 }
 
 .assignment-box{
-    width:22vw;
-    height: 20vh;
+    width:40vw;
+    height: auto;
     box-sizing: border-box;
+
 }
 
 .assignment-readingpage{

@@ -15,7 +15,7 @@ function RegisterUser() {
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
 
-
+    console.log(errors);
     async function handleFormSubmit(data) {
         console.log(data);
         toggleLoading(true);
@@ -42,6 +42,11 @@ function RegisterUser() {
         }
         toggleLoading(false);
     }
+
+    // function handleChange(e){
+    //     console.log(' hoi')
+    //     console.log(e.target.files)
+    // }
 
     return (
         <div className="outer-container">
@@ -180,13 +185,13 @@ function RegisterUser() {
                                 id="profile-picture-field"
                                 register={register}
                                 errors={errors}
+                                // changeHandler={handleChange}
                                 registerName="photo"
                                 validationRules={{
                                     validate: {
                                         fileType: (value) =>
-                                            value[0] && ["image/jpeg", "image/png"].includes(value[0].type),
-                                        fileSize: (value) => value[0] && value[0].size <= 5000000,
-                                        message: "bestand moet een .jpeg een .jpg of .png zijn van maximaal 5MB",
+                                            value[0] && ["image/jpeg", "image/png"].includes(value[0].type) || "bestand moet een .jpeg een .jpg of .png zijn" ,
+                                        fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                     },
                                 }}
                                 className="input-photo"
@@ -196,7 +201,7 @@ function RegisterUser() {
                             <FormInput
                                 htmlFor="email-field"
                                 labelText="Email:"
-                                type="text"
+                                type="email"
                                 id="email-field"
                                 register={register}
                                 registerName="email"
@@ -205,7 +210,6 @@ function RegisterUser() {
                                         value: true,
                                         message: 'Dit veld is verplicht',
                                     },
-                                    validate: (value) => value.includes('@') || 'Email moet een @ bevatten',
                                 }}
                                 className="input"
                                 errors={errors}
@@ -258,7 +262,7 @@ function RegisterUser() {
                             <FormInput
                                 htmlFor="confirm-password-field"
                                 labelText="Herhaal wachtwoord:"
-                                type="text"
+                                type="password"
                                 id="confrim-password-field"
                                 register={register}
                                 registerName="confirm-password"
@@ -272,7 +276,7 @@ function RegisterUser() {
 
                         <Button
                             buttonType="submit"
-                            buttonText="Registreer"
+                            buttonText="  Registreer  "
                             buttonStyle="buttonStyle"
                         />
                        </form>

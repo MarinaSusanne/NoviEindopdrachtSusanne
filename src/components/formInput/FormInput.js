@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './FormInput.module.css';
 
 function FormInput({ htmlFor, register, labelText, type, id, registerName, validationRules, className, errors }) {
+
     return (
         <label htmlFor={htmlFor}>
             {labelText}

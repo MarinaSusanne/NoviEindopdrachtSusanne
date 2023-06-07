@@ -40,13 +40,12 @@ function GroupPage1() {
         // console.log(base64Photo);
         setMemberImages((prevImages) => ({
             ...prevImages,
-            [member.id]: `data:image/png;base64,${base64Photo}`,
+            [member.id]: `${base64Photo}`,
         }));
         console.log(memberImages);
     }
+
     //TODO: aanpassen van image! gaat iets mis met de encode64
-
-
 
 
     async function fetchMessagesMessageBoard() {
@@ -57,7 +56,7 @@ function GroupPage1() {
         } catch (e) {
             console.log(e)
         }
-}
+    }
 
 
     useEffect(() => {
@@ -85,8 +84,8 @@ function GroupPage1() {
                                         {Object.values(members).map((member) => (
                                             <span key={member.id}>
                                              {memberImages[member.id] && (
-                                             <img src={memberImages[member.id].src} alt={member.firstName}/>
-                                                 )}
+                                                 <img src={member.photo} alt={member.firstName}/>
+                                             )}
                                                 <h3>{member.firstName}</h3>
                                              </span>
                                         ))}
@@ -127,12 +126,14 @@ function GroupPage1() {
                                 {(messages).length > 0 && (
                                     <>
                                         {(messages).map((message) => (
-                                   <span key={message.id}>
-                                <p>{message.author}</p>
-                             <p>"{message.content}"</p>
-                                   </span>
-                                     ))}
-                                        </>
+                                            <span key={message.id}>
+                                            <p>{message.userLeanOutputDto.firstName}</p>
+                                             <p>{message.submitDate}</p>
+                                            <p>"{message.content}"</p>
+                                         </span>
+                                            //TODO: check deze code!
+                                        ))}
+                                    </>
                                 )}
                             </Innerbox>
                         </WhiteBox>
