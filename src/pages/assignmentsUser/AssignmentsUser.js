@@ -11,21 +11,35 @@ import axios from "axios";
 function AssignmentsUser() {
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit"});
+    const [error, toggleError] = useState(false);
 
-    function handleFormSubmit(data) {
-        console.log(data)
-    }
+   async function handleFormSubmit(formData) {
+        console.log(formData)
+       toggleError(false);
+       try {
+           const response = await axios.post('http://localhost:8081/handinassignments/1', {
+               content:formData.message
+           })
+           console.log(response);
+       } catch (e) {
+           console.log(e)
+           toggleError(true);
+
+       }
+   }
+
+    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId}
 
     async function fetchHomeWorkAssignments() {
         try {
             const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`);
-            //TODO:aanpassen naar context, wie is er ingelogd en in welke groep zit die persoon? en de 1 aanpassen naar groepsId
             console.log(data);
             setHomeworkAssignments(data);
         } catch (e) {
             console.log(e)
         }
      }
+    //TODO:aanpassen naar context, wie is er ingelogd en in welke groep zit die persoon? en de 1 aanpassen naar groepsId
 
     async function handleDownload(assignment) {
             try {
@@ -77,25 +91,28 @@ function AssignmentsUser() {
                             ))}
 
                         </WhiteBox>
+
                         < WhiteBox className="assignment-box">
                             <h2> Inleveren opdracht </h2>
                             <form className="form-login" onSubmit={handleSubmit(handleFormSubmit)}>
+
                                 <FormInput
-                                    htmlFor="name-field"
-                                    labelText="Naam opdracht:"
-                                    type="text"
-                                    id="name-field"
-                                    register={register}
-                                    registerName="name"
-                                    validationRules={{
-                                        required: {
-                                            value: true,
-                                            message: 'Dit veld is verplicht',
-                                        },
-                                    }}
-                                    className="input"
-                                    errors={errors}
-                                />
+                                    <label htmlFor="assignment-field" className={styles["selection-field"]}>
+                                        {"Selecteer een opdracht:      "}
+                                        <select id="assignment-field" {...register("opdracht")} >
+                                            <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
+                                            <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
+                                            <option value="opdracht3">Opdracht 3 - Stap voor Stap </option>
+                                            <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
+                                            <option value="opdracht5">Opdracht 5 - Onstspannen in intimiteit</option>
+                                            <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
+                                            <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
+                                            <option value="opdracht8" >Opdracht 8 - Jouw seksuele blauwdruk</option>
+                                            <option value="opdracht9" >Opdracht 9 - Op weg naar intimiteit</option>
+                                        </select>
+                                    </label>
+                                </FormInput>
+                            //door met assignment pagina!!!!
 
                                 <FormInput
                                     htmlFor="info-field"
@@ -139,12 +156,13 @@ function AssignmentsUser() {
                                     className="input-uploadfield"
                                     accept=".pdf .word"
                                 />
-                            </form>
-                            <Button
+
+                              <Button
                                 buttonType="submit"
                                 buttonText="verzenden"
                                 buttonStyle="buttonStyle"
                             />
+                            </form>
                         </WhiteBox>
                     </article>
                 </section>

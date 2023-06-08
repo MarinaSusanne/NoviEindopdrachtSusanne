@@ -14,11 +14,26 @@ function GroupPage1() {
     const [memberImages, setMemberImages] = useState({});
     const [messages, setMessages] = useState([]);
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit"});
+    const [error, toggleError] = useState(false);
 
 
-    function handleFormSubmit(data) {
-        console.log(data)
+   async function handleFormSubmit(formData) {
+       console.log(formData);
+       toggleError(false);
+       try {
+           const response = await axios.post('http://localhost:8081/messages/1', {
+
+               content:formData.message
+           })
+           console.log(response);
+       } catch (e) {
+           console.log(e)
+           toggleError(true);
+
+       }
     }
+
+    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId}
 
     async function fetchGroupMembers() {
         try {
@@ -51,7 +66,6 @@ function GroupPage1() {
     async function fetchMessagesMessageBoard() {
         try {
             const {data} = await axios.get(`http://localhost:8081/messageboards/${messageBoardId}`);
-            console.log(data);
             setMessages(data);
         } catch (e) {
             console.log(e)
@@ -69,7 +83,10 @@ function GroupPage1() {
 
     useEffect(() => {
         fetchMessagesMessageBoard();
-    }, [messages]);
+    }, [messageBoardId]);
+
+    //TODO: aanpassen dat pagina direct refresht!
+
 
     return (
         <div className="outer-container">
@@ -82,11 +99,11 @@ function GroupPage1() {
                                 {Object.keys(members).length > 0 && (
                                     <>
                                         {Object.values(members).map((member) => (
-                                            <span key={member.id}>
+                                            <span key={member.id} className={styles["group-span"]}>
                                              {memberImages[member.id] && (
-                                                 <img src={member.photo} alt={member.firstName}/>
-                                             )}
-                                                <h3>{member.firstName}</h3>
+                                                 <img src={member.photo} alt={member.firstName} className={styles["image-span"]}/>
+                                                 )}
+                                                <p>{member.firstName} {member.lastName}</p>
                                              </span>
                                         ))}
                                     </>
@@ -113,9 +130,9 @@ function GroupPage1() {
                                             className="input-message"
                                             errors={errors}
                                         />
-                                    </form>
                                     <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
                                     />
+                                    </form>
                                 </Innerbox>
 
                             </WhiteBox>
@@ -127,11 +144,9 @@ function GroupPage1() {
                                     <>
                                         {(messages).map((message) => (
                                             <span key={message.id}>
-                                            <p>{message.userLeanOutputDto.firstName}</p>
-                                             <p>{message.submitDate}</p>
-                                            <p>"{message.content}"</p>
+                                            <p style={{ fontWeight: 'bold'}}> {message.userLeanOutputDto.firstName }  geschreven op {message.submitDate} </p>
+                                            <p  style={{ fontStyle: 'italic' }}>"{message.content}"</p>
                                          </span>
-                                            //TODO: check deze code!
                                         ))}
                                     </>
                                 )}
@@ -142,7 +157,7 @@ function GroupPage1() {
             </section>
         </div>
     );
-
+//TODO: aanpassen styling zodat de twee linkerkolommen niet groter worden
 }
 
 export default GroupPage1;

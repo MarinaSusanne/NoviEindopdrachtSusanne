@@ -29,14 +29,19 @@
     overflow:hidden;
 }
 
-.group-members{
-    width:20vw;
-    height: 40vh;
+
+.group-members {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: fit-content;
+    min-width: fit-content;
+
 }
 
 .sent-message{
-    width:20vw;
-    height: 30vh;
+    min-height: fit-content;
+    min-width: fit-content;
 }
 
 .message-board {
@@ -49,6 +54,7 @@
     width: 25vw;
     height: 60vh;
 }
+
 
 .reading-box {
     min-width: 35vw;

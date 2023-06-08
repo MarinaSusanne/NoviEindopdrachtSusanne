@@ -16,23 +16,23 @@ function RegisterUser() {
     const [loading, toggleLoading] = useState(false);
 
     console.log(errors);
-    async function handleFormSubmit(data) {
-        console.log(data);
+    async function handleFormSubmit(formData) {
+        console.log(formData);
         toggleLoading(true);
         toggleError(false);
         try {
-            const result = await axios.post('http://localhost:8081/users', {
-                firstName:data.firstName,
-                lastName:data.lastName,
-                streetName:data.streetName,
-                houseNumber: data.houseNumber,
-                zipcode: data.zipcode,
-                city: data.city,
-                dateOfBirth: data.dateOfBirth,
-                photo: data.photo,
-                email: data.email,
-                password: data.password,
-                username: data.username,
+            const response = await axios.post('http://localhost:8081/users', {
+                firstName:formData.firstName,
+                lastName:formData.lastName,
+                streetName:formData.streetName,
+                houseNumber: formData.houseNumber,
+                zipcode: formData.zipcode,
+                city: formData.city,
+                dateOfBirth: formData.dateOfBirth,
+                photo: formData.photo,
+                email: formData.email,
+                password: formData.password,
+                username: formData.username,
             })
             navigate('/');
         } catch (e) {
@@ -42,6 +42,7 @@ function RegisterUser() {
         }
         toggleLoading(false);
     }
+    //TODO: fixing error: Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.lang.String` from Object value (token `JsonToken.START_OBJECT`)]. heeft te maken met curly brackets in JSON
 
     // function handleChange(e){
     //     console.log(' hoi')
