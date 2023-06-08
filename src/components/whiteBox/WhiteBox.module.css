@@ -40,7 +40,7 @@
 }
 
 .sent-message{
-    min-height: fit-content;
+    max-height: fit-content;
     min-width: fit-content;
 }
 
@@ -48,11 +48,19 @@
     width: 40vw;
     height: auto;
     overflow:hidden;
+    min-height: fit-content;
 }
 
 .assignment-box{
     width: 25vw;
-    height: 60vh;
+    height: fit-content;
+    display: flex;
+}
+
+.assignment-box-admin{
+    width: 10vw;
+    height: fit-content;
+    display: flex;
 }
 
 

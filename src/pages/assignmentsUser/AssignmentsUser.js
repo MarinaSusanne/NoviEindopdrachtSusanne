@@ -12,22 +12,23 @@ function AssignmentsUser() {
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
+    const [selectedAssignment, setSelectedAssignment] = useState("");
 
-   async function handleFormSubmit(formData) {
+
+    async function handleFormSubmit(formData) {
         console.log(formData)
        toggleError(false);
        try {
            const response = await axios.post('http://localhost:8081/handinassignments/1', {
-               content:formData.message
+               info:formData.info,
+               assignmentName: selectedAssignment,
            })
            console.log(response);
        } catch (e) {
            console.log(e)
            toggleError(true);
-
        }
    }
-
     //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId}
 
     async function fetchHomeWorkAssignments() {
@@ -39,7 +40,9 @@ function AssignmentsUser() {
             console.log(e)
         }
      }
+
     //TODO:aanpassen naar context, wie is er ingelogd en in welke groep zit die persoon? en de 1 aanpassen naar groepsId
+    //TODO: kan maar 1 keer donwloaden en dan is er een foutmelding, waarom?
 
     async function handleDownload(assignment) {
             try {
@@ -87,33 +90,29 @@ function AssignmentsUser() {
                                         buttonText="Downloaden"
                                     />
                                    </span>
-                                   </div>
+                                 </div>
                             ))}
-
                         </WhiteBox>
 
                         < WhiteBox className="assignment-box">
                             <h2> Inleveren opdracht </h2>
-                            <form className="form-login" onSubmit={handleSubmit(handleFormSubmit)}>
-
-                                <FormInput
-                                    <label htmlFor="assignment-field" className={styles["selection-field"]}>
-                                        {"Selecteer een opdracht:      "}
-                                        <select id="assignment-field" {...register("opdracht")} >
-                                            <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
-                                            <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
-                                            <option value="opdracht3">Opdracht 3 - Stap voor Stap </option>
-                                            <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
-                                            <option value="opdracht5">Opdracht 5 - Onstspannen in intimiteit</option>
-                                            <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
-                                            <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
-                                            <option value="opdracht8" >Opdracht 8 - Jouw seksuele blauwdruk</option>
-                                            <option value="opdracht9" >Opdracht 9 - Op weg naar intimiteit</option>
-                                        </select>
-                                    </label>
-                                </FormInput>
-                            //door met assignment pagina!!!!
-
+                            <form className="form-handin" onSubmit={handleSubmit(handleFormSubmit)}>
+                                <label htmlFor="assignment-field" className={styles["selection-field"]}>
+                                      {"Selecteer een opdracht:      "}
+                                    <select id="assignment-field" value={selectedAssignment}
+                                            onChange={(e) => setSelectedAssignment(e.target.value)}>
+                                        <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
+                                        <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
+                                        <option value="opdracht3">Opdracht 3 - Stap voor Stap</option>
+                                        <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
+                                        <option value="opdracht5">Opdracht 5 - Ontspannen in intimiteit</option>
+                                        <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
+                                        <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
+                                        <option value="opdracht8">Opdracht 8 - Jouw seksuele blauwdruk</option>
+                                        <option value="opdracht9">Opdracht 9 - Op weg naar intimiteit</option>
+                                    </select>
+                                </label>
+                                <br></br>
                                 <FormInput
                                     htmlFor="info-field"
                                     labelText="Extra info:"
@@ -156,13 +155,12 @@ function AssignmentsUser() {
                                     className="input-uploadfield"
                                     accept=".pdf .word"
                                 />
-
                               <Button
                                 buttonType="submit"
                                 buttonText="verzenden"
-                                buttonStyle="buttonStyle"
-                            />
+                                buttonStyle="buttonStyle"/>
                             </form>
+
                         </WhiteBox>
                     </article>
                 </section>
@@ -170,5 +168,7 @@ function AssignmentsUser() {
         </div>
     );
 }
+
+//TODO:inzenden lukt niet!
 
 export default AssignmentsUser;

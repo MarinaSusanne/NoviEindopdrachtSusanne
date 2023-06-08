@@ -1,39 +1,60 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from "./ReadingPageAdmin.module.css";
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
+import axios from "axios";
 
 const ReadingPageAdmin = () => {
-    return (
+    const [selectedGroup, setSelectedGroup] = useState({});
+    const [selectedMember, setSelectedMember] = useState({});
+    const [groupMembers, setGroupMembers] = useState([]);
+
+
+
+//TODO: actieve groepen uit de context halen. Hieronder keuzemenu aanpassen!
+async function handleGroupSelection(value){
+    try {
+        console.log(value)
+        const {data} = await axios.get(`http://localhost:8081/groups/${value}/users`);
+        console.log(data);
+        setGroupMembers(data);
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
+
+return (
         <div className="outer-container">
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <WhiteBox className="reading-box">
-                        <h2> Ingeleverde opdrachten</h2>
+                        <h2> Ingeleverde opdrachten per persoon</h2>
                         <div>
-                            {/*<label htmlFor="group-selector">Kies een groep:</label>*/}
-                            {/*<select id="group-selector" onChange={handleGroupChange}>*/}
-                            {/*    <option value="">-- Selecteer een groep --</option>*/}
-                            {/*    {groups.map((group) => (*/}
-                            {/*        <option key={group.id} value={group.id}>*/}
-                            {/*            {group.name}*/}
-                            {/*        </option>*/}
-                            {/*    ))}*/}
-                            {/*</select>*/}
+                            <label htmlFor="group-field" className={styles["selection-field"]}>
+                                {"Selecteer een groep:      "}
+                                <select id="group-field" value={selectedGroup}
+                                        onChange={(e) => handleGroupSelection(e.target.value)}>
+                                    <option value="groep1">Groep1</option>
+                                    <option value="groep2">Groep2</option>
+                                    <option value="groep3">Groep3</option>
+                                </select>
+                            </label>
                         </div>
                         <div>
-                            {/*<label htmlFor="member-selector">Selecteer een groepslid:</label>*/}
-                            {/*<select*/}
-                            {/*    id="member-selector"*/}
-                            {/*    multiple onChange={handleMemberChange}*/}
-                            {/*    value={selectedMember}*/}
-                            {/*     >*/}
-                            {/*    {members.map((member) => (*/}
-                            {/*        <option key={member.id} value={member.id}>*/}
-                            {/*            {member.name}*/}
-                            {/*        </option>*/}
-                            {/*    ))}*/}
-                            {/*</select>*/}
+                            <label htmlFor="member-selector">Selecteer een groepslid:</label>
+                            <select
+                                id="member-selector"
+                                multiple onChange={setSelectedMember}
+                                value={selectedMember}
+                                 >
+                                    {groupMembers.map((member) => (
+                                    <option key={member.id} value={member.id}>
+                                        {member.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <InnerGoldBox className="assignment-readingpage">
                             {/*<div>*/}
