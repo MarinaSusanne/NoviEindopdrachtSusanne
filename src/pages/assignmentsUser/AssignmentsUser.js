@@ -116,7 +116,7 @@ function AssignmentsUser() {
                                 <FormInput
                                     htmlFor="info-field"
                                     labelText="Extra info:"
-                                    type="text"
+                                    type="textarea"
                                     id="info-field"
                                     register={register}
                                     registerName="info"

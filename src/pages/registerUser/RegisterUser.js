@@ -1,53 +1,59 @@
-import React, {useState} from 'react';
-import styles from './RegisterUser.module.css'
+import React, { useState } from 'react';
+import styles from './RegisterUser.module.css';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
-import {useForm} from "react-hook-form";
-import {Link, useNavigate} from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../../components/navigation/Navigation";
 import axios from "axios";
 
 function RegisterUser() {
 
-    const {register, handleSubmit, watch, formState: {errors}} = useForm({mode: "onSubmit"});
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: "onSubmit" });
     const navigate = useNavigate();
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
+    const [photo, setPhoto] = useState('');
 
     console.log(errors);
+
     async function handleFormSubmit(formData) {
-        console.log(formData);
-        toggleLoading(true);
-        toggleError(false);
-        try {
-            const response = await axios.post('http://localhost:8081/users', {
-                firstName:formData.firstName,
-                lastName:formData.lastName,
-                streetName:formData.streetName,
-                houseNumber: formData.houseNumber,
-                zipcode: formData.zipcode,
-                city: formData.city,
-                dateOfBirth: formData.dateOfBirth,
-                photo: formData.photo,
-                email: formData.email,
-                password: formData.password,
-                username: formData.username,
-            })
-            navigate('/');
-        } catch (e) {
-            console.log(e)
-            toggleError(true);
-
+        const reader = new FileReader();
+        if (formData.photo[0]) {
+            reader.readAsDataURL(formData.photo[0]);
+            reader.onloadend = function () {
+                const base64String = reader.result.split(",")[1];
+                const finalPhoto = `data:image/jpeg;base64,${base64String}`
+                console.log(finalPhoto);
+                setPhoto(finalPhoto);
+            };
+            console.log(formData);
+            toggleLoading(true);
+            toggleError(false);
+            try {
+                const response = await axios.post('http://localhost:8081/users', {
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    streetName: formData.streetName,
+                    houseNumber: formData.houseNumber,
+                    zipcode: formData.zipcode,
+                    city: formData.city,
+                    dateOfBirth: formData.dateOfBirth,
+                    photo: photo,
+                    email: formData.email,
+                    password: formData.password,
+                    username: formData.username,
+                });
+                navigate('/');
+            } catch (e) {
+                console.log(e);
+                toggleError(true);
+            }
+            toggleLoading(false);
         }
-        toggleLoading(false);
     }
-    //TODO: fixing error: Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.lang.String` from Object value (token `JsonToken.START_OBJECT`)]. heeft te maken met curly brackets in JSON
 
-    // function handleChange(e){
-    //     console.log(' hoi')
-    //     console.log(e.target.files)
-    // }
 
     return (
         <div className="outer-container">
@@ -198,7 +204,7 @@ function RegisterUser() {
                                 className="input-photo"
                                 accept=".jpg, .jpeg, .png"
                             />
-
+                            <br></br>
                             <FormInput
                                 htmlFor="email-field"
                                 labelText="Email:"
@@ -283,9 +289,11 @@ function RegisterUser() {
                        </form>
                         <p>Heb je al een account? Je kunt je <Link to="/">hier</Link> inloggen.</p>
                     </WhiteBox>
+                    }
                 </section>
             </section>
         </div>
+
     )
 }
 

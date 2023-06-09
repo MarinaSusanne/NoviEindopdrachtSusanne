@@ -45,4 +45,6 @@
     margin-bottom:10px;
     background-color: var(--midgold);
     box-sizing: border-box;
+    resize: vertical;
 }
+

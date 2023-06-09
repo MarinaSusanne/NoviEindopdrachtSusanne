@@ -10,9 +10,10 @@
 
 .sent-message{
     width:22vw;
-    height: 20vh;
+    height: fit-content;
     box-sizing: border-box;
     margin: 20px;
+    padding-top:20px;
 }
 
 .assignment-box{

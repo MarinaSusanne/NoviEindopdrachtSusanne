@@ -6,15 +6,18 @@ import Button from '../../components/button/Button';
 import FormInput from "../../components/formInput/FormInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
+import formatSendDate from "../../helpers/formatSendDate";
+
 
 function GroupPage1() {
     const [group, setGroup] = useState({});
-    const [messageBoardId, setMessageBoardId] = useState({});
+    const [messageBoardId, setMessageBoardId] = useState('');
     const [members, setMembers] = useState([]);
     const [memberImages, setMemberImages] = useState({});
     const [messages, setMessages] = useState([]);
-    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit"});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
+    const [messageSent, setMessageSent] = useState(false);
 
 
    async function handleFormSubmit(formData) {
@@ -22,10 +25,12 @@ function GroupPage1() {
        toggleError(false);
        try {
            const response = await axios.post('http://localhost:8081/messages/1', {
-
                content:formData.message
            })
            console.log(response);
+           setMessageSent(true);
+           reset();
+           fetchMessagesMessageBoard();
        } catch (e) {
            console.log(e)
            toggleError(true);
@@ -33,7 +38,7 @@ function GroupPage1() {
        }
     }
 
-    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId}
+    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId} en let op bij fetcchmessages dat messageboardId gelijk bekend is
 
     async function fetchGroupMembers() {
         try {
@@ -60,11 +65,11 @@ function GroupPage1() {
         console.log(memberImages);
     }
 
-    //TODO: aanpassen van image! gaat iets mis met de encode64
-
-
     async function fetchMessagesMessageBoard() {
         try {
+            if (!messageBoardId) {
+                return;
+            }
             const {data} = await axios.get(`http://localhost:8081/messageboards/${messageBoardId}`);
             setMessages(data);
         } catch (e) {
@@ -72,20 +77,14 @@ function GroupPage1() {
         }
     }
 
-
     useEffect(() => {
         fetchGroupMembers();
+        fetchMessagesMessageBoard();
     }, []);
 
     useEffect(() => {
         members.forEach((member) => getImage(member));
     }, [members]);
-
-    useEffect(() => {
-        fetchMessagesMessageBoard();
-    }, [messageBoardId]);
-
-    //TODO: aanpassen dat pagina direct refresht!
 
 
     return (
@@ -117,7 +116,7 @@ function GroupPage1() {
                                         <FormInput
                                             htmlFor="message-field"
                                             labelText=""
-                                            type="text"
+                                            type="textarea"
                                             id="message-field"
                                             register={register}
                                             registerName="message"
@@ -127,10 +126,11 @@ function GroupPage1() {
                                                     message: "Maximaal 200 karakters"
                                                 }
                                             }}
-                                            className="input-message"
+                                            className="input-bigger"
                                             errors={errors}
                                         />
-                                    <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
+                                        {messageSent && <p> Bericht is verzonden!</p>}
+                                        <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
                                     />
                                     </form>
                                 </Innerbox>
@@ -144,7 +144,7 @@ function GroupPage1() {
                                     <>
                                         {(messages).map((message) => (
                                             <span key={message.id}>
-                                            <p style={{ fontWeight: 'bold'}}> {message.userLeanOutputDto.firstName }  geschreven op {message.submitDate} </p>
+                                            <p style={{ fontWeight: 'bold'}}> {message.userLeanOutputDto.firstName }  geschreven op {formatSendDate(message.submitDate)} </p>
                                             <p  style={{ fontStyle: 'italic' }}>"{message.content}"</p>
                                          </span>
                                         ))}
@@ -157,7 +157,7 @@ function GroupPage1() {
             </section>
         </div>
     );
-//TODO: aanpassen styling zodat de twee linkerkolommen niet groter worden
+//TODO: aanpassen styling zodat de twee linkerkolommen niet groter worden. en Nadenken oplossing voor teveel berichten
 }
 
 export default GroupPage1;

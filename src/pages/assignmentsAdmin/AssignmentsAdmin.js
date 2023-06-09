@@ -100,7 +100,7 @@ function AssignmentsAdmin() {
                                 <FormInput
                                     htmlFor="info-field"
                                     labelText="Omschrijving:"
-                                    type="text"
+                                    type="textarea"
                                     id="info-field"
                                     register={register}
                                     registerName="info"
