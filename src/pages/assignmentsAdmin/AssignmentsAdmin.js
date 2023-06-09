@@ -10,28 +10,64 @@ import axios from "axios";
 function AssignmentsAdmin() {
 
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
-    const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});
-    const [selectedAssignment, setSelectedAssignment] = useState("");
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
+    const [selectedAssignment, setSelectedAssignment] = useState('');
     const [error, toggleError] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState([]);
+    const [selectedGroup, setSelectedGroup] = useState('');
+    const [assignmentId, setAssignmentId] = useState('');
+    const [file, setFile] = useState([]);
 
-   async function handleFormSubmit(formData){
-        console.log(formData)
+
+
+    function handleGroupSelection(e) {
+        setSelectedGroup(e.target.value);
+    }
+
+    function handleAssignmentSelection(e) {
+        console.log(e)
+        setSelectedAssignment(e.target.value);
+    }
+
+
+    async function handleFormSubmit(data) {
+        console.log(data)
+        const uploadedFile = data.uploadFile[0];
+        console.log(uploadedFile);
+        setFile(uploadedFile);
+
         toggleError(false);
         try {
             const response = await axios.post('http://localhost:8081/homeworkassignments/admin/groups/1', {
-                info:formData.info,
+                info: data.info,
                 assignmentName: selectedAssignment,
             })
+            setAssignmentId(response.data.id);
+            console.log(assignmentId);
             console.log(response);
+            // first POST request to create an assignment - retrieve assignmentID to use for the POST request to create and assign a File
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const result = await axios.post(`http://localhost:8081/homeworkassignments/${assignmentId}/file`, formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                })
+            console.log(result.data);
+            setFile([]);
+            reset();
         } catch (e) {
-            console.log(e)
+            console.error(e)
             toggleError(true);
         }
     }
+
+
     //TODO: aanpassen naar context! ipv 1 is het {groupId}
 
-    async function fetchHomeworkAssignments(selectedGroup){
+    async function fetchHomeworkAssignments(selectedGroup) {
         try {
             const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`);
             console.log(data);
@@ -44,8 +80,8 @@ function AssignmentsAdmin() {
     //TODO: aanpassen naar context! In de context staan de groepen met groepId en kan je eruit halen. ipv 1 is het {groupId}
 
     useEffect(() => {
-        fetchHomeworkAssignments();
-    }, []);
+        fetchHomeworkAssignments(selectedGroup);
+    }, [selectedGroup]);
 
 
     return (
@@ -58,22 +94,22 @@ function AssignmentsAdmin() {
                             <label htmlFor="group-field" className={styles["selection-field"]}>
                                 {"Selecteer een groep:      "}
                                 <select id="group-field" value={selectedGroup}
-                                        onChange={(e) => setSelectedGroup(e.target.value)}>
+                                        onChange={handleGroupSelection}>
                                     <option value="opdracht1">Groep1</option>
                                     <option value="opdracht2">Groep2</option>
                                     <option value="opdracht3">Groep3</option>
                                 </select>
 
-                                </label>
-                               {homeworkAssignments.map((assignment) => (
-                               <div key={assignment.id}>
+                            </label>
+                            {homeworkAssignments.map((assignment) => (
+                                <div key={assignment.id}>
                                    <span>
                                 <InnerGoldBox className="assignment-box-admin">
                              <p> {assignment.assignmentName} - - "{assignment.info}" </p>
                             </InnerGoldBox>
                             </span>
-                         </div>
-                       ))}
+                                </div>
+                            ))}
                         </WhiteBox>
 
                         < WhiteBox className="assignment-box">
@@ -83,7 +119,7 @@ function AssignmentsAdmin() {
                                 <label htmlFor="assignment-field" className={styles["selection-field"]}>
                                     {"Selecteer een opdracht:      "}
                                     <select id="assignment-field" value={selectedAssignment}
-                                            onChange={(e) => setSelectedAssignment(e.target.value)}>
+                                            onChange={handleAssignmentSelection}>
                                         <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
                                         <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
                                         <option value="opdracht3">Opdracht 3 - Stap voor Stap</option>
@@ -104,7 +140,7 @@ function AssignmentsAdmin() {
                                     id="info-field"
                                     register={register}
                                     registerName="info"
-                                    validationRules= {{
+                                    validationRules={{
                                         required: "Dit veld is verplicht",
                                         minlength: {
                                             value: 10,
@@ -112,7 +148,7 @@ function AssignmentsAdmin() {
                                         },
                                         maxLength: {
                                             value: 500,
-                                            message:"maximaal 200 karakters"
+                                            message: "maximaal 200 karakters"
                                         },
                                     }}
                                     className="input-bigger"
@@ -126,7 +162,7 @@ function AssignmentsAdmin() {
                                     id="group-field"
                                     register={register}
                                     registerName="group"
-                                    validationRules= {{ }}
+                                    validationRules={{}}
                                     className="input-bigger"
                                     errors={errors}
                                 />
@@ -142,10 +178,9 @@ function AssignmentsAdmin() {
                                     validationRules={{
                                         required: true,
                                         validate: {
-                                            fileType: (value) =>
-                                                value[0] && ["pdf", "word"].includes(value[0].type),
-                                            fileSize: (value) => value[0] && value[0].size <= 5000000,
-                                            message: "bestand moet een .pdf of .word zijn van maximaal 5MB",
+                                            // fileType: (value) =>
+                                            //     value[0] && ["pdf", "word", "docx"].includes(value[0].type) || "bestand moet een .Word of .Pdf zijn",
+                                            fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                         },
                                     }}
                                     className="input-uploadfield"
@@ -162,6 +197,7 @@ function AssignmentsAdmin() {
         </div>
     );
 }
+
 //TODO: in de context aantal actieve groepen ophalen en deze hierin zetten om optie mee te geven, kies groep
 
 
