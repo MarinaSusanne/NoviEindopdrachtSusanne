@@ -14,7 +14,6 @@ function AssignmentsAdmin() {
     const [selectedAssignment, setSelectedAssignment] = useState('');
     const [error, toggleError] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState('');
-    // const [assignmentId, setAssignmentId] = useState('');
     const [file, setFile] = useState([]);
 
 

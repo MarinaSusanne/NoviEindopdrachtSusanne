@@ -11,20 +11,42 @@ import formatSendDate from "../../helpers/formatSendDate";
 
 function AssignmentsUser() {
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
-    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onSubmit"});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [selectedAssignment, setSelectedAssignment] = useState("");
+    const [file, setFile] = useState([]);
 
+    function handleAssignmentSelection(e) {
+        console.log(e)
+        setSelectedAssignment(e.target.value);
+    }
 
-    async function handleFormSubmit(formData) {
-        console.log(formData)
+    async function handleFormSubmit(data) {
+        console.log(data)
+        const uploadedFile = data.uploadFile[0];
+        console.log(uploadedFile);
+        setFile(uploadedFile);
+
        toggleError(false);
        try {
-           const response = await axios.post('http://localhost:8081/handinassignments/1', {
-               info:formData.info,
+           const response = await axios.post('http://localhost:8081/handinassignments/users/1', {
+               info:data.info,
                assignmentName: selectedAssignment,
            })
-           console.log(response);
+           const assignmentId = response.data.id;
+           console.log(assignmentId);
+           const formData = new FormData();
+           formData.append("file", uploadedFile);
+
+           const result = await axios.post(`http://localhost:8081/handinassignments/${assignmentId}/file`, formData,
+               {
+                   headers: {
+                       "Content-Type": "multipart/form-data"
+                   },
+               })
+           console.log(result.data);
+           setFile([]);
+           reset();
        } catch (e) {
            console.log(e)
            toggleError(true);
@@ -43,7 +65,7 @@ function AssignmentsUser() {
      }
 
     //TODO:aanpassen naar context, wie is er ingelogd en in welke groep zit die persoon? en de 1 aanpassen naar groepsId
-    //TODO: kan maar 1 keer donwloaden en dan is er een foutmelding, waarom?
+
 
     async function handleDownload(assignment) {
             try {
@@ -101,7 +123,7 @@ function AssignmentsUser() {
                                 <label htmlFor="assignment-field" className={styles["selection-field"]}>
                                       {"Selecteer een opdracht:      "}
                                     <select id="assignment-field" value={selectedAssignment}
-                                            onChange={(e) => setSelectedAssignment(e.target.value)}>
+                                            onChange={handleAssignmentSelection}>
                                         <option value="opdracht 1">Opdracht 1 - Van spanning naar ontspanning</option>
                                         <option value="opdracht 2">Opdracht 2 - Een nieuwe start</option>
                                         <option value="opdracht 3">Opdracht 3 - Stap voor Stap</option>
@@ -136,26 +158,25 @@ function AssignmentsUser() {
                                     errors={errors}
                                 />
 
-                                {/*<FormInput*/}
-                                {/*    htmlFor="uploadfile-field"*/}
-                                {/*    labelText="Bestand uploaden:  "*/}
-                                {/*    type="file"*/}
-                                {/*    id="uploadfile-field"*/}
-                                {/*    register={register}*/}
-                                {/*    errors={errors}*/}
-                                {/*    registerName="uploadFile"*/}
-                                {/*    validationRules={{*/}
-                                {/*        required: true,*/}
-                                {/*        validate: {*/}
-                                {/*            fileType: (value) =>*/}
-                                {/*                value[0] && ["pdf", "word"].includes(value[0].type),*/}
-                                {/*            fileSize: (value) => value[0] && value[0].size <= 5000000,*/}
-                                {/*            message: "bestand moet een .pdf of .word zijn van maximaal 5MB",*/}
-                                {/*        },*/}
-                                {/*    }}*/}
-                                {/*    className="input-uploadfield"*/}
-                                {/*    accept=".pdf .word"*/}
-                                {/*/>*/}
+                                <FormInput
+                                    htmlFor="uploadfile-field"
+                                    labelText="Bestand uploaden:  "
+                                    type="file"
+                                    id="uploadfile-field"
+                                    register={register}
+                                    errors={errors}
+                                    registerName="uploadFile"
+                                    validationRules={{
+                                        required: true,
+                                        validate: {
+                                            // fileType: (value) =>
+                                            //     value[0] && ["pdf", "word"].includes(value[0].type) || "bestand moet een .Word of .Pdf zijn",
+                                            fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
+                                        },
+                                    }}
+                                    className="input-uploadfield"
+                                    accept=".pdf .word"
+                                />
                               <Button
                                 buttonType="submit"
                                 buttonText="verzenden"
