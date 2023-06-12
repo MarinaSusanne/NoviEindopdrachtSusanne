@@ -14,7 +14,7 @@ function AssignmentsAdmin() {
     const [selectedAssignment, setSelectedAssignment] = useState('');
     const [error, toggleError] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState('');
-    const [assignmentId, setAssignmentId] = useState('');
+    // const [assignmentId, setAssignmentId] = useState('');
     const [file, setFile] = useState([]);
 
 
@@ -41,13 +41,10 @@ function AssignmentsAdmin() {
                 info: data.info,
                 assignmentName: selectedAssignment,
             })
-            setAssignmentId(response.data.id);
-            console.log(assignmentId);
-            console.log(response);
-            // first POST request to create an assignment - retrieve assignmentID to use for the POST request to create and assign a File
-
+            const assignmentId = response.data.id;
+            console.log(assignmentId); // first POST request to create an assignment - retrieve assignmentID to use for the POST request to create and assign a File
             const formData = new FormData();
-            formData.append("file", file);
+            formData.append("file", uploadedFile);
 
             const result = await axios.post(`http://localhost:8081/homeworkassignments/${assignmentId}/file`, formData,
                 {
@@ -62,6 +59,7 @@ function AssignmentsAdmin() {
             console.error(e)
             toggleError(true);
         }
+
     }
 
 
@@ -105,7 +103,7 @@ function AssignmentsAdmin() {
                                 <div key={assignment.id}>
                                    <span>
                                 <InnerGoldBox className="assignment-box-admin">
-                             <p> {assignment.assignmentName} - - "{assignment.info}" </p>
+                             <p> {assignment.assignmentName} ~ "{assignment.info}" </p>
                             </InnerGoldBox>
                             </span>
                                 </div>
@@ -120,15 +118,15 @@ function AssignmentsAdmin() {
                                     {"Selecteer een opdracht:      "}
                                     <select id="assignment-field" value={selectedAssignment}
                                             onChange={handleAssignmentSelection}>
-                                        <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
-                                        <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
-                                        <option value="opdracht3">Opdracht 3 - Stap voor Stap</option>
-                                        <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
-                                        <option value="opdracht5">Opdracht 5 - Ontspannen in intimiteit</option>
-                                        <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
-                                        <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
-                                        <option value="opdracht8">Opdracht 8 - Jouw seksuele blauwdruk</option>
-                                        <option value="opdracht9">Opdracht 9 - Op weg naar intimiteit</option>
+                                        <option value="opdracht 1">Opdracht 1 - Van spanning naar ontspanning</option>
+                                        <option value="opdracht 2">Opdracht 2 - Een nieuwe start</option>
+                                        <option value="opdracht 3">Opdracht 3 - Stap voor Stap</option>
+                                        <option value="opdracht 4">Opdracht 4 - Hulp van binnenuit</option>
+                                        <option value="opdracht 5">Opdracht 5 - Ontspannen in intimiteit</option>
+                                        <option value="opdracht 6">Opdracht 6 - Overwinning in de slaapkamer</option>
+                                        <option value="opdracht 7">Opdracht 7 - Kracht van verbeelding</option>
+                                        <option value="opdracht 8">Opdracht 8 - Jouw seksuele blauwdruk</option>
+                                        <option value="opdracht 9">Opdracht 9 - Op weg naar intimiteit</option>
                                     </select>
                                 </label>
                                 <br></br>

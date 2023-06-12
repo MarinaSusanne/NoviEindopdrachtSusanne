@@ -79,8 +79,12 @@ function GroupPage1() {
 
     useEffect(() => {
         fetchGroupMembers();
-        fetchMessagesMessageBoard();
     }, []);
+
+    useEffect(() => {
+        fetchMessagesMessageBoard();
+    }, [messageBoardId]);
+
 
     useEffect(() => {
         members.forEach((member) => getImage(member));

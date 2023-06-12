@@ -7,6 +7,7 @@ import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import Button from "../../components/button/Button";
 import FormInput from "../../components/formInput/FormInput";
 import axios from "axios";
+import formatSendDate from "../../helpers/formatSendDate";
 
 function AssignmentsUser() {
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
@@ -77,9 +78,8 @@ function AssignmentsUser() {
                                 <div key={assignment.id}>
                                 <span>
                                  <InnerGoldBox className="assignment-box">
-                                   <p style={{ fontWeight: 'bold'}}>{assignment.assignmentName}</p>
+                                   <p style={{ fontWeight: 'bold'}}>{assignment.assignmentName} op {assignment.sendDate} </p>
                                    <p style={{ fontStyle: 'italic' }}>"{assignment.info}"</p>
-                                   <p>{assignment.sendDate}</p>
                                 </InnerGoldBox>
                                  </span>
                                     <span>
@@ -88,6 +88,7 @@ function AssignmentsUser() {
                                         onClick={()=> handleDownload(assignment)}
                                         buttonType="submit"
                                         buttonText="Downloaden"
+                                        key={`download-button-${assignment.id}`}
                                     />
                                    </span>
                                  </div>
@@ -101,15 +102,15 @@ function AssignmentsUser() {
                                       {"Selecteer een opdracht:      "}
                                     <select id="assignment-field" value={selectedAssignment}
                                             onChange={(e) => setSelectedAssignment(e.target.value)}>
-                                        <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
-                                        <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
-                                        <option value="opdracht3">Opdracht 3 - Stap voor Stap</option>
-                                        <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
-                                        <option value="opdracht5">Opdracht 5 - Ontspannen in intimiteit</option>
-                                        <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
-                                        <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
-                                        <option value="opdracht8">Opdracht 8 - Jouw seksuele blauwdruk</option>
-                                        <option value="opdracht9">Opdracht 9 - Op weg naar intimiteit</option>
+                                        <option value="opdracht 1">Opdracht 1 - Van spanning naar ontspanning</option>
+                                        <option value="opdracht 2">Opdracht 2 - Een nieuwe start</option>
+                                        <option value="opdracht 3">Opdracht 3 - Stap voor Stap</option>
+                                        <option value="opdracht 4">Opdracht 4 - Hulp van binnenuit</option>
+                                        <option value="opdracht 5">Opdracht 5 - Ontspannen in intimiteit</option>
+                                        <option value="opdracht 6">Opdracht 6 - Overwinning in de slaapkamer</option>
+                                        <option value="opdracht 7">Opdracht 7 - Kracht van verbeelding</option>
+                                        <option value="opdracht 8">Opdracht 8 - Jouw seksuele blauwdruk</option>
+                                        <option value="opdracht 9">Opdracht 9 - Op weg naar intimiteit</option>
                                     </select>
                                 </label>
                                 <br></br>
@@ -135,32 +136,31 @@ function AssignmentsUser() {
                                     errors={errors}
                                 />
 
-                                <FormInput
-                                    htmlFor="uploadfile-field"
-                                    labelText="Bestand uploaden:  "
-                                    type="file"
-                                    id="uploadfile-field"
-                                    register={register}
-                                    errors={errors}
-                                    registerName="uploadFile"
-                                    validationRules={{
-                                        required: true,
-                                        validate: {
-                                            fileType: (value) =>
-                                                value[0] && ["pdf", "word"].includes(value[0].type),
-                                            fileSize: (value) => value[0] && value[0].size <= 5000000,
-                                            message: "bestand moet een .pdf of .word zijn van maximaal 5MB",
-                                        },
-                                    }}
-                                    className="input-uploadfield"
-                                    accept=".pdf .word"
-                                />
+                                {/*<FormInput*/}
+                                {/*    htmlFor="uploadfile-field"*/}
+                                {/*    labelText="Bestand uploaden:  "*/}
+                                {/*    type="file"*/}
+                                {/*    id="uploadfile-field"*/}
+                                {/*    register={register}*/}
+                                {/*    errors={errors}*/}
+                                {/*    registerName="uploadFile"*/}
+                                {/*    validationRules={{*/}
+                                {/*        required: true,*/}
+                                {/*        validate: {*/}
+                                {/*            fileType: (value) =>*/}
+                                {/*                value[0] && ["pdf", "word"].includes(value[0].type),*/}
+                                {/*            fileSize: (value) => value[0] && value[0].size <= 5000000,*/}
+                                {/*            message: "bestand moet een .pdf of .word zijn van maximaal 5MB",*/}
+                                {/*        },*/}
+                                {/*    }}*/}
+                                {/*    className="input-uploadfield"*/}
+                                {/*    accept=".pdf .word"*/}
+                                {/*/>*/}
                               <Button
                                 buttonType="submit"
                                 buttonText="verzenden"
                                 buttonStyle="buttonStyle"/>
                             </form>
-
                         </WhiteBox>
                     </article>
                 </section>
