@@ -66,7 +66,7 @@
 
 .reading-box {
     min-width: 35vw;
-    min-height:50vh;
+    min-height:fit-content;
     gap:30px;
     justify-content: flex-start;
 }

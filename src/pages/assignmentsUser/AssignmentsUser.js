@@ -29,7 +29,7 @@ function AssignmentsUser() {
 
        toggleError(false);
        try {
-           const response = await axios.post('http://localhost:8081/handinassignments/users/1', {
+           const response = await axios.post('http://localhost:8081/handinassignments/users/2', {
                info:data.info,
                assignmentName: selectedAssignment,
            })
@@ -190,6 +190,5 @@ function AssignmentsUser() {
     );
 }
 
-//TODO:inzenden lukt niet!
 
 export default AssignmentsUser;
