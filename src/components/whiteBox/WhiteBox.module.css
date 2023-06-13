@@ -23,7 +23,7 @@
 .register-box{
     display: flex;
     flex-direction: column;
-    width: 25vw;
+    width: 30vw;
     height:auto;
     margin-top: 50px;
     overflow:hidden;

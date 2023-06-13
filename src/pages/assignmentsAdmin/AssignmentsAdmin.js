@@ -92,9 +92,9 @@ function AssignmentsAdmin() {
                                 {"Selecteer een groep:      "}
                                 <select id="group-field" value={selectedGroup}
                                         onChange={handleGroupSelection}>
-                                    <option value="opdracht1">Groep1</option>
-                                    <option value="opdracht2">Groep2</option>
-                                    <option value="opdracht3">Groep3</option>
+                                    <option value="groep 1">Groep1</option>
+                                    <option value="groep 2">Groep2</option>
+                                    <option value="groep 3">Groep3</option>
                                 </select>
 
                             </label>

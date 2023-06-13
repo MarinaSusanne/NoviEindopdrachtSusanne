@@ -7,9 +7,21 @@
         background-repeat: no-repeat;
         background-position: center;
         width: 100vw;
+        min-height: 90vh;
     }
 
+    .custom-select {
+        width: 200px;
+        min-height: 150px;
+    }
 
+    .custom-select option:checked {
+        background-color: blue;
+        color: white;
+    }
 
+    .group-created-message {
+        color: red;
+    }
 
 }
