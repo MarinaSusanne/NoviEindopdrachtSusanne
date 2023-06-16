@@ -14,6 +14,11 @@ function CreateGroupAdmin() {
     const [loading, toggleLoading] = useState(false);
     const [groupCreatedMessage, setGroupCreatedMessage] = useState("");
 
+    useEffect(() => {
+        fetchMembersWithoutGroup();
+    }, []);
+
+
     async function handleFormSubmit(formData) {
         try {
             const response = await axios.post('http://localhost:8081/groups/admin', {
@@ -47,9 +52,7 @@ function CreateGroupAdmin() {
     }
 
 
-    useEffect(() => {
-        fetchMembersWithoutGroup();
-    }, []);
+
 
     return (
         <div className="outer-container">

@@ -1,6 +1,6 @@
 @media screen and (min-width: 576px) {
 
-.page-body {
+    .page-body {
         background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Achtergrond login en registreer.png");
         background-size: cover;
         background-attachment: fixed;
@@ -8,11 +8,6 @@
         background-position: bottom;
         min-height: 100%;
         padding-top: 50px;
-        width:100vw;
-
-}
-
-
-
-
+        width: 100vw;
+    }
 }

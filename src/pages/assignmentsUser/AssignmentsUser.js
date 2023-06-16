@@ -16,6 +16,12 @@ function AssignmentsUser() {
     const [selectedAssignment, setSelectedAssignment] = useState("");
     const [file, setFile] = useState([]);
 
+
+    useEffect(() => {
+        fetchHomeWorkAssignments();
+    }, []);
+
+
     function handleAssignmentSelection(e) {
         console.log(e)
         setSelectedAssignment(e.target.value);
@@ -84,9 +90,6 @@ function AssignmentsUser() {
 
     }
 
-    useEffect(() => {
-        fetchHomeWorkAssignments();
-    }, []);
 
 
     return (

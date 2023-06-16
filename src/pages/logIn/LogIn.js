@@ -1,19 +1,44 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import styles from './LogIn.module.css';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Navigation from "../../components/navigation/Navigation";
+import axios from "axios";
+import {AuthContext} from "../../context/AuthContext";
 
 
 function LogIn() {
+    //dit mag uiteraard korter, namelijk const {login } =useContext, maar de nu even zo, want Nova gebruikt de 'whatsinthecontext' en is voor mezelf fijn
+    const whatsInTheContext  = useContext(AuthContext);
+    console.log(whatsInTheContext);
     const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});
+    const [error, toggleError] = useState(false);
+    const [loading, toggleLoading] = useState(false);
+    const navigate = useNavigate();
 
-    function handleFormSubmit(data){
-        console.log(data)
+   async function handleFormSubmit(data){
+        console.log(data);
+        toggleLoading(true);
+        try {
+            const result = await axios.post('http://localhost:8081/authenticate', {
+                username: data.username,
+                password: data.password,
+            })
+            console.log(result);
+            const JWT = result.data.jwt;
+            whatsInTheContext.logIn(JWT);
+            navigate('/opdrachten');
+            //TODO:aanpassen naar groepspagina
+        } catch (e) {
+            console.log(e)
+            toggleError(true);
+        }
+        toggleLoading(false);
     }
+
 
     return (
       <div className="outer-container">
@@ -22,19 +47,21 @@ function LogIn() {
                <WhiteBox className="login-box">
                   <h2> Welkom bij Vulva Adventures!</h2>
                   <form className="form-login" onSubmit={handleSubmit(handleFormSubmit) }>
-                      <FormInput
-                          htmlFor="email-field"
-                          labelText="Email:"
+
+                       <FormInput
+                          htmlFor="username-field"
+                          labelText="Gebruikersnaam:"
                           type="text"
-                          id="email-field"
+                          id="username-field"
                           register = {register}
-                          registerName="email"
+                          registerName="username"
                           validationRules= {{
-                              required: {
-                              value: true,
-                              message: 'Dit veld is verplicht',
+                              required: "Dit veld is verplicht",
+                              minlength: {
+                              value: 5,
+                              message: "Minstens 10 karakters"
                           },
-                              validate: (value) => value.includes('@') || 'Email moet een @ bevatten',
+                              maxLength:15,
                           }}
                           className="input"
                           errors={errors}
@@ -58,13 +85,12 @@ function LogIn() {
                           className="input"
                           errors={errors}
                       />
-
+                      <Button
+                          buttonType="submit"
+                          buttonText="Inloggen"
+                          buttonStyle="buttonStyle"
+                      />
                     </form>
-                   <Button
-                    buttonType="submit"
-                    buttonText="Inloggen"
-                    buttonStyle="buttonStyle"
-                   />
                    <p> Heb je nog geen account? <Link to="/registreer"> Klik dan hier! </Link>  </p>
                 </WhiteBox>
               </section>

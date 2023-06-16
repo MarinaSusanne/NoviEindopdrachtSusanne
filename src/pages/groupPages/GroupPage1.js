@@ -20,6 +20,20 @@ function GroupPage1() {
     const [messageSent, setMessageSent] = useState(false);
 
 
+    useEffect(() => {
+        fetchGroupMembers();
+    }, []);
+
+    useEffect(() => {
+        fetchMessagesMessageBoard();
+    }, [messageBoardId]);
+
+
+    useEffect(() => {
+        members.forEach((member) => getImage(member));
+    }, [members]);
+
+
    async function handleFormSubmit(formData) {
        console.log(formData);
        toggleError(false);
@@ -30,7 +44,7 @@ function GroupPage1() {
            console.log(response);
            setMessageSent(true);
            reset();
-           fetchMessagesMessageBoard();
+           await fetchMessagesMessageBoard();
        } catch (e) {
            console.log(e)
            toggleError(true);
@@ -38,7 +52,7 @@ function GroupPage1() {
        }
     }
 
-    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId} en let op bij fetcchmessages dat messageboardId gelijk bekend is
+    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId} en let op bij fetchmessages dat messageboardId gelijk bekend is
 
     async function fetchGroupMembers() {
         try {
@@ -46,14 +60,13 @@ function GroupPage1() {
             console.log(data);
             setGroup(data);
             setMessageBoardId(data.messageBoardId);
-            const outcome = data.userPictureOutputDto;
+            const outcome = data.userPictureOutputDtos;
             setMembers(outcome);
             console.log(outcome);
         } catch (e) {
             console.log(e)
         }
     }
-
 
     function getImage(member) {
         const base64Photo = member.photo;
@@ -76,19 +89,6 @@ function GroupPage1() {
             console.log(e)
         }
     }
-
-    useEffect(() => {
-        fetchGroupMembers();
-    }, []);
-
-    useEffect(() => {
-        fetchMessagesMessageBoard();
-    }, [messageBoardId]);
-
-
-    useEffect(() => {
-        members.forEach((member) => getImage(member));
-    }, [members]);
 
 
     return (

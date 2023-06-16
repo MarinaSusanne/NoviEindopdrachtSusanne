@@ -17,6 +17,10 @@ function AssignmentsAdmin() {
     const [file, setFile] = useState([]);
 
 
+    useEffect(() => {
+        fetchHomeworkAssignments(selectedGroup);
+    }, [selectedGroup]);
+
 
     function handleGroupSelection(e) {
         setSelectedGroup(e.target.value);
@@ -75,11 +79,6 @@ function AssignmentsAdmin() {
     }
 
     //TODO: aanpassen naar context! In de context staan de groepen met groepId en kan je eruit halen. ipv 1 is het {groupId}
-
-    useEffect(() => {
-        fetchHomeworkAssignments(selectedGroup);
-    }, [selectedGroup]);
-
 
     return (
         <div className="outer-container">

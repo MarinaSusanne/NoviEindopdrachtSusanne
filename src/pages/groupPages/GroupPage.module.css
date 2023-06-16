@@ -1,44 +1,41 @@
 @media screen and (min-width: 576px) {
 
-        .page-body {
-                background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Backgorunimagegroups.png");
-                background-size: cover;
-                background-attachment: fixed;
-                background-repeat: no-repeat;
-                background-position: center;
-                /*overflow-y: scroll;*/
-                width: 100vw;
-        }
+    .page-body {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Backgorunimagegroups.png");
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100vw;
+    }
 
-        .three-boxes {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-evenly;
-                border: green dotted 2px;
-                min-height: 88vh;
-                width: 100%;
-                padding: 100px;
-        }
+    .three-boxes {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        min-height: 88vh;
+        width: 100%;
+        padding: 100px;
+    }
 
-        .two-boxes {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-        }
+    .two-boxes {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
-        .image-span {
-                border-radius: 50%;
-                border: black 1px;
-                width: 40px;
-                height: 40px;
-                object-fit: cover;
-                margin-right: 10px;
-                margin-bottom:5px;
-        }
-        .group-span{
-                display:flex;
-                flex-direction: row;
-        }
+    .image-span {
+        border-radius: 50%;
+        border: black 1px;
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
 
-
+    .group-span {
+        display: flex;
+        flex-direction: row;
+    }
 }
