@@ -1,5 +1,27 @@
 @media screen and (min-width: 576px) {
 
+    .page-body {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Backgorunimagegroups.png");
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100vw;
+        min-height: 90vh;
+    }
 
+    .custom-select {
+        width: 200px;
+        min-height: 150px;
+    }
+
+    .custom-select option:checked {
+        background-color: blue;
+        color: white;
+    }
+
+    .group-created-message {
+        color: red;
+    }
 
 }

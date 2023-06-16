@@ -4,25 +4,81 @@ import WhiteBox from "../../components/whiteBox/WhiteBox";
 import FormInput from "../../components/formInput/FormInput";
 import Button from "../../components/button/Button";
 import {useForm} from "react-hook-form";
+import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
+import axios from "axios";
 
 function AssignmentsAdmin() {
 
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
-    const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
+    const [selectedAssignment, setSelectedAssignment] = useState('');
+    const [error, toggleError] = useState(false);
+    const [selectedGroup, setSelectedGroup] = useState('');
+    const [file, setFile] = useState([]);
 
-    function handleFormSubmit(data){
+
+
+    function handleGroupSelection(e) {
+        setSelectedGroup(e.target.value);
+    }
+
+    function handleAssignmentSelection(e) {
+        console.log(e)
+        setSelectedAssignment(e.target.value);
+    }
+
+
+    async function handleFormSubmit(data) {
         console.log(data)
+        const uploadedFile = data.uploadFile[0];
+        console.log(uploadedFile);
+        setFile(uploadedFile);
+
+        toggleError(false);
+        try {
+            const response = await axios.post('http://localhost:8081/homeworkassignments/admin/groups/1', {
+                info: data.info,
+                assignmentName: selectedAssignment,
+            })
+            const assignmentId = response.data.id;
+            console.log(assignmentId); // first POST request to create an assignment - retrieve assignmentID to use for the POST request to create and assign a File
+            const formData = new FormData();
+            formData.append("file", uploadedFile);
+
+            const result = await axios.post(`http://localhost:8081/homeworkassignments/${assignmentId}/file`, formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                })
+            console.log(result.data);
+            setFile([]);
+            reset();
+        } catch (e) {
+            console.error(e)
+            toggleError(true);
+        }
+
     }
 
-    async function fetchHomeworkAssignments(){
-        const outcomefunction=["bla", "blabla"];
-        setHomeworkAssignments(outcomefunction);
+
+    //TODO: aanpassen naar context! ipv 1 is het {groupId}
+
+    async function fetchHomeworkAssignments(selectedGroup) {
+        try {
+            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`);
+            console.log(data);
+            setHomeworkAssignments(data);
+        } catch (e) {
+            console.log(e)
+        }
     }
 
+    //TODO: aanpassen naar context! In de context staan de groepen met groepId en kan je eruit halen. ipv 1 is het {groupId}
 
     useEffect(() => {
-        fetchHomeworkAssignments();
-    }, []);
+        fetchHomeworkAssignments(selectedGroup);
+    }, [selectedGroup]);
 
 
     return (
@@ -32,45 +88,56 @@ function AssignmentsAdmin() {
                     <article className={styles["two-boxes"]}>
                         <WhiteBox className="assignment-box">
                             <h2> De volgende opdrachten staan online </h2>
-                            {/*Aanpassen wat hieronder staat!*/}
-                            {/*   {assignments.map((assignment) => (*/}
-                            {/*   <div key={assignment.id}>*/}
-                            {/*<span> <InnerGoldBox className="assignment-box"> */}
-                            {/* <h3> {assignment.assignmentName}</h3> */}
-                            {/*<p> {assignment.assignmentInfo} </p>*/}
-                            {/*</InnerGoldBox> </span> */}
-                            {/*<span> <Button buttonStyle="download-button" onClick={handleDownload} buttonType="submit" buttontext="Downloaden"/>*/}
-                            {/*</span>*/}
-                            {/*</div>*/}
-                        </WhiteBox>
-                        < WhiteBox className="assignment-box">
-                            <h2> Inleveren opdracht </h2>
-                            <form className="form-login" onSubmit={handleSubmit(handleFormSubmit) }>
-                                <FormInput
-                                    htmlFor="name-field"
-                                    labelText="Naam opdracht:"
-                                    type="text"
-                                    id="name-field"
-                                    register = {register}
-                                    registerName="name"
-                                    validationRules= {{
-                                        required: {
-                                            value: true,
-                                            message: 'Dit veld is verplicht',
-                                        },
-                                    }}
-                                    className="input"
-                                    errors={errors}
-                                />
+                            <label htmlFor="group-field" className={styles["selection-field"]}>
+                                {"Selecteer een groep:      "}
+                                <select id="group-field" value={selectedGroup}
+                                        onChange={handleGroupSelection}>
+                                    <option value="groep 1">Groep1</option>
+                                    <option value="groep 2">Groep2</option>
+                                    <option value="groep 3">Groep3</option>
+                                </select>
 
+                            </label>
+                            {homeworkAssignments.map((assignment) => (
+                                <div key={assignment.id}>
+                                   <span>
+                                <InnerGoldBox className="assignment-box-admin">
+                             <p> {assignment.assignmentName} ~ "{assignment.info}" </p>
+                            </InnerGoldBox>
+                            </span>
+                                </div>
+                            ))}
+                        </WhiteBox>
+
+                        < WhiteBox className="assignment-box">
+                            <h2> Huiswerk opgeven </h2>
+                            <form className="form-login" onSubmit={handleSubmit(handleFormSubmit)}>
+                                <br></br>
+                                <label htmlFor="assignment-field" className={styles["selection-field"]}>
+                                    {"Selecteer een opdracht:      "}
+                                    <select id="assignment-field" value={selectedAssignment}
+                                            onChange={handleAssignmentSelection}>
+                                        <option value="opdracht 1">Opdracht 1 - Van spanning naar ontspanning</option>
+                                        <option value="opdracht 2">Opdracht 2 - Een nieuwe start</option>
+                                        <option value="opdracht 3">Opdracht 3 - Stap voor Stap</option>
+                                        <option value="opdracht 4">Opdracht 4 - Hulp van binnenuit</option>
+                                        <option value="opdracht 5">Opdracht 5 - Ontspannen in intimiteit</option>
+                                        <option value="opdracht 6">Opdracht 6 - Overwinning in de slaapkamer</option>
+                                        <option value="opdracht 7">Opdracht 7 - Kracht van verbeelding</option>
+                                        <option value="opdracht 8">Opdracht 8 - Jouw seksuele blauwdruk</option>
+                                        <option value="opdracht 9">Opdracht 9 - Op weg naar intimiteit</option>
+                                    </select>
+                                </label>
+                                <br></br>
+                                <br></br>
                                 <FormInput
                                     htmlFor="info-field"
                                     labelText="Omschrijving:"
-                                    type="text"
+                                    type="textarea"
                                     id="info-field"
                                     register={register}
                                     registerName="info"
-                                    validationRules= {{
+                                    validationRules={{
                                         required: "Dit veld is verplicht",
                                         minlength: {
                                             value: 10,
@@ -78,9 +145,21 @@ function AssignmentsAdmin() {
                                         },
                                         maxLength: {
                                             value: 500,
-                                            message:"maximaal 200 karakters"
+                                            message: "maximaal 200 karakters"
                                         },
                                     }}
+                                    className="input-bigger"
+                                    errors={errors}
+                                />
+
+                                <FormInput
+                                    htmlFor="group-field"
+                                    labelText="Huiswerkopdracht voor groepId:"
+                                    type="number"
+                                    id="group-field"
+                                    register={register}
+                                    registerName="group"
+                                    validationRules={{}}
                                     className="input-bigger"
                                     errors={errors}
                                 />
@@ -96,37 +175,18 @@ function AssignmentsAdmin() {
                                     validationRules={{
                                         required: true,
                                         validate: {
-                                            fileType: (value) =>
-                                                value[0] && ["pdf", "word"].includes(value[0].type),
-                                            fileSize: (value) => value[0] && value[0].size <= 5000000,
-                                            message: "bestand moet een .pdf of .word zijn van maximaal 5MB",
+                                            // fileType: (value) =>
+                                            //     value[0] && ["pdf", "word", "docx"].includes(value[0].type) || "bestand moet een .Word of .Pdf zijn",
+                                            fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                         },
                                     }}
                                     className="input-uploadfield"
                                     accept=".pdf .word"
                                 />
                                 <br></br>
-                                <label htmlFor="assignment-field" className={styles["selection-field"]}>
-                                    {"Selecteer een opdracht:      "}
-                                    <select id="assignment-field" {...register("opdracht")} >
-                                        <option value="opdracht1">Opdracht 1 - Van spanning naar ontspanning</option>
-                                        <option value="opdracht2">Opdracht 2 - Een nieuwe start</option>
-                                        <option value="opdracht3">Opdracht 3 - Stap voor Stap </option>
-                                        <option value="opdracht4">Opdracht 4 - Hulp van binnenuit</option>
-                                        <option value="opdracht5">Opdracht 5 - Onstspannen in intimiteit</option>
-                                        <option value="opdracht6">Opdracht 6 - Overwinning in de slaapkamer</option>
-                                        <option value="opdracht7">Opdracht 7 - Kracht van verbeelding</option>
-                                        <option value="opdracht8" >Opdracht 8 - Jouw seksuele blauwdruk</option>
-                                        <option value="opdracht9" >Opdracht 9 - Op weg naar intimiteit</option>
-                                    </select>
-                                </label>
+                                <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
+                                />
                             </form>
-                            <br></br>
-                            <Button
-                                buttonType="submit"
-                                buttonText="verzenden"
-                                buttonStyle="buttonStyle"
-                            />
                         </WhiteBox>
                     </article>
                 </section>
@@ -134,5 +194,8 @@ function AssignmentsAdmin() {
         </div>
     );
 }
+
+//TODO: in de context aantal actieve groepen ophalen en deze hierin zetten om optie mee te geven, kies groep
+
 
 export default AssignmentsAdmin;

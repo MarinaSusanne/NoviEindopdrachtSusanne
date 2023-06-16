@@ -8,7 +8,12 @@
         background-position: center;
         /*overflow-y: scroll;*/
         width: 100vw;
+        min-height: 90vh;
 }
-
+        .reading-box {
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+        }
 }
 

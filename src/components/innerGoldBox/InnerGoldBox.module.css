@@ -10,18 +10,27 @@
 
 .sent-message{
     width:22vw;
-    height: 20vh;
+    height: fit-content;
     box-sizing: border-box;
+    margin: 20px;
+    padding-top:20px;
 }
 
 .assignment-box{
-    width:22vw;
-    height: 20vh;
+    width:40vw;
+    height: auto;
     box-sizing: border-box;
+    /*margin: 5px;*/
+
 }
 
 .assignment-readingpage{
     width:22vw;
-    height: 20vh;
+    height: fit-content;
     box-sizing: border-box;
+}
+
+.assignment-box-admin{
+    margin:4px;
+
 }

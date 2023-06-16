@@ -41,4 +41,7 @@ function App() {
   );
 }
 
+//TODO: responsive maken
+//TODO: mobile version maken
+
 export default App;

@@ -26,10 +26,19 @@
                 justify-content: space-between;
         }
 
-.image-span{
-        border-radius:50%;
-        border:black 1px;
-        width:40px;
- }
+        .image-span {
+                border-radius: 50%;
+                border: black 1px;
+                width: 40px;
+                height: 40px;
+                object-fit: cover;
+                margin-right: 10px;
+                margin-bottom:5px;
+        }
+        .group-span{
+                display:flex;
+                flex-direction: row;
+        }
+
 
 }

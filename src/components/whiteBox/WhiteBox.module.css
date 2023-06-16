@@ -23,36 +23,50 @@
 .register-box{
     display: flex;
     flex-direction: column;
-    width: 25vw;
+    width: 30vw;
     height:auto;
     margin-top: 50px;
     overflow:hidden;
 }
 
-.group-members{
-    width:20vw;
-    height: 40vh;
+
+.group-members {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: fit-content;
+    min-width: fit-content;
+
 }
 
 .sent-message{
-    width:20vw;
-    height: 30vh;
+    max-height: fit-content;
+    min-width: fit-content;
 }
 
 .message-board {
     width: 40vw;
     height: auto;
     overflow:hidden;
+    min-height: fit-content;
 }
 
 .assignment-box{
     width: 25vw;
-    height: 60vh;
+    height: fit-content;
+    display: flex;
 }
+
+.assignment-box-admin{
+    width: 10vw;
+    height: fit-content;
+    display: flex;
+}
+
 
 .reading-box {
     min-width: 35vw;
-    min-height:50vh;
+    min-height:fit-content;
     gap:30px;
     justify-content: flex-start;
 }

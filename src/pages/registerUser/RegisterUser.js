@@ -1,47 +1,59 @@
-import React, {useState} from 'react';
-import styles from './RegisterUser.module.css'
+import React, { useState } from 'react';
+import styles from './RegisterUser.module.css';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
-import {useForm} from "react-hook-form";
-import {Link, useNavigate} from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../../components/navigation/Navigation";
 import axios from "axios";
 
 function RegisterUser() {
 
-    const {register, handleSubmit, watch, formState: {errors}} = useForm({mode: "onSubmit"});
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: "onSubmit" });
     const navigate = useNavigate();
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
+    const [photo, setPhoto] = useState('');
 
+    console.log(errors);
 
-    async function handleFormSubmit(data) {
-        console.log(data);
-        toggleLoading(true);
-        toggleError(false);
-        try {
-            const result = await axios.post('http://localhost:8081/users', {
-                firstName:data.firstName,
-                lastName:data.lastName,
-                streetName:data.streetName,
-                houseNumber: data.houseNumber,
-                zipcode: data.zipcode,
-                city: data.city,
-                dateOfBirth: data.dateOfBirth,
-                photo: data.photo,
-                email: data.email,
-                password: data.password,
-                username: data.username,
-            })
-            navigate('/');
-        } catch (e) {
-            console.log(e)
-            toggleError(true);
-
+    async function handleFormSubmit(formData) {
+        const reader = new FileReader();
+        if (formData.photo[0]) {
+            reader.readAsDataURL(formData.photo[0]);
+            reader.onloadend = function () {
+                const base64String = reader.result.split(",")[1];
+                const finalPhoto = `data:image/jpeg;base64,${base64String}`
+                console.log(finalPhoto);
+                setPhoto(finalPhoto);
+            };
+            console.log(formData);
+            toggleLoading(true);
+            toggleError(false);
+            try {
+                const response = await axios.post('http://localhost:8081/users', {
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    streetName: formData.streetName,
+                    houseNumber: formData.houseNumber,
+                    zipcode: formData.zipcode,
+                    city: formData.city,
+                    dateOfBirth: formData.dateOfBirth,
+                    photo: photo,
+                    email: formData.email,
+                    password: formData.password,
+                    username: formData.username,
+                });
+                navigate('/');
+            } catch (e) {
+                console.log(e);
+                toggleError(true);
+            }
+            toggleLoading(false);
         }
-        toggleLoading(false);
     }
+
 
     return (
         <div className="outer-container">
@@ -180,23 +192,23 @@ function RegisterUser() {
                                 id="profile-picture-field"
                                 register={register}
                                 errors={errors}
+                                // changeHandler={handleChange}
                                 registerName="photo"
                                 validationRules={{
                                     validate: {
                                         fileType: (value) =>
-                                            value[0] && ["image/jpeg", "image/png"].includes(value[0].type),
-                                        fileSize: (value) => value[0] && value[0].size <= 5000000,
-                                        message: "bestand moet een .jpeg een .jpg of .png zijn van maximaal 5MB",
+                                            value[0] && ["image/jpeg", "image/png"].includes(value[0].type) || "bestand moet een .jpeg een .jpg of .png zijn" ,
+                                        fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                     },
                                 }}
                                 className="input-photo"
                                 accept=".jpg, .jpeg, .png"
                             />
-
+                            <br></br>
                             <FormInput
                                 htmlFor="email-field"
                                 labelText="Email:"
-                                type="text"
+                                type="email"
                                 id="email-field"
                                 register={register}
                                 registerName="email"
@@ -205,7 +217,6 @@ function RegisterUser() {
                                         value: true,
                                         message: 'Dit veld is verplicht',
                                     },
-                                    validate: (value) => value.includes('@') || 'Email moet een @ bevatten',
                                 }}
                                 className="input"
                                 errors={errors}
@@ -258,7 +269,7 @@ function RegisterUser() {
                             <FormInput
                                 htmlFor="confirm-password-field"
                                 labelText="Herhaal wachtwoord:"
-                                type="text"
+                                type="password"
                                 id="confrim-password-field"
                                 register={register}
                                 registerName="confirm-password"
@@ -272,15 +283,17 @@ function RegisterUser() {
 
                         <Button
                             buttonType="submit"
-                            buttonText="Registreer"
+                            buttonText="  Registreer  "
                             buttonStyle="buttonStyle"
                         />
                        </form>
                         <p>Heb je al een account? Je kunt je <Link to="/">hier</Link> inloggen.</p>
                     </WhiteBox>
+                    }
                 </section>
             </section>
         </div>
+
     )
 }
 
