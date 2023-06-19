@@ -1,5 +1,6 @@
 import styles from './AssignmentsAdmin.module.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import {AuthContext} from "../../context/AuthContext";
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import FormInput from "../../components/formInput/FormInput";
 import Button from "../../components/button/Button";
@@ -9,6 +10,7 @@ import axios from "axios";
 
 function AssignmentsAdmin() {
 
+    const whatsInTheContext = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [selectedAssignment, setSelectedAssignment] = useState('');

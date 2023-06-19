@@ -2,10 +2,12 @@ import React from "react";
 import styles from './Navigation.module.css';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images/logo-vulva-v.png';
-
-
+import {AuthContext} from "../../context/AuthContext";
+import  {useContext, useState} from "react";
+import {Link, useNavigate} from 'react-router-dom';
 
 function Navigation(props) {
+    const whatsInTheContext = useContext(AuthContext);
     let amountGroups = ["group1", "group2", "group3"];
     //TODO:oaanvullen-navbar-naar-groepslid
     function renderNavigation(amountGroups) {

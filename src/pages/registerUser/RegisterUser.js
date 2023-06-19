@@ -5,18 +5,18 @@ import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import Navigation from "../../components/navigation/Navigation";
 import axios from "axios";
 
 function RegisterUser() {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: "onSubmit" });
+    const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({ mode: "onSubmit" });
     const navigate = useNavigate();
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [photo, setPhoto] = useState('');
+    const [createdProfile, setCreatedProfile] = useState(false);
+    const [username, setUsername] = useState("");
 
-    console.log(errors);
 
     async function handleFormSubmit(formData) {
         const reader = new FileReader();
@@ -45,7 +45,10 @@ function RegisterUser() {
                     password: formData.password,
                     username: formData.username,
                 });
-                navigate('/');
+                navigate('/groepspagina1');
+                setCreatedProfile(true);
+                setUsername(formData.username)
+                reset();
             } catch (e) {
                 console.log(e);
                 toggleError(true);
@@ -280,7 +283,7 @@ function RegisterUser() {
                                 className="input"
                                 errors={errors}
                             />
-
+                            {createdProfile && <p> Profiel aangemaakt met de volgende usernaam: "${username}" </p>}
                         <Button
                             buttonType="submit"
                             buttonText="  Registreer  "

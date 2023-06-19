@@ -2,6 +2,7 @@ import React, {createContext, useEffect, useRef, useState} from 'react';
 import {NavLink, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import fromTokentoDate from "../helpers/fromTokentoDate";
 
 export const AuthContext = createContext({});
 
@@ -9,10 +10,24 @@ function AuthContextProvider ({children}) {
     const [isAuth, setAuthState] = useState({
         isAuth: false,
         user: null,
-        status: 'done',
+        status: 'pending',
     });
-    //TODO: status aanpassen naar "pending"
 
+    useEffect(() => {
+            const token = localStorage.getItem('token');
+            if (token && fromTokentoDate(token)) {
+                const decodedToken = jwt_decode(token);
+                void fetchDataUser(token, decodedToken.sub);
+            }
+            else {
+                setAuthState({
+                    isAuth: false,
+                    user: null,
+                    status: 'done',
+                });
+            }
+        },
+ []);
 
     const navigate = useNavigate();
 
@@ -72,7 +87,7 @@ function AuthContextProvider ({children}) {
 
 
     return (
-        <AuthContext.Provider  value={data}>
+        <AuthContext.Provider  value={data} >
             {isAuth.status === 'done' ? children : <p> Loading...</p>}
         </AuthContext.Provider>
     );

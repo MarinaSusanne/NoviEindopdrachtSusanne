@@ -1,13 +1,15 @@
 import styles from './CreateGroupAdmin.module.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import Button from '../../components/button/Button';
 import FormInput from "../../components/formInput/FormInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
+import {AuthContext} from "../../context/AuthContext";
 
 function CreateGroupAdmin() {
+    const whatsInTheContext = useContext(AuthContext);
     const [grouplessMembers, setGrouplessMembers] = useState([]);
     const {register, handleSubmit, formState: {errors}, watch, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);

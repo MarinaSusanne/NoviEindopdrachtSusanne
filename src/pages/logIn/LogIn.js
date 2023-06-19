@@ -1,4 +1,5 @@
 import React, {useContext, useState} from 'react';
+import {AuthContext} from "../../context/AuthContext";
 import styles from './LogIn.module.css';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import FormInput from '../../components/formInput/FormInput';
@@ -7,7 +8,7 @@ import {useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
 import Navigation from "../../components/navigation/Navigation";
 import axios from "axios";
-import {AuthContext} from "../../context/AuthContext";
+
 
 
 function LogIn() {
@@ -30,8 +31,7 @@ function LogIn() {
             console.log(result);
             const JWT = result.data.jwt;
             whatsInTheContext.logIn(JWT);
-            navigate('/opdrachten');
-            //TODO:aanpassen naar groepspagina
+            navigate('/groepspagina1');
         } catch (e) {
             console.log(e)
             toggleError(true);

@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import styles from "./ReadingPageAdmin.module.css";
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import axios from "axios";
 import Button from "../../components/button/Button";
+import {AuthContext} from "../../context/AuthContext";
 
 const ReadingPageAdmin = () => {
     const [selectedGroupId, setSelectedGroupId] = useState(1);
@@ -11,6 +12,7 @@ const ReadingPageAdmin = () => {
     const [groupMembers, setGroupMembers] = useState([]);
     const [error, toggleError] = useState(false);
     const [assignments, setAssignments] = useState([]);
+    const whatsInTheContext = useContext(AuthContext);
 
     useEffect(() => {
         fetchGroupMembers();

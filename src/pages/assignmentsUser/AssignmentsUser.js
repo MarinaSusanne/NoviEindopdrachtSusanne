@@ -2,14 +2,17 @@ import styles from './AssignmentsUser.module.css';
 import React, {useState} from 'react';
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import {useForm} from "react-hook-form";
-import {useEffect} from "react";
+import {useEffect, useContext} from "react";
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import Button from "../../components/button/Button";
 import FormInput from "../../components/formInput/FormInput";
 import axios from "axios";
 import formatSendDate from "../../helpers/formatSendDate";
+import {AuthContext} from "../../context/AuthContext";
+
 
 function AssignmentsUser() {
+    const whatsInTheContext = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);

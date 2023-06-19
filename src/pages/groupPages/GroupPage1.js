@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
+import {AuthContext} from "../../context/AuthContext";
 import styles from './GroupPage.module.css';
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import Innerbox from '../../components/innerGoldBox/InnerGoldBox';
@@ -10,6 +11,7 @@ import formatSendDate from "../../helpers/formatSendDate";
 
 
 function GroupPage1() {
+    const whatsInTheContext = useContext(AuthContext);
     const [group, setGroup] = useState({});
     const [messageBoardId, setMessageBoardId] = useState('');
     const [members, setMembers] = useState([]);
