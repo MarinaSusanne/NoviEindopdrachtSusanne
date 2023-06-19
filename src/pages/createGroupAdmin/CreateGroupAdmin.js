@@ -9,12 +9,13 @@ import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import {AuthContext} from "../../context/AuthContext";
 
 function CreateGroupAdmin() {
-    const whatsInTheContext = useContext(AuthContext);
+    const {user, isAuth} = useContext(AuthContext);
     const [grouplessMembers, setGrouplessMembers] = useState([]);
     const {register, handleSubmit, formState: {errors}, watch, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [groupCreatedMessage, setGroupCreatedMessage] = useState("");
+    const token = localStorage.getItem('token')
 
     useEffect(() => {
         fetchMembersWithoutGroup();
@@ -28,7 +29,12 @@ function CreateGroupAdmin() {
                 groupName: formData.name,
                 startDate: formData.startDate,
                 endDate: formData.endDate,
-                users: formData.selectedMembers,
+                users: formData.selectedMembers
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
             });
             console.log(response);
             setGroupCreatedMessage(
@@ -45,7 +51,11 @@ function CreateGroupAdmin() {
 
     async function fetchMembersWithoutGroup() {
         try {
-            const response = await axios.get(`http://localhost:8081/users/nogroup`);
+            const response = await axios.get(`http://localhost:8081/users/nogroup`,{
+                headers: {
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+            }});
             console.log(response);
             setGrouplessMembers(response.data);
         } catch (e) {

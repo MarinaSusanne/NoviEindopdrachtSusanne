@@ -11,12 +11,31 @@ const ReadingPageAdmin = () => {
     const [selectedMember, setSelectedMember] = useState({});
     const [groupMembers, setGroupMembers] = useState([]);
     const [error, toggleError] = useState(false);
+    const [activeGroups, setActiveGroups] = useState([]);
     const [assignments, setAssignments] = useState([]);
-    const whatsInTheContext = useContext(AuthContext);
+    const {user, isAuth} = useContext(AuthContext);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
+        fetchActiveGroups();
         fetchGroupMembers();
     }, []);
+
+    async function fetchActiveGroups(){
+        try{
+            const {data} = await axios.get(`http://localhost:8081/groups/admin/all`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+            console.log(data);
+            setActiveGroups(data);
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
 
     function handleGroupSelection(e) {
         console.log(e)
@@ -24,7 +43,7 @@ const ReadingPageAdmin = () => {
         fetchGroupMembers();
     }
 
-    async function fetchGroupMembers(e) {
+    async function fetchGroupMembers() {
         try {
             const {data} = await axios.get(`http://localhost:8081/groups/${selectedGroupId}/users`);
             console.log(data);
@@ -41,10 +60,16 @@ const ReadingPageAdmin = () => {
         fetchAssignmentsByMember();
     }
 
+    //TODO:aanpassen dat nu niet groep 1 en groep 2 is maar actieve groepen worden weergegeven
+
     async function fetchAssignmentsByMember() {
         try {
             console.log(selectedMember);
-            const {data} = await axios.get(`http://localhost:8081/handinassignments/${selectedMember.id}`);
+            const {data} = await axios.get(`http://localhost:8081/handinassignments/${selectedMember.id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }});
             console.log(data);
             setAssignments(data);
         } catch (e) {
@@ -69,7 +94,6 @@ const ReadingPageAdmin = () => {
         }
     }
 
-
     return (<div className="outer-container">
         <section className={styles["page-body"]}>
             <section className="inner-container">
@@ -80,11 +104,12 @@ const ReadingPageAdmin = () => {
                             <label htmlFor="group-field" className={styles["selection-field"]}>
                                 {"Selecteer een groep:"}
                                 <br></br>
-                                <select id="group-field" value={selectedGroupId}
+                                <select id="group-field" value={selectedGroupId?.id}
                                         onChange={handleGroupSelection}>
-                                    <option value="groep 1">Groep1</option>
-                                    <option value="groep 2">Groep2</option>
-                                    <option value="groep 3">Groep3</option>
+                                    >
+                                    {activeGroups.map((group) => (<option key={group.id} value={group.id}>
+                                        {group.groupName}
+                                    </option>))}
                                 </select>
                             </label>
                         </div>

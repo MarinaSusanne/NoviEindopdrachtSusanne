@@ -6,7 +6,7 @@ import fromTokentoDate from "../helpers/fromTokentoDate";
 
 export const AuthContext = createContext({});
 
-function AuthContextProvider ({children}) {
+function AuthContextProvider({children}) {
     const [isAuth, setAuthState] = useState({
         isAuth: false,
         user: null,
@@ -18,8 +18,7 @@ function AuthContextProvider ({children}) {
             if (token && fromTokentoDate(token)) {
                 const decodedToken = jwt_decode(token);
                 void fetchDataUser(token, decodedToken.sub);
-            }
-            else {
+            } else {
                 setAuthState({
                     isAuth: false,
                     user: null,
@@ -27,11 +26,11 @@ function AuthContextProvider ({children}) {
                 });
             }
         },
- []);
+        []);
 
     const navigate = useNavigate();
 
-    function logIn(JWT){
+    function logIn(JWT) {
         console.log('gebruiker is ingelogd');
         localStorage.setItem('token', JWT);
         const decodedToken = jwt_decode(JWT);
@@ -39,7 +38,7 @@ function AuthContextProvider ({children}) {
         fetchDataUser(JWT, decodedToken.id);
     }
 
-    async function fetchDataUser(JWT, id){
+    async function fetchDataUser(JWT, id) {
         try {
             const result = await axios.get(`http://localhost:8081/users/${id}`, {
                 headers: {
@@ -58,13 +57,43 @@ function AuthContextProvider ({children}) {
                 },
                 status: 'done',
             });
-            navigate("/groepspagina1");
+            if (result.data.username === 'admin') {
+                navigate("/admin/opdrachten");
+            } else {
+                fetchGroup();
+            }
         } catch (e) {
             console.log(e)
         }
     }
 
-    function logOut(){
+
+    async function fetchGroup(JWT, id) {
+        try {
+            const response = await axios.get(`http://localhost:8081/groups/${id}/group`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${JWT}`,
+                },
+            });
+            console.log(response);
+            setAuthState({
+                isAuth: true,
+                user: {
+                    ...isAuth.user,
+                    groupid: response.data.id,
+                    groupName: response.data.groupName,
+                },
+                status: 'done',
+            });
+            navigate("/groepspagina");
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+    function logOut() {
         localStorage.removeItem('token');
         setAuthState({
             isAuth: false,
@@ -78,16 +107,15 @@ function AuthContextProvider ({children}) {
 
     const data = {
         isAuth: isAuth.isAuth,
-        user:isAuth.user,
+        user: isAuth.user,
         logIn: logIn,
         logOut: logOut,
-        banaan:'geel',
+        banaan: 'geel',
     };
 
 
-
     return (
-        <AuthContext.Provider  value={data} >
+        <AuthContext.Provider value={data}>
             {isAuth.status === 'done' ? children : <p> Loading...</p>}
         </AuthContext.Provider>
     );

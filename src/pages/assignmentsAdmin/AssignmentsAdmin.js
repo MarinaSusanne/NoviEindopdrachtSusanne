@@ -10,13 +10,14 @@ import axios from "axios";
 
 function AssignmentsAdmin() {
 
-    const whatsInTheContext = useContext(AuthContext);
+    const {user, isAuthenticated}  = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [selectedAssignment, setSelectedAssignment] = useState('');
     const [error, toggleError] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState('');
     const [file, setFile] = useState([]);
+    const token = localStorage.getItem('token');
 
 
     useEffect(() => {
@@ -43,6 +44,10 @@ function AssignmentsAdmin() {
         toggleError(false);
         try {
             const response = await axios.post('http://localhost:8081/homeworkassignments/admin/groups/1', {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
                 info: data.info,
                 assignmentName: selectedAssignment,
             })
@@ -72,7 +77,11 @@ function AssignmentsAdmin() {
 
     async function fetchHomeworkAssignments(selectedGroup) {
         try {
-            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`);
+            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`, {
+            headers: {
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+            }})
             console.log(data);
             setHomeworkAssignments(data);
         } catch (e) {

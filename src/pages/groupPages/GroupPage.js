@@ -10,8 +10,8 @@ import axios from "axios";
 import formatSendDate from "../../helpers/formatSendDate";
 
 
-function GroupPage1() {
-    const whatsInTheContext = useContext(AuthContext);
+function GroupPage() {
+    const {user, isAuth} = useContext(AuthContext);
     const [group, setGroup] = useState({});
     const [messageBoardId, setMessageBoardId] = useState('');
     const [members, setMembers] = useState([]);
@@ -20,6 +20,7 @@ function GroupPage1() {
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [messageSent, setMessageSent] = useState(false);
+    const token = localStorage.getItem('token');
 
 
     useEffect(() => {
@@ -40,10 +41,15 @@ function GroupPage1() {
        console.log(formData);
        toggleError(false);
        try {
-           const response = await axios.post('http://localhost:8081/messages/1', {
-               content:formData.message
-           })
-           console.log(response);
+           const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+                   content: formData.message
+               }, {
+                   headers: {
+                       "Content-Type": "application/json",
+                       Authorization: `Bearer ${token}`,
+                   }
+               });
+               console.log(response);
            setMessageSent(true);
            reset();
            await fetchMessagesMessageBoard();
@@ -54,11 +60,9 @@ function GroupPage1() {
        }
     }
 
-    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId} en let op bij fetchmessages dat messageboardId gelijk bekend is
-
     async function fetchGroupMembers() {
         try {
-            const {data} = await axios.get('http://localhost:8081/groups/users/1/group');
+            const {data} = await axios.get(`http://localhost:8081/groups/users/${user.id}/group`);
             console.log(data);
             setGroup(data);
             setMessageBoardId(data.messageBoardId);
@@ -72,7 +76,6 @@ function GroupPage1() {
 
     function getImage(member) {
         const base64Photo = member.photo;
-        // console.log(base64Photo);
         setMemberImages((prevImages) => ({
             ...prevImages,
             [member.id]: `${base64Photo}`,
@@ -166,4 +169,4 @@ function GroupPage1() {
 //TODO: aanpassen styling zodat de twee linkerkolommen niet groter worden. en Nadenken oplossing voor teveel berichten
 }
 
-export default GroupPage1;
+export default GroupPage;

@@ -31,7 +31,7 @@ function LogIn() {
             console.log(result);
             const JWT = result.data.jwt;
             whatsInTheContext.logIn(JWT);
-            navigate('/groepspagina1');
+            navigate('/admin-opdrachten');
         } catch (e) {
             console.log(e)
             toggleError(true);
@@ -50,7 +50,7 @@ function LogIn() {
 
                        <FormInput
                           htmlFor="username-field"
-                          labelText="Gebruikersnaam:"
+                          labelText="Usernaam:"
                           type="text"
                           id="username-field"
                           register = {register}

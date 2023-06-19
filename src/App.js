@@ -8,9 +8,8 @@ import AssignmentsUser from './pages/assignmentsUser/AssignmentsUser';
 import ReadingPageAdmin from './pages/readingPageAdmin/ReadingPageAdmin';
 import RegisterUser from './pages/registerUser/RegisterUser';
 import Navigation from './components/navigation/Navigation';
-import GroupPage1 from './pages/groupPages/GroupPage1';
-import GroupPage2 from './pages/groupPages/GroupPage2';
-import GroupPage3 from './pages/groupPages/GroupPage3';
+import GroupPage from './pages/groupPages/GroupPage';
+import NotFound from "./pages/notFound/NotFound";
 
 
 function App() {
@@ -25,16 +24,12 @@ function App() {
             <Routes>
               <Route path="/" element={<LogIn/>}/>
               <Route path="/registreer" element={<RegisterUser/>}/>
-              <Route path="/groepspagina1" element={<GroupPage1/>}/>
-              <Route path="/groepspagina2" element={<GroupPage2/>}/>
-              <Route path="/groepspagina3" element={<GroupPage3/>}/>
+              <Route path="/groepspagina/:groupId"  element={<GroupPage/>}/>
               <Route path="/opdrachten" element={<AssignmentsUser/>}/>
               <Route path="/admin/opdrachten" element={<AssignmentsAdmin/>}/>
               <Route path="/admin/groep-aanmaken" element={<CreateGroupAdmin/>}/>
               <Route path="/admin/lees-pagina" element={<ReadingPageAdmin/>}/>
-              {/*TODO:maak-een-NotFound-pagina!*/}
-              {/*TODO:pas-groepspagina's-aan-naar-dynamische-paginas--zoals-ah-productpagina*/}
-              {/*<Route path="*" element={<NotFound/>}/>*/}
+              <Route path="*" element={<NotFound/>}/>
             </Routes>
           </div>
       </>
