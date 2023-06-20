@@ -11,18 +11,21 @@ function AuthContextProvider({children}) {
         isAuth: false,
         user: null,
         status: 'pending',
+        groupStatus: 'pending',
     });
 
     useEffect(() => {
             const token = localStorage.getItem('token');
             if (token && fromTokentoDate(token)) {
                 const decodedToken = jwt_decode(token);
-                void fetchDataUser(token, decodedToken.sub);
+                console.log(decodedToken);
+                fetchDataUser(token, decodedToken.id);
             } else {
                 setAuthState({
                     isAuth: false,
                     user: null,
                     status: 'done',
+                    groupStatus: 'done'
                 });
             }
         },
@@ -56,12 +59,13 @@ function AuthContextProvider({children}) {
                     id: result.data.id,
                 },
                 status: 'done',
+                groupStatus: isAuth.groupStatus,
             });
-            if (result.data.username === 'admin') {
-                navigate("/admin/opdrachten");
-            } else {
-                fetchGroup();
-            }
+            // if (result.data.username === 'admin') {
+            //     navigate("/admin/opdrachten");
+            // } else {
+            console.log(result);
+            await fetchGroup(JWT, result.data.id);
         } catch (e) {
             console.log(e)
         }
@@ -81,12 +85,14 @@ function AuthContextProvider({children}) {
                 isAuth: true,
                 user: {
                     ...isAuth.user,
-                    groupid: response.data.id,
+                    groupId: response.data.id,
                     groupName: response.data.groupName,
                 },
-                status: 'done',
+                status: isAuth.status,
+                groupStatus: 'done',
             });
             navigate("/groepspagina");
+            console.log(isAuth)
         } catch (e) {
             console.log(e)
         }
@@ -99,6 +105,7 @@ function AuthContextProvider({children}) {
             isAuth: false,
             user: null,
             status: 'done',
+            groupStatus: 'done',
         });
         console.log('gebruiker is uitgelogd');
         navigate('/');
