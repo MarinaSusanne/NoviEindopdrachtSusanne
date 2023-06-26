@@ -7,25 +7,27 @@
     box-shadow: 0 5px 8px 4px rgba(0, 0, 0, 0.1);
     padding: 10px 30px;
     box-sizing: border-box;
-    flex-shrink: 1;
+    flex-shrink: 0;
     flex-grow:1;
     margin:20px;
+    /*justify-content: center;*/
 }
 
 
 .login-box {
     max-width: 25vw;
+    min-width: fit-content;
     min-height:30vh;
     gap:30px;
-    justify-content: center;
+    margin-top: 50px;
 }
 
 .register-box{
     display: flex;
     flex-direction: column;
-    width: 30vw;
+    max-width: 55vw;
     height:auto;
-    margin-top: 50px;
+    margin-top: 20px;
     overflow:hidden;
 }
 
@@ -36,7 +38,6 @@
     justify-content: flex-start;
     min-height: fit-content;
     min-width: fit-content;
-
 }
 
 .sent-message{
@@ -49,6 +50,7 @@
     height: auto;
     overflow:hidden;
     min-height: fit-content;
+    flex-grow: 1;
 }
 
 .assignment-box{
@@ -63,10 +65,9 @@
     display: flex;
 }
 
-
 .reading-box {
     min-width: 35vw;
-    min-height:fit-content;
+    min-height: fit-content;
     gap:30px;
     justify-content: flex-start;
 }

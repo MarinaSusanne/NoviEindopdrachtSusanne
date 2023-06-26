@@ -6,9 +6,7 @@ function fromTokentoDate (token) {
     console.log(decodedToken);
     const dateInUnix = decodedToken.exp;
     const dateNow = new Date().getTime();
-    console.log(dateInUnix);
-
-    if (dateInUnix - dateNow > 0 ) {
+        if (dateInUnix * 1000 - dateNow > 0 ) {
         return true
     } else {
         return false

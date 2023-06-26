@@ -31,7 +31,6 @@ function LogIn() {
             console.log(result);
             const JWT = result.data.jwt;
             whatsInTheContext.logIn(JWT);
-            navigate('/admin-opdrachten');
         } catch (e) {
             console.log(e)
             toggleError(true);

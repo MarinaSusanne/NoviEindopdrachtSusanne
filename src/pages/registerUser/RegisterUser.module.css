@@ -6,8 +6,8 @@
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: bottom;
-        min-height: 100%;
         padding-top: 50px;
         width: 100vw;
+        min-height: 90vh;
     }
 }

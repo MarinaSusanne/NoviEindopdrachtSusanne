@@ -38,7 +38,6 @@ function App() {
 
 //TODO: responsive maken
 //TODO: mobile version maken
-//TODO: aanpassen vanwege relationship???
 //TODO: goede error berichten en error en loading!
 
 export default App;

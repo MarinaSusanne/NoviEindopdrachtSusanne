@@ -8,11 +8,12 @@ import FormInput from "../../components/formInput/FormInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import formatSendDate from "../../helpers/formatSendDate";
+import {useParams} from "react-router-dom";
 
 
 function GroupPage() {
-    const {user, isAuth} = useContext(AuthContext);
-    const [group, setGroup] = useState({});
+    const {user, userGroup, isAuth} = useContext(AuthContext);
+    const [groupInfo, setGroupInfo] = useState({});
     const [messageBoardId, setMessageBoardId] = useState('');
     const [members, setMembers] = useState([]);
     const [memberImages, setMemberImages] = useState({});
@@ -21,16 +22,18 @@ function GroupPage() {
     const [error, toggleError] = useState(false);
     const [messageSent, setMessageSent] = useState(false);
     const token = localStorage.getItem('token');
-
+    const {groupId} = useParams();
 
     useEffect(() => {
         fetchGroupMembers();
-    }, []);
+    }, [groupId]);
+
 
     useEffect(() => {
         fetchMessagesMessageBoard();
-    }, [messageBoardId]);
+    }, [messageBoardId, messageSent]);
 
+    //hier heb ik nu even groupId aan toegevoegd ivm useParams
 
     useEffect(() => {
         members.forEach((member) => getImage(member));
@@ -38,10 +41,22 @@ function GroupPage() {
 
 
    async function handleFormSubmit(formData) {
-       console.log(formData);
+       console.log(formData.message);
        toggleError(false);
        try {
-           const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+           if ( user.username === "admin"){
+               const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+                   content: formData.message,
+                   groupId:groupId
+               }, {
+                   headers: {
+                       "Content-Type": "application/json",
+                       Authorization: `Bearer ${token}`,
+                   }
+               });
+           }
+           else {
+               const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
                    content: formData.message
                }, {
                    headers: {
@@ -49,11 +64,11 @@ function GroupPage() {
                        Authorization: `Bearer ${token}`,
                    }
                });
-               console.log(response);
+           }
            setMessageSent(true);
-           reset();
-           await fetchMessagesMessageBoard();
-       } catch (e) {
+           // reset();
+
+        } catch (e) {
            console.log(e)
            toggleError(true);
 
@@ -62,9 +77,9 @@ function GroupPage() {
 
     async function fetchGroupMembers() {
         try {
-            const {data} = await axios.get(`http://localhost:8081/groups/users/${user.id}/group`);
+            const {data} = await axios.get(`http://localhost:8081/groups/${groupId}`);
             console.log(data);
-            setGroup(data);
+            setGroupInfo(data);
             setMessageBoardId(data.messageBoardId);
             const outcome = data.userPictureOutputDtos;
             setMembers(outcome);
@@ -84,11 +99,14 @@ function GroupPage() {
     }
 
     async function fetchMessagesMessageBoard() {
-        try {
-            if (!messageBoardId) {
-                return;
-            }
+       setMessages([]);
+       try {
+
+            // if (!messageBoardId) {
+            //     return;
+            // }
             const {data} = await axios.get(`http://localhost:8081/messageboards/${messageBoardId}`);
+           console.log(data);
             setMessages(data);
         } catch (e) {
             console.log(e)
@@ -98,6 +116,7 @@ function GroupPage() {
 
     return (
         <div className="outer-container">
+            {console.log(messages)}
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <article className={styles["three-boxes"]}>
@@ -147,7 +166,7 @@ function GroupPage() {
                             </WhiteBox>
                         </div>
                         <WhiteBox className="message-board">
-                            <h2> Prikbord van {group.groupName} </h2>
+                            <h2> Prikbord van {groupInfo.groupName} </h2>
                             <Innerbox>
                                 {(messages).length > 0 && (
                                     <>
@@ -166,7 +185,6 @@ function GroupPage() {
             </section>
         </div>
     );
-//TODO: aanpassen styling zodat de twee linkerkolommen niet groter worden. en Nadenken oplossing voor teveel berichten
 }
 
 export default GroupPage;

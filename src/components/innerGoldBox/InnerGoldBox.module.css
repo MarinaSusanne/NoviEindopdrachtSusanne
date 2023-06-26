@@ -12,7 +12,7 @@
     width:22vw;
     height: fit-content;
     box-sizing: border-box;
-    margin: 20px;
+    margin-bottom: 20px;
     padding-top:20px;
 }
 
@@ -25,8 +25,9 @@
 }
 
 .assignment-readingpage{
-    width:22vw;
-    height: fit-content;
+    width:30vw;
+    min-height: 100px;
+    max-height: fit-content;
     box-sizing: border-box;
 }
 

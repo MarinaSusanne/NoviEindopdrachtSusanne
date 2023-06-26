@@ -7,12 +7,14 @@ import fromTokentoDate from "../helpers/fromTokentoDate";
 export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
-    const [isAuth, setAuthState] = useState({
+    const [authState, setAuthState] = useState({
         isAuth: false,
         user: null,
+        userGroup: null,
         status: 'pending',
         groupStatus: 'pending',
     });
+
 
     useEffect(() => {
             const token = localStorage.getItem('token');
@@ -24,6 +26,7 @@ function AuthContextProvider({children}) {
                 setAuthState({
                     isAuth: false,
                     user: null,
+                    userGroup: null,
                     status: 'done',
                     groupStatus: 'done'
                 });
@@ -41,6 +44,11 @@ function AuthContextProvider({children}) {
         fetchDataUser(JWT, decodedToken.id);
     }
 
+    //wel of niet state mee geven?
+    //wel of niet verschillende statussen
+    //wel of niet spreadoperator of alles mee nemen?
+    //call back function??
+
     async function fetchDataUser(JWT, id) {
         try {
             const result = await axios.get(`http://localhost:8081/users/${id}`, {
@@ -51,6 +59,7 @@ function AuthContextProvider({children}) {
             });
             console.log(result);
             setAuthState({
+                ...authState,
                 isAuth: true,
                 user: {
                     username: result.data.username,
@@ -59,40 +68,44 @@ function AuthContextProvider({children}) {
                     id: result.data.id,
                 },
                 status: 'done',
-                groupStatus: isAuth.groupStatus,
+                groupStatus: 'done'
             });
-            // if (result.data.username === 'admin') {
-            //     navigate("/admin/opdrachten");
-            // } else {
-            console.log(result);
-            await fetchGroup(JWT, result.data.id);
-        } catch (e) {
+            console.log(authState);
+            if (result.data.username === 'admin') {
+                navigate("/admin/opdrachten");
+            } else {
+                console.log(result);
+                fetchGroup(JWT, result.data.id);
+                //await weg of niet?
+                }
+            } catch (e) {
             console.log(e)
-        }
+         }
     }
 
 
     async function fetchGroup(JWT, id) {
         try {
-            const response = await axios.get(`http://localhost:8081/groups/${id}/group`, {
+            console.log(id);
+            const response = await axios.get(`http://localhost:8081/groups/users/${id}/group`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${JWT}`,
                 },
             });
             console.log(response);
+            console.log(authState);
             setAuthState({
+                ...authState,
                 isAuth: true,
-                user: {
-                    ...isAuth.user,
+                userGroup:{
                     groupId: response.data.id,
                     groupName: response.data.groupName,
                 },
-                status: isAuth.status,
+                status:'done',
                 groupStatus: 'done',
             });
-            navigate("/groepspagina");
-            console.log(isAuth)
+            console.log(authState)
         } catch (e) {
             console.log(e)
         }
@@ -104,6 +117,7 @@ function AuthContextProvider({children}) {
         setAuthState({
             isAuth: false,
             user: null,
+            userGroup: null,
             status: 'done',
             groupStatus: 'done',
         });
@@ -113,8 +127,9 @@ function AuthContextProvider({children}) {
 
 
     const data = {
-        isAuth: isAuth.isAuth,
-        user: isAuth.user,
+        isAuth: authState.isAuth,
+        user: authState.user,
+        userGroup:authState.userGroup,
         logIn: logIn,
         logOut: logOut,
         banaan: 'geel',
@@ -123,7 +138,7 @@ function AuthContextProvider({children}) {
 
     return (
         <AuthContext.Provider value={data}>
-            {isAuth.status === 'done' ? children : <p> Loading...</p>}
+            {authState.status === 'done' ? children : <p> Loading...</p>}
         </AuthContext.Provider>
     );
 }
