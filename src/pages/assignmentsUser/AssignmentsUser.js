@@ -12,7 +12,7 @@ import {AuthContext} from "../../context/AuthContext";
 
 
 function AssignmentsUser() {
-    const {user, isAuth} = useContext(AuthContext);
+    const {user, userGroup, isAuth} = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
@@ -69,7 +69,7 @@ function AssignmentsUser() {
 
     async function fetchHomeWorkAssignments() {
         try {
-            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/${user.groupid}`, {
+            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/${userGroup.groupId}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,

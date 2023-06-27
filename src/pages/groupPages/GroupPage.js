@@ -66,7 +66,8 @@ function GroupPage() {
                });
            }
            setMessageSent(true);
-           // reset();
+           reset();
+           fetchMessagesMessageBoard();
 
         } catch (e) {
            console.log(e)

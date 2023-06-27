@@ -14,6 +14,10 @@ function AuthContextProvider({children}) {
         status: 'pending',
         groupStatus: 'pending',
     });
+    const [username, setUsername] = useState('');
+    const [firstname, setFirstName] = useState('');
+    const [id, setId] = useState('');
+    const [lastname, setLastname] = useState('');
 
 
     useEffect(() => {
@@ -44,11 +48,6 @@ function AuthContextProvider({children}) {
         fetchDataUser(JWT, decodedToken.id);
     }
 
-    //wel of niet state mee geven?
-    //wel of niet verschillende statussen
-    //wel of niet spreadoperator of alles mee nemen?
-    //call back function??
-
     async function fetchDataUser(JWT, id) {
         try {
             const result = await axios.get(`http://localhost:8081/users/${id}`, {
@@ -70,13 +69,15 @@ function AuthContextProvider({children}) {
                 status: 'done',
                 groupStatus: 'done'
             });
+            //Het lijkt erop dat mijn Context te traag is,dus zet het ook even in de state, om bij fetchGroup alsnog te gebruiken
+            setFirstName(result.data.firstName);
+            setLastname(result.data.lastName);
+            setUsername(result.data.username);
+            setId(result.data.id);
             console.log(authState);
-            if (result.data.username === 'admin') {
-                navigate("/admin/opdrachten");
-            } else {
+            if (result.data.username !== 'admin') {
                 console.log(result);
                 fetchGroup(JWT, result.data.id);
-                //await weg of niet?
                 }
             } catch (e) {
             console.log(e)
@@ -96,8 +97,13 @@ function AuthContextProvider({children}) {
             console.log(response);
             console.log(authState);
             setAuthState({
-                ...authState,
                 isAuth: true,
+                user:{
+                    username: username,
+                    firstname: firstname,
+                    lastname: lastname,
+                    id: id,
+                },
                 userGroup:{
                     groupId: response.data.id,
                     groupName: response.data.groupName,
@@ -105,7 +111,8 @@ function AuthContextProvider({children}) {
                 status:'done',
                 groupStatus: 'done',
             });
-            console.log(authState)
+            console.log(authState);
+            navigate('/opdrachten')
         } catch (e) {
             console.log(e)
         }

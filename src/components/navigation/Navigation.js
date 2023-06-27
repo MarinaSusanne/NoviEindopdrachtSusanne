@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import styles from './Navigation.module.css';
-import { NavLink } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import logo from '../../assets/images/logo-vulva-v.png';
 import {AuthContext} from "../../context/AuthContext";
 import  {useContext, useState} from "react";
@@ -13,11 +13,14 @@ function Navigation() {
     const {isAuth, user, userGroup, logOut } = useContext(AuthContext);
     console.log(userGroup);
 
+    const navigate = useNavigate();
 
     useEffect(() => {
             if (user && user.username === 'admin') {
                 fetchActiveGroups();
+                navigate('/admin/lees-pagina')
             }
+          console.log(user);
         }, [user]);
 
 
@@ -40,9 +43,7 @@ function Navigation() {
         if (!user || !user.username) {
             return null;
         }
-
         const isMaxActiveGroupsReached = activeGroups.length >= 3;
-
         //To prevent that the navigation will render to soon without all the information
         if (activeGroups.length === 0) {
             return <p>Loading...</p>;
@@ -65,9 +66,10 @@ function Navigation() {
     }
 
     function renderUserNavigation() {
-        if (!user || !user.firstname) {
+        if (!user || !user.username) {
             return null;
         }
+
             return (
             <>
                 <NavLink to ={`/groepspagina/${1}`} className={({ isActive }) => isActive ? styles['active-menu-link'] : styles['default-menu-link']} > Mijn Groep </NavLink>
