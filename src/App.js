@@ -36,7 +36,6 @@ function App() {
   );
 }
 
-//TODO: responsive maken
 //TODO: mobile version maken
 //TODO: goede error berichten en error en loading!
 

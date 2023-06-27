@@ -1,4 +1,4 @@
-/*@media screen and (min-width: 576px) {*/
+@media screen and (min-width: 576px) {
 
     .page-body {
         background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Backgorunimagegroups.png");
@@ -11,7 +11,7 @@
 
     .three-boxes {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-evenly;
         min-height: 88vh;
         width: 100%;
@@ -40,3 +40,14 @@
         display: flex;
         flex-direction: row;
     }
+}
+
+@media screen and (min-width: 1000px) {
+
+    .three-boxes {
+        display: flex;
+        flex-direction: row;
+
+    }
+}
+

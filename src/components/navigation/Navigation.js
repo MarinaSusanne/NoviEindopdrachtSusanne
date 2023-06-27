@@ -18,7 +18,6 @@ function Navigation() {
     useEffect(() => {
             if (user && user.username === 'admin') {
                 fetchActiveGroups();
-                navigate('/admin/lees-pagina')
             }
           console.log(user);
         }, [user]);
@@ -84,13 +83,15 @@ function Navigation() {
             <img src={logo} className={styles.logo} alt="logo-vulva-adventures" />
             <section className={styles['navigation-text']}>
                 {user && user.username === 'admin' ? renderAdminNavigation() : renderUserNavigation()}
-                <Button
-                    buttonType="submit"
-                    buttonText="Uitloggen"
-                    buttonStyle="buttonStyle"
-                    onClick={logOut}
-                />
             </section>
+           {isAuth && (
+               <Button
+                   buttonType="submit"
+                   buttonText="Uitloggen"
+                   buttonStyle="buttonStyle"
+                   onClick={logOut}
+               />
+               )}
        </nav>
     );
 }
