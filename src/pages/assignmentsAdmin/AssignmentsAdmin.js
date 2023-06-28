@@ -15,8 +15,8 @@ function AssignmentsAdmin() {
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [selectedAssignment, setSelectedAssignment] = useState('opdracht 1');
     const [error, toggleError] = useState(false);
-    const [selectedGroupId, setSelectedGroupId] = useState({});
-    const [selectedGroupId2, setSelectedGroupId2] = useState({});
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const [selectedGroupId2, setSelectedGroupId2] = useState(null);
     const [file, setFile] = useState([]);
     const token = localStorage.getItem('token');
     const [activeGroups, setActiveGroups] = useState([]);
@@ -29,11 +29,16 @@ function AssignmentsAdmin() {
 
 
     useEffect(() => {
-        if (activeGroups.length > 0) {
+        if (selectedGroupId2 === null && activeGroups.length > 0) {
+            setSelectedGroupId2(activeGroups[0].id);
+        }
+    }, [activeGroups, selectedGroupId2]);
+
+    useEffect(() => {
+        if (selectedGroupId === null && activeGroups.length > 0) {
             setSelectedGroupId(activeGroups[0].id);
         }
     }, [activeGroups]);
-
 
 
     useEffect(() => {
@@ -41,7 +46,7 @@ function AssignmentsAdmin() {
             fetchHomeworkAssignments();
         }
     }, [selectedGroupId]);
-//hierboven file weggehaald
+    //hierboven file weggehaald
 
 
     function handleGroupSelection(e) {
@@ -101,6 +106,7 @@ function AssignmentsAdmin() {
             setFile([]);
             reset();
             setIsSubmitted(true);
+            fetchHomeworkAssignments();
         } catch (e) {
             console.error(e)
             toggleError(true);
@@ -134,13 +140,12 @@ function AssignmentsAdmin() {
                                     id="group-field"
                                     onChange={handleGroupSelection}
                                     value={selectedGroupId}
-                                >
+                                    >
                                     {activeGroups.map((group) => (<option key={group.id} value={group.id}>
                                             {group.groupName}
                                         </option>
                                     ))}
                                 </select>
-
 
                             </label>
                             {homeworkAssignments.map((assignment) => (
