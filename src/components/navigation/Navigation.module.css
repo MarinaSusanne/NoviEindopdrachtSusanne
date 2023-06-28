@@ -9,15 +9,8 @@
     }
 
     .navigation-text {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        flex-basis: 1100px;
-        flex-shrink: 1;
-        flex-grow: 0;
-        font-size: 1.7em;
         font-family: "Dancing Script", serif;
-        padding-top: 20px;
+
     }
 
     .logo {
@@ -48,6 +41,21 @@
 
     .default-menu-link {
         border-bottom: none;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+
+    .navigation-text {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-basis: 1100px;
+        flex-shrink: 1;
+        flex-grow: 0;
+        font-size: 1.7em;
+        font-family: "Dancing Script", serif;
+        padding-top: 20px;
     }
 }
 

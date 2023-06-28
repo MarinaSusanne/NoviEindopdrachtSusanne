@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 import styles from './LogIn.module.css';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
@@ -10,17 +10,15 @@ import Navigation from "../../components/navigation/Navigation";
 import axios from "axios";
 
 
-
 function LogIn() {
-    //dit mag uiteraard korter, namelijk const {login } =useContext, maar de nu even zo, want Nova gebruikt de 'whatsinthecontext' en is voor mezelf fijn
-    const whatsInTheContext  = useContext(AuthContext);
-    console.log(whatsInTheContext);
-    const {register, handleSubmit, formState:{errors}} = useForm({mode:"onSubmit"});
+    const context = useContext(AuthContext);
+
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
-    const navigate = useNavigate();
 
-   async function handleFormSubmit(data){
+
+    async function handleFormSubmit(data) {
         console.log(data);
         toggleLoading(true);
         try {
@@ -30,7 +28,8 @@ function LogIn() {
             })
             console.log(result);
             const JWT = result.data.jwt;
-            whatsInTheContext.logIn(JWT);
+            context.logIn(JWT);
+            reset();
         } catch (e) {
             console.log(e)
             toggleError(true);
@@ -40,60 +39,65 @@ function LogIn() {
 
 
     return (
-      <div className="outer-container">
-         <section className={styles["page-body"]}>
-            <section className="inner-container">
-               <WhiteBox className="login-box">
-                  <h2> Welkom bij Vulva Adventures!</h2>
-                  <form className="form-login" onSubmit={handleSubmit(handleFormSubmit) }>
+        <div className="outer-container">
+            <section className={styles["page-body"]}>
+                <section className="inner-container">
+                    <WhiteBox className="login-box">
+                        <h2> Welkom bij Vulva Adventures!</h2>
+                        {context.isAuth ? (
+                            <p> U bent ingelogd en kunt nu navigeren via de navigatiebalk naar een pagina</p>
+                        ) : (
+                            <form className="form-login" onSubmit={handleSubmit(handleFormSubmit)}>
 
-                       <FormInput
-                          htmlFor="username-field"
-                          labelText="Usernaam:"
-                          type="text"
-                          id="username-field"
-                          register = {register}
-                          registerName="username"
-                          validationRules= {{
-                              required: "Dit veld is verplicht",
-                              minlength: {
-                              value: 5,
-                              message: "Minstens 10 karakters"
-                          },
-                              maxLength:15,
-                          }}
-                          className="input"
-                          errors={errors}
-                      />
+                                <FormInput
+                                    htmlFor="username-field"
+                                    labelText="Usernaam:"
+                                    type="text"
+                                    id="username-field"
+                                    register={register}
+                                    registerName="username"
+                                    validationRules={{
+                                        required: "Dit veld is verplicht",
+                                        minlength: {
+                                            value: 5,
+                                            message: "Minstens 10 karakters"
+                                        },
+                                        maxLength: 15,
+                                    }}
+                                    className="input"
+                                    errors={errors}
+                                />
 
-                      <FormInput
-                          htmlFor="password-field"
-                          labelText="Wachtwoord:"
-                          type="text"
-                          id="password-field"
-                          register={register}
-                          registerName="password"
-                          validationRules= {{
-                              required: "Dit veld is verplicht",
-                              minlength: {
-                                  value: 10,
-                                  message: "Minstens 10 karakters"
-                              },
-                              maxLength: 50,
-                          }}
-                          className="input"
-                          errors={errors}
-                      />
-                      <Button
-                          buttonType="submit"
-                          buttonText="Inloggen"
-                          buttonStyle="buttonStyle"
-                      />
-                    </form>
-                   <p> Heb je nog geen account? <Link to="/registreer"> Klik dan hier! </Link>  </p>
-                </WhiteBox>
-              </section>
-         </section>
+                                <FormInput
+                                    htmlFor="password-field"
+                                    labelText="Wachtwoord:"
+                                    type="text"
+                                    id="password-field"
+                                    register={register}
+                                    registerName="password"
+                                    validationRules={{
+                                        required: "Dit veld is verplicht",
+                                        minlength: {
+                                            value: 10,
+                                            message: "Minstens 10 karakters"
+                                        },
+                                        maxLength: 50,
+                                    }}
+                                    className="input"
+                                    errors={errors}
+                                />
+                                <Button
+                                    buttonType="submit"
+                                    buttonText="Inloggen"
+                                    buttonStyle="buttonStyle"
+                                />
+                                <p> Heb je nog geen account? <Link to="/registreer"> Klik dan hier! </Link></p>
+                            </form>
+                        )}
+
+                    </WhiteBox>
+                </section>
+            </section>
         </div>
     );
 };

@@ -12,13 +12,7 @@ function AuthContextProvider({children}) {
         user: null,
         userGroup: null,
         status: 'pending',
-        groupStatus: 'pending',
     });
-    const [username, setUsername] = useState('');
-    const [firstname, setFirstName] = useState('');
-    const [id, setId] = useState('');
-    const [lastname, setLastname] = useState('');
-
 
     useEffect(() => {
             const token = localStorage.getItem('token');
@@ -32,7 +26,6 @@ function AuthContextProvider({children}) {
                     user: null,
                     userGroup: null,
                     status: 'done',
-                    groupStatus: 'done'
                 });
             }
         },
@@ -69,50 +62,39 @@ function AuthContextProvider({children}) {
                 status: 'done',
                 groupStatus: 'done'
             });
-            //Het lijkt erop dat mijn Context te traag is,dus zet het ook even in de state, om bij fetchGroup alsnog te gebruiken
-            setFirstName(result.data.firstName);
-            setLastname(result.data.lastName);
-            setUsername(result.data.username);
-            setId(result.data.id);
             console.log(authState);
             if (result.data.username !== 'admin') {
                 console.log(result);
-                fetchGroup(JWT, result.data.id);
+                fetchGroup(JWT, result.data.id, result.data.username, result.data.firstName, result.data.lastName);
                 }
             } catch (e) {
             console.log(e)
          }
     }
 
-
-    async function fetchGroup(JWT, id) {
+    async function fetchGroup(JWT, id, userName, firstName, lastName) {
         try {
-            console.log(id);
             const response = await axios.get(`http://localhost:8081/groups/users/${id}/group`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${JWT}`,
                 },
             });
-            console.log(response);
-            console.log(authState);
             setAuthState({
                 isAuth: true,
-                user:{
-                    username: username,
-                    firstname: firstname,
-                    lastname: lastname,
-                    id: id,
+                user: {
+                    username: userName,
+                    firstname: firstName,
+                    lastname: lastName,
+                    id: id
                 },
                 userGroup:{
                     groupId: response.data.id,
                     groupName: response.data.groupName,
                 },
                 status:'done',
-                groupStatus: 'done',
             });
             console.log(authState);
-            navigate('/opdrachten')
         } catch (e) {
             console.log(e)
         }
@@ -126,7 +108,6 @@ function AuthContextProvider({children}) {
             user: null,
             userGroup: null,
             status: 'done',
-            groupStatus: 'done',
         });
         console.log('gebruiker is uitgelogd');
         navigate('/');
@@ -146,6 +127,7 @@ function AuthContextProvider({children}) {
     return (
         <AuthContext.Provider value={data}>
             {authState.status === 'done' ? children : <p> Loading...</p>}
+
         </AuthContext.Provider>
     );
 }
