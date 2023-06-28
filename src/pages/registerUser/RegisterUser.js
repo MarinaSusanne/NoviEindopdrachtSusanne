@@ -28,7 +28,6 @@ function RegisterUser() {
                 console.log(finalPhoto);
                 setPhoto(finalPhoto);
             };
-            console.log(formData);
             toggleLoading(true);
             toggleError(false);
             try {
@@ -284,6 +283,8 @@ function RegisterUser() {
                                 errors={errors}
                             />
                             {createdProfile && <p> Profiel aangemaakt met de volgende usernaam: "${username}" </p>}
+                            {loading && <p>Loading...</p>}
+                            {error && <p style={{color: 'red'}} >Er is een fout opgetreden tijdens het registreren.</p>}
                             <Button
                                 buttonType="submit"
                                 buttonText="  Registreer  "

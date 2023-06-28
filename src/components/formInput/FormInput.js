@@ -1,7 +1,18 @@
 import React from 'react';
 import styles from './FormInput.module.css';
 
-function FormInput({ htmlFor, register, labelText, type, id, registerName, validationRules, className, errors, changeHandler }) {
+function FormInput({
+                       htmlFor,
+                       register,
+                       labelText,
+                       type,
+                       id,
+                       registerName,
+                       validationRules,
+                       className,
+                       errors,
+                       changeHandler
+                   }) {
 
     return (
         <label htmlFor={htmlFor}>
@@ -12,7 +23,7 @@ function FormInput({ htmlFor, register, labelText, type, id, registerName, valid
                     {...register(registerName, validationRules)}
                     className={styles[className]}
                 />
-                 ) : (
+            ) : (
                 <input
                     type={type}
                     id={id}
@@ -20,7 +31,7 @@ function FormInput({ htmlFor, register, labelText, type, id, registerName, valid
                     className={styles[className]}
                     onChange={changeHandler}
                 />
-                )}
+            )}
             {errors[registerName] && <p className={styles['error-message']}>{errors[registerName].message}</p>}
         </label>
     );

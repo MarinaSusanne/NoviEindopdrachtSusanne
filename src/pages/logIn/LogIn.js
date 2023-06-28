@@ -6,20 +6,17 @@ import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
 import {useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
-import Navigation from "../../components/navigation/Navigation";
 import axios from "axios";
 
 
 function LogIn() {
     const context = useContext(AuthContext);
-
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
 
 
     async function handleFormSubmit(data) {
-        console.log(data);
         toggleLoading(true);
         try {
             const result = await axios.post('http://localhost:8081/authenticate', {
@@ -71,7 +68,7 @@ function LogIn() {
                                 <FormInput
                                     htmlFor="password-field"
                                     labelText="Wachtwoord:"
-                                    type="text"
+                                    type="password"
                                     id="password-field"
                                     register={register}
                                     registerName="password"
@@ -94,11 +91,11 @@ function LogIn() {
                                 <p> Heb je nog geen account? <Link to="/registreer"> Klik dan hier! </Link></p>
                             </form>
                         )}
-
                     </WhiteBox>
                 </section>
             </section>
         </div>
     );
 };
+
 export default LogIn;

@@ -36,25 +36,21 @@ function AssignmentsAdmin() {
 
 
     useEffect(() => {
-        // if (selectedGroupId) {
+        if (selectedGroupId) {
             fetchHomeworkAssignments();
-        console.log()
-    }, [selectedGroupId]);
+        }
+    }, [selectedGroupId, file]);
 
 
     function handleGroupSelection(e) {
-        console.log(e.target.value);
         setSelectedGroupId(e.target.value);
-        console.log(selectedGroupId);
     }
 
     function handleGroupSelection2(e) {
-        console.log(e.target.value)
         setSelectedGroupId2(e.target.value);
     }
 
     function handleAssignmentSelection(e) {
-        console.log(e)
         setSelectedAssignment(e.target.value);
     }
 
@@ -67,18 +63,14 @@ function AssignmentsAdmin() {
                 }
             });
             setActiveGroups(data);
-            console.log(activeGroups);
         } catch (e) {
             console.log(e)
         }
     }
 
     async function handleFormSubmit(data) {
-        console.log(data)
         const uploadedFile = data.uploadFile[0];
-        console.log(uploadedFile);
         setFile(uploadedFile);
-
         toggleError(false);
         try {
             const response = await axios.post(`http://localhost:8081/homeworkassignments/admin/groups/${selectedGroupId2}`, {
@@ -108,9 +100,7 @@ function AssignmentsAdmin() {
             console.error(e)
             toggleError(true);
         }
-
     }
-
 
     async function fetchHomeworkAssignments() {
         try {
@@ -120,15 +110,11 @@ function AssignmentsAdmin() {
                     Authorization: `Bearer ${token}`,
                 }
             })
-            console.log(data);
             setHomeworkAssignments(data);
-            console.log(homeworkAssignments);
-            console.log(selectedGroupId);
         } catch (e) {
             console.log(e)
         }
     }
-
 
     return (
         <div className="outer-container">
@@ -145,8 +131,8 @@ function AssignmentsAdmin() {
                                     value={selectedGroupId}
                                 >
                                     {activeGroups.map((group) => (<option key={group.id} value={group.id}>
-                                        {group.groupName}
-                                    </option>
+                                            {group.groupName}
+                                        </option>
                                     ))}
                                 </select>
 
@@ -230,9 +216,9 @@ function AssignmentsAdmin() {
                                     errors={errors}
                                     registerName="uploadFile"
                                     validationRules={{
-                                        required: true,
+                                        required: "Je moet een bestand uploaden",
                                         validate: {
-                                             fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
+                                            fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                         },
                                     }}
                                     className="input-uploadfield"
@@ -240,12 +226,11 @@ function AssignmentsAdmin() {
                                 />
                                 <br></br>
                                 {isSubmitted && (
-                                    <p style={{ color: "green" }}>Opdracht is verzonden naar de groep</p>
+                                    <p style={{color: "green"}}>Opdracht is verzonden naar de groep</p>
                                 )}
                                 {error && (
-                                    <p style={{ color: "red" }}>
-                                        Er is een fout opgetreden bij het verzenden van de opdracht
-                                    </p>
+                                    <p style={{color: "red"}}>
+                                        Er is een fout opgetreden bij het verzenden van de opdracht</p>
                                 )}
                                 <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
                                 />

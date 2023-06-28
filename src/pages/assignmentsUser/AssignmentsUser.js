@@ -16,6 +16,7 @@ function AssignmentsUser() {
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const [selectedAssignment, setSelectedAssignment] = useState("");
     const [file, setFile] = useState([]);
     const token = localStorage.getItem('token');
@@ -25,47 +26,42 @@ function AssignmentsUser() {
         fetchHomeWorkAssignments();
     }, []);
 
-
     function handleAssignmentSelection(e) {
-        console.log(e)
         setSelectedAssignment(e.target.value);
     }
 
     async function handleFormSubmit(data) {
-        console.log(data)
         const uploadedFile = data.uploadFile[0];
-        console.log(uploadedFile);
         setFile(uploadedFile);
+        toggleError(false);
+        try {
+            const response = await axios.post(`http://localhost:8081/handinassignments/users/${user.id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                info: data.info,
+                assignmentName: selectedAssignment,
+            })
+            const assignmentId = response.data.id;
+            const formData = new FormData();
+            formData.append("file", uploadedFile);
 
-       toggleError(false);
-       try {
-           const response = await axios.post(`http://localhost:8081/handinassignments/users/${user.id}`, {
-               headers: {
-                   "Content-Type": "application/json",
-                   Authorization: `Bearer ${token}`,
-               },
-               info:data.info,
-               assignmentName: selectedAssignment,
-           })
-           const assignmentId = response.data.id;
-           console.log(assignmentId);
-           const formData = new FormData();
-           formData.append("file", uploadedFile);
-
-           const result = await axios.post(`http://localhost:8081/handinassignments/${assignmentId}/file`, formData,
-               {
-                   headers: {
-                       "Content-Type": "multipart/form-data"
-                   },
-               })
-           console.log(result.data);
-           setFile([]);
-           reset();
-       } catch (e) {
-           console.log(e)
-           toggleError(true);
-       }
-   }
+            const result = await axios.post(`http://localhost:8081/handinassignments/${assignmentId}/file`, formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                })
+            console.log(result.data); // With this post file is automatically added, this log is just for visibility
+            setFile([]);
+            setIsSubmitted(true);
+            reset();
+        } catch (e) {
+            console.log(e)
+            toggleError(true);
+        }
+    }
 
     async function fetchHomeWorkAssignments() {
         try {
@@ -73,31 +69,29 @@ function AssignmentsUser() {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
-                }})
-            console.log(data);
+                }
+            })
             setHomeworkAssignments(data);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
-     }
-
-    async function handleDownload(assignment) {
-            try {
-                const response = await axios.get(`http://localhost:8081/download/${assignment.fileName}`, {
-                    responseType: 'blob',
-                });
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', assignment.fileName);
-                document.body.appendChild(link);
-                link.click();
-            } catch (e) {
-                console.log(e);
-            }
     }
 
-
+    async function handleDownload(assignment) {
+        try {
+            const response = await axios.get(`http://localhost:8081/download/${assignment.fileName}`, {
+                responseType: 'blob',
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', assignment.fileName);
+            document.body.appendChild(link);
+            link.click();
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <div className="outer-container">
@@ -110,20 +104,20 @@ function AssignmentsUser() {
                                 <div key={assignment.id}>
                                 <span>
                                  <InnerGoldBox className="assignment-box">
-                                   <p style={{ fontWeight: 'bold'}}>{assignment.assignmentName} op {assignment.sendDate} </p>
-                                   <p style={{ fontStyle: 'italic' }}>"{assignment.info}"</p>
+                                   <p style={{fontWeight: 'bold'}}>{assignment.assignmentName} op {assignment.sendDate} </p>
+                                   <p style={{fontStyle: 'italic'}}>"{assignment.info}"</p>
                                 </InnerGoldBox>
                                  </span>
                                     <span>
                                     <Button
                                         buttonStyle="download-button"
-                                        onClick={()=> handleDownload(assignment)}
+                                        onClick={() => handleDownload(assignment)}
                                         buttonType="submit"
                                         buttonText="Downloaden"
                                         key={`download-button-${assignment.id}`}
                                     />
                                    </span>
-                                 </div>
+                                </div>
                             ))}
                         </WhiteBox>
 
@@ -131,7 +125,7 @@ function AssignmentsUser() {
                             <h2> Inleveren opdracht </h2>
                             <form className="form-handin" onSubmit={handleSubmit(handleFormSubmit)}>
                                 <label htmlFor="assignment-field" className={styles["selection-field"]}>
-                                      {"Selecteer een opdracht:      "}
+                                    {"Selecteer een opdracht:      "}
                                     <select id="assignment-field" value={selectedAssignment}
                                             onChange={handleAssignmentSelection}>
                                         <option value="opdracht 1">Opdracht 1 - Van spanning naar ontspanning</option>
@@ -187,11 +181,18 @@ function AssignmentsUser() {
                                     className="input-uploadfield"
                                     accept=".pdf .word"
                                 />
-                              <Button
-                                buttonType="submit"
-                                buttonText="verzenden"
-                                buttonStyle="buttonStyle"/>
+                                <Button
+                                    buttonType="submit"
+                                    buttonText="verzenden"
+                                    buttonStyle="buttonStyle"/>
                             </form>
+                            {isSubmitted && (
+                                <p style={{color: "green"}}>Opdracht is verzonden naar de admin</p>
+                            )}
+                            {error && (
+                                <p style={{color: "red"}}>
+                                    Er is een fout opgetreden </p>
+                            )}
                         </WhiteBox>
                     </article>
                 </section>
@@ -199,6 +200,5 @@ function AssignmentsUser() {
         </div>
     );
 }
-
 
 export default AssignmentsUser;

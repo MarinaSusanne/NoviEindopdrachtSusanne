@@ -5,12 +5,12 @@ import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import axios from "axios";
 import Button from "../../components/button/Button";
 import {AuthContext} from "../../context/AuthContext";
+import logIn from "../logIn/LogIn";
 
 const ReadingPageAdmin = () => {
     const [selectedGroupId, setSelectedGroupId] = useState(1);
     const [selectedMember, setSelectedMember] = useState({});
     const [groupMembers, setGroupMembers] = useState([]);
-    const [error, toggleError] = useState(false);
     const [activeGroups, setActiveGroups] = useState([]);
     const [assignments, setAssignments] = useState([]);
     const {user, isAuth} = useContext(AuthContext);
@@ -18,58 +18,73 @@ const ReadingPageAdmin = () => {
 
     useEffect(() => {
         fetchActiveGroups();
-        fetchGroupMembers();
     }, []);
 
-    async function fetchActiveGroups(){
-        try{
-            const {data} = await axios.get(`http://localhost:8081/groups/admin/all`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    }
-                });
-            console.log(data);
-            setActiveGroups(data);
+    useEffect(() => {
+        if (activeGroups.length > 0) {
+            setSelectedGroupId(activeGroups[0].id);
         }
-        catch (e) {
-            console.log(e)
-        }
-    }
+    }, [activeGroups]);
 
-    function handleGroupSelection(e) {
-        console.log(e)
-        setSelectedGroupId(e.target.value);
+    useEffect(() => {
         fetchGroupMembers();
-    }
+    }, [selectedGroupId]);
 
-    async function fetchGroupMembers() {
+    useEffect(() => {
+        if (groupMembers.length > 0) {
+            setSelectedMember(groupMembers[0]);
+            fetchAssignmentsByMember(groupMembers[0]);
+        }
+    }, [groupMembers]);
+
+    async function fetchActiveGroups() {
         try {
-            const {data} = await axios.get(`http://localhost:8081/groups/${selectedGroupId}/users`);
-            console.log(data);
-            setGroupMembers(data);
+            const {data} = await axios.get(`http://localhost:8081/groups/admin/all`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            setActiveGroups(data);
         } catch (e) {
             console.log(e)
         }
     }
 
-    function handleMemberSelection(e) {
-        const memberId = parseInt(e.target.value);
-        const selectedMember = groupMembers.find(member => member.id === memberId);
-        setSelectedMember(selectedMember);
-        fetchAssignmentsByMember();
+    function handleGroupSelection(e) {
+        const groupId = e.target.value;
+        setSelectedGroupId(groupId);
     }
 
-    //TODO:aanpassen dat nu niet groep 1 en groep 2 is maar actieve groepen worden weergegeven
+    async function fetchGroupMembers() {
+        try {
+            const {data} = await axios.get(`http://localhost:8081/groups/${selectedGroupId}/users`);
+            setGroupMembers(data);
+            setSelectedMember({});
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
-    async function fetchAssignmentsByMember() {
+    function handleMemberSelection(e) {
+        const memberId = parseInt(e.target.value);
+        const selectedMember1 = groupMembers.find(member => member.id === memberId);
+        setSelectedMember(selectedMember1)
+        fetchAssignmentsByMember(selectedMember1);
+    }
+
+    async function fetchAssignmentsByMember(selectedMember1) {
+        if (!selectedMember) {
+            return;
+        }
         try {
             console.log(selectedMember);
-            const {data} = await axios.get(`http://localhost:8081/handinassignments/${selectedMember.id}`, {
+            const {data} = await axios.get(`http://localhost:8081/handinassignments/${selectedMember1.id}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
-                }});
+                }
+            });
             console.log(data);
             setAssignments(data);
         } catch (e) {
@@ -130,7 +145,7 @@ const ReadingPageAdmin = () => {
                             <div>
                                 {assignments.map((assignment) => (<div key={assignment.id}>
                                     <h4>{assignment.name}</h4>
-                                    <p style={{fontWeight: 'bold'}}>{assignment.assignmentName} op {assignment.sentDate}</p>
+                                    <p style={{fontWeight: 'bold'}}>{assignment.assignmentName} op {assignment.sendDate}</p>
                                     <p style={{fontStyle: 'italic'}}>{assignment.info}</p>
                                     <Button
                                         buttonStyle="download-button"

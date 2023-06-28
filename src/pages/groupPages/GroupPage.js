@@ -20,6 +20,7 @@ function GroupPage() {
     const [messages, setMessages] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
+    const [loading, toggleLoading] = useState(false);
     const [messageSent, setMessageSent] = useState(false);
     const token = localStorage.getItem('token');
     const {groupId} = useParams();
@@ -33,60 +34,58 @@ function GroupPage() {
         fetchMessagesMessageBoard();
     }, [messageBoardId, messageSent]);
 
-    //hier heb ik nu even groupId aan toegevoegd ivm useParams
 
     useEffect(() => {
         members.forEach((member) => getImage(member));
     }, [members]);
 
 
-   async function handleFormSubmit(formData) {
-       console.log(formData.message);
-       toggleError(false);
-       try {
-           if ( user.username === "admin"){
-               const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
-                   content: formData.message,
-                   groupId:groupId
-               }, {
-                   headers: {
-                       "Content-Type": "application/json",
-                       Authorization: `Bearer ${token}`,
-                   }
-               });
-           }
-           else {
-               const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
-                   content: formData.message
-               }, {
-                   headers: {
-                       "Content-Type": "application/json",
-                       Authorization: `Bearer ${token}`,
-                   }
-               });
-           }
-           setMessageSent(true);
-           reset();
-           fetchMessagesMessageBoard();
-
+    async function handleFormSubmit(formData) {
+        console.log(formData.message);
+        toggleLoading(true);
+        toggleError(false);
+        try {
+            if (user.username === "admin") {
+                const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+                    content: formData.message,
+                    groupId: groupId
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+            } else {
+                const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+                    content: formData.message
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+            }
+            setMessageSent(true);
+            reset();
+            fetchMessagesMessageBoard();
         } catch (e) {
-           console.log(e)
-           toggleError(true);
-
-       }
+            console.log(e)
+            toggleError(true);
+        }
+        toggleLoading(false);
     }
 
     async function fetchGroupMembers() {
+        toggleError(false);
         try {
             const {data} = await axios.get(`http://localhost:8081/groups/${groupId}`);
-            console.log(data);
             setGroupInfo(data);
             setMessageBoardId(data.messageBoardId);
             const outcome = data.userPictureOutputDtos;
             setMembers(outcome);
-            console.log(outcome);
         } catch (e) {
-            console.log(e)
+            console.log(e);
+            toggleError(true);
         }
     }
 
@@ -100,24 +99,24 @@ function GroupPage() {
     }
 
     async function fetchMessagesMessageBoard() {
-       setMessages([]);
-       try {
-
-            // if (!messageBoardId) {
-            //     return;
-            // }
+        setMessages([]);
+        toggleLoading(true);
+        toggleError(false);
+        try {
+            if (!messageBoardId) {
+                return;
+            }
             const {data} = await axios.get(`http://localhost:8081/messageboards/${messageBoardId}`);
-           console.log(data);
             setMessages(data);
         } catch (e) {
-            console.log(e)
+            console.log(e);
+            toggleError(true);
         }
+        toggleLoading(false);
     }
-
 
     return (
         <div className="outer-container">
-            {console.log(messages)}
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <article className={styles["three-boxes"]}>
@@ -129,8 +128,9 @@ function GroupPage() {
                                         {Object.values(members).map((member) => (
                                             <span key={member.id} className={styles["group-span"]}>
                                              {memberImages[member.id] && (
-                                                 <img src={member.photo} alt={member.firstName} className={styles["image-span"]}/>
-                                                 )}
+                                                 <img src={member.photo} alt={member.firstName}
+                                                      className={styles["image-span"]}/>
+                                             )}
                                                 <p>{member.firstName} {member.lastName}</p>
                                              </span>
                                         ))}
@@ -150,6 +150,7 @@ function GroupPage() {
                                             register={register}
                                             registerName="message"
                                             validationRules={{
+                                                required: "Voer een bericht in",
                                                 maxLength: {
                                                     value: 200,
                                                     message: "Maximaal 200 karakters"
@@ -160,7 +161,7 @@ function GroupPage() {
                                         />
                                         {messageSent && <p> Bericht is verzonden!</p>}
                                         <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
-                                    />
+                                        />
                                     </form>
                                 </Innerbox>
 
@@ -173,13 +174,16 @@ function GroupPage() {
                                     <>
                                         {(messages).map((message) => (
                                             <span key={message.id}>
-                                            <p style={{ fontWeight: 'bold'}}> {message.userLeanOutputDto.firstName }  geschreven op {formatSendDate(message.submitDate)} </p>
-                                            <p  style={{ fontStyle: 'italic' }}>"{message.content}"</p>
+                                            <p style={{fontWeight: 'bold'}}> {message.userLeanOutputDto.firstName} geschreven op {formatSendDate(message.submitDate)} </p>
+                                            <p style={{fontStyle: 'italic'}}>"{message.content}"</p>
                                          </span>
                                         ))}
                                     </>
                                 )}
                             </Innerbox>
+                            {loading && (
+                                <p style={{color: "purple"}}>
+                                    Laden... </p>)}
                         </WhiteBox>
                     </article>
                 </section>

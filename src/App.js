@@ -11,7 +11,6 @@ import Navigation from './components/navigation/Navigation';
 import GroupPage from './pages/groupPages/GroupPage';
 import NotFound from "./pages/notFound/NotFound";
 
-
 function App() {
   return (
       <>
@@ -35,8 +34,5 @@ function App() {
       </>
   );
 }
-
-//TODO: mobile version maken
-//TODO: goede error berichten en error en loading!
 
 export default App;

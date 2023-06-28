@@ -16,7 +16,6 @@ function Navigation() {
         if (user && user.username === 'admin') {
             fetchActiveGroups();
         }
-        console.log(user);
     }, [user]);
 
 
@@ -43,7 +42,6 @@ function Navigation() {
         if (activeGroups.length === 0) {
             return <p>Loading...</p>;
         }
-        console.log(activeGroups);
         return (
             <>
                 <NavLink to="/admin/lees-pagina"
@@ -52,7 +50,8 @@ function Navigation() {
                          className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Opdrachten </NavLink>
                 {!isMaxActiveGroupsReached && (
                     <NavLink to="/admin/groep-aanmaken"
-                             className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Groep aanmaken </NavLink>
+                             className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Groep
+                        aanmaken </NavLink>
                 )}
 
                 {activeGroups.map(group => (
@@ -72,7 +71,8 @@ function Navigation() {
         return (
             <>
                 <NavLink to={`/groepspagina/${1}`}
-                         className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Mijn Groep </NavLink>
+                         className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Mijn
+                    Groep </NavLink>
                 <NavLink to="/opdrachten"
                          className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Opdrachten </NavLink>
                 <h2> Welkom, {user.firstname}</h2>

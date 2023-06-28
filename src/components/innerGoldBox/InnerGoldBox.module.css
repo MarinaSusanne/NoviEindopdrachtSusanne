@@ -36,7 +36,7 @@
 @media screen and (min-width: 1000px) {
     .sent-message {
         width: 36vw;
-        height: 20vw;
+        height: fit-content;
     }
 
     .assignment-readingpage {
