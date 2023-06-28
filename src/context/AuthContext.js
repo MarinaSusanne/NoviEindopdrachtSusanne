@@ -120,14 +120,12 @@ function AuthContextProvider({children}) {
         userGroup:authState.userGroup,
         logIn: logIn,
         logOut: logOut,
-        banaan: 'geel',
     };
 
 
     return (
         <AuthContext.Provider value={data}>
             {authState.status === 'done' ? children : <p> Loading...</p>}
-
         </AuthContext.Provider>
     );
 }
