@@ -35,15 +35,18 @@ function AssignmentsAdmin() {
     }, [activeGroups]);
 
 
+
     useEffect(() => {
         if (selectedGroupId) {
             fetchHomeworkAssignments();
         }
-    }, [selectedGroupId, file]);
+    }, [selectedGroupId]);
+//hierboven file weggehaald
 
 
     function handleGroupSelection(e) {
-        setSelectedGroupId(e.target.value);
+        const groupId = e.target.value;
+        setSelectedGroupId(groupId);
     }
 
     function handleGroupSelection2(e) {
@@ -63,12 +66,14 @@ function AssignmentsAdmin() {
                 }
             });
             setActiveGroups(data);
+            console.log(activeGroups);
         } catch (e) {
             console.log(e)
         }
     }
 
     async function handleFormSubmit(data) {
+        console.log(data);
         const uploadedFile = data.uploadFile[0];
         setFile(uploadedFile);
         toggleError(false);
