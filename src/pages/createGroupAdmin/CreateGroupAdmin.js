@@ -1,18 +1,26 @@
 import styles from './CreateGroupAdmin.module.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import Button from '../../components/button/Button';
 import FormInput from "../../components/formInput/FormInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
+import {AuthContext} from "../../context/AuthContext";
 
 function CreateGroupAdmin() {
+    const {user, isAuth} = useContext(AuthContext);
     const [grouplessMembers, setGrouplessMembers] = useState([]);
     const {register, handleSubmit, formState: {errors}, watch, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [groupCreatedMessage, setGroupCreatedMessage] = useState("");
+    const token = localStorage.getItem('token')
+
+    useEffect(() => {
+        fetchMembersWithoutGroup();
+    }, []);
+
 
     async function handleFormSubmit(formData) {
         try {
@@ -21,7 +29,12 @@ function CreateGroupAdmin() {
                 groupName: formData.name,
                 startDate: formData.startDate,
                 endDate: formData.endDate,
-                users: formData.selectedMembers,
+                users: formData.selectedMembers
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
             });
             console.log(response);
             setGroupCreatedMessage(
@@ -38,7 +51,11 @@ function CreateGroupAdmin() {
 
     async function fetchMembersWithoutGroup() {
         try {
-            const response = await axios.get(`http://localhost:8081/users/nogroup`);
+            const response = await axios.get(`http://localhost:8081/users/nogroup`,{
+                headers: {
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+            }});
             console.log(response);
             setGrouplessMembers(response.data);
         } catch (e) {
@@ -47,9 +64,7 @@ function CreateGroupAdmin() {
     }
 
 
-    useEffect(() => {
-        fetchMembersWithoutGroup();
-    }, []);
+
 
     return (
         <div className="outer-container">

@@ -1,36 +1,45 @@
-.inner-box {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--lightgold);
-    border: 1px solid var(--grey);
-    border-radius: 10px;
-    padding: 10px 30px;
-    box-sizing: border-box;
+@media screen and (min-width: 576px) {
+
+    .inner-box {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--lightgold);
+        border: 1px solid var(--grey);
+        border-radius: 10px;
+        padding: 10px 30px;
+        box-sizing: border-box;
+    }
+
+    .sent-message {
+        width: 60vw;
+        height: fit-content;
+        margin-bottom: 20px;
+        padding-top: 20px;
+    }
+
+    .assignment-box {
+        width: 40vw;
+        height: auto;
+    }
+
+    .assignment-readingpage {
+        width: 60vw;
+        min-height: 100px;
+        max-height: fit-content;
+    }
+
+    .assignment-box-admin {
+        margin: 4px;
+    }
 }
 
-.sent-message{
-    width:22vw;
-    height: fit-content;
-    box-sizing: border-box;
-    margin: 20px;
-    padding-top:20px;
-}
+@media screen and (min-width: 1000px) {
+    .sent-message {
+        width: 36vw;
+        height: 20vw;
+    }
 
-.assignment-box{
-    width:40vw;
-    height: auto;
-    box-sizing: border-box;
-    /*margin: 5px;*/
-
-}
-
-.assignment-readingpage{
-    width:22vw;
-    height: fit-content;
-    box-sizing: border-box;
-}
-
-.assignment-box-admin{
-    margin:4px;
-
+    .assignment-readingpage {
+        width: 30vw;
+    }
 }

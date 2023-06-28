@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styles from './RegisterUser.module.css';
 import WhiteBox from '../../components/whiteBox/WhiteBox';
 import FormInput from '../../components/formInput/FormInput';
 import Button from '../../components/button/Button';
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import Navigation from "../../components/navigation/Navigation";
+import {useForm} from "react-hook-form";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 function RegisterUser() {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: "onSubmit" });
+    const {register, reset, handleSubmit, watch, formState: {errors}} = useForm({mode: "onSubmit"});
     const navigate = useNavigate();
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [photo, setPhoto] = useState('');
+    const [createdProfile, setCreatedProfile] = useState(false);
+    const [username, setUsername] = useState("");
 
-    console.log(errors);
 
     async function handleFormSubmit(formData) {
         const reader = new FileReader();
@@ -45,7 +45,10 @@ function RegisterUser() {
                     password: formData.password,
                     username: formData.username,
                 });
-                navigate('/');
+                navigate('/groepspagina1');
+                setCreatedProfile(true);
+                setUsername(formData.username)
+                reset();
             } catch (e) {
                 console.log(e);
                 toggleError(true);
@@ -192,12 +195,11 @@ function RegisterUser() {
                                 id="profile-picture-field"
                                 register={register}
                                 errors={errors}
-                                // changeHandler={handleChange}
                                 registerName="photo"
                                 validationRules={{
                                     validate: {
                                         fileType: (value) =>
-                                            value[0] && ["image/jpeg", "image/png"].includes(value[0].type) || "bestand moet een .jpeg een .jpg of .png zijn" ,
+                                            value[0] && ["image/jpeg", "image/png"].includes(value[0].type) || "bestand moet een .jpeg een .jpg of .png zijn",
                                         fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                     },
                                 }}
@@ -205,6 +207,7 @@ function RegisterUser() {
                                 accept=".jpg, .jpeg, .png"
                             />
                             <br></br>
+
                             <FormInput
                                 htmlFor="email-field"
                                 labelText="Email:"
@@ -280,23 +283,20 @@ function RegisterUser() {
                                 className="input"
                                 errors={errors}
                             />
-
-                        <Button
-                            buttonType="submit"
-                            buttonText="  Registreer  "
-                            buttonStyle="buttonStyle"
-                        />
-                       </form>
+                            {createdProfile && <p> Profiel aangemaakt met de volgende usernaam: "${username}" </p>}
+                            <Button
+                                buttonType="submit"
+                                buttonText="  Registreer  "
+                                buttonStyle="buttonStyle"
+                            />
+                        </form>
                         <p>Heb je al een account? Je kunt je <Link to="/">hier</Link> inloggen.</p>
                     </WhiteBox>
-                    }
+
                 </section>
             </section>
         </div>
-
     )
 }
 
 export default RegisterUser;
-
-//TODO:gouden-kraan-preview-foto-weergeven

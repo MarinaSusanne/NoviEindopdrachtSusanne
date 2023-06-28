@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
+import {AuthContext} from "../../context/AuthContext";
 import styles from './GroupPage.module.css';
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import Innerbox from '../../components/innerGoldBox/InnerGoldBox';
@@ -7,10 +8,12 @@ import FormInput from "../../components/formInput/FormInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import formatSendDate from "../../helpers/formatSendDate";
+import {useParams} from "react-router-dom";
 
 
-function GroupPage1() {
-    const [group, setGroup] = useState({});
+function GroupPage() {
+    const {user, userGroup, isAuth} = useContext(AuthContext);
+    const [groupInfo, setGroupInfo] = useState({});
     const [messageBoardId, setMessageBoardId] = useState('');
     const [members, setMembers] = useState([]);
     const [memberImages, setMemberImages] = useState({});
@@ -18,35 +21,68 @@ function GroupPage1() {
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [messageSent, setMessageSent] = useState(false);
+    const token = localStorage.getItem('token');
+    const {groupId} = useParams();
+
+    useEffect(() => {
+        fetchGroupMembers();
+    }, [groupId]);
+
+
+    useEffect(() => {
+        fetchMessagesMessageBoard();
+    }, [messageBoardId, messageSent]);
+
+    //hier heb ik nu even groupId aan toegevoegd ivm useParams
+
+    useEffect(() => {
+        members.forEach((member) => getImage(member));
+    }, [members]);
 
 
    async function handleFormSubmit(formData) {
-       console.log(formData);
+       console.log(formData.message);
        toggleError(false);
        try {
-           const response = await axios.post('http://localhost:8081/messages/1', {
-               content:formData.message
-           })
-           console.log(response);
+           if ( user.username === "admin"){
+               const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+                   content: formData.message,
+                   groupId:groupId
+               }, {
+                   headers: {
+                       "Content-Type": "application/json",
+                       Authorization: `Bearer ${token}`,
+                   }
+               });
+           }
+           else {
+               const response = await axios.post(`http://localhost:8081/messages/${user.id}`, {
+                   content: formData.message
+               }, {
+                   headers: {
+                       "Content-Type": "application/json",
+                       Authorization: `Bearer ${token}`,
+                   }
+               });
+           }
            setMessageSent(true);
            reset();
            fetchMessagesMessageBoard();
-       } catch (e) {
+
+        } catch (e) {
            console.log(e)
            toggleError(true);
 
        }
     }
 
-    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId} en let op bij fetcchmessages dat messageboardId gelijk bekend is
-
     async function fetchGroupMembers() {
         try {
-            const {data} = await axios.get('http://localhost:8081/groups/users/1/group');
+            const {data} = await axios.get(`http://localhost:8081/groups/${groupId}`);
             console.log(data);
-            setGroup(data);
+            setGroupInfo(data);
             setMessageBoardId(data.messageBoardId);
-            const outcome = data.userPictureOutputDto;
+            const outcome = data.userPictureOutputDtos;
             setMembers(outcome);
             console.log(outcome);
         } catch (e) {
@@ -54,10 +90,8 @@ function GroupPage1() {
         }
     }
 
-
     function getImage(member) {
         const base64Photo = member.photo;
-        // console.log(base64Photo);
         setMemberImages((prevImages) => ({
             ...prevImages,
             [member.id]: `${base64Photo}`,
@@ -66,33 +100,24 @@ function GroupPage1() {
     }
 
     async function fetchMessagesMessageBoard() {
-        try {
-            if (!messageBoardId) {
-                return;
-            }
+       setMessages([]);
+       try {
+
+            // if (!messageBoardId) {
+            //     return;
+            // }
             const {data} = await axios.get(`http://localhost:8081/messageboards/${messageBoardId}`);
+           console.log(data);
             setMessages(data);
         } catch (e) {
             console.log(e)
         }
     }
 
-    useEffect(() => {
-        fetchGroupMembers();
-    }, []);
-
-    useEffect(() => {
-        fetchMessagesMessageBoard();
-    }, [messageBoardId]);
-
-
-    useEffect(() => {
-        members.forEach((member) => getImage(member));
-    }, [members]);
-
 
     return (
         <div className="outer-container">
+            {console.log(messages)}
             <section className={styles["page-body"]}>
                 <section className="inner-container">
                     <article className={styles["three-boxes"]}>
@@ -142,7 +167,7 @@ function GroupPage1() {
                             </WhiteBox>
                         </div>
                         <WhiteBox className="message-board">
-                            <h2> Prikbord van {group.groupName} </h2>
+                            <h2> Prikbord van {groupInfo.groupName} </h2>
                             <Innerbox>
                                 {(messages).length > 0 && (
                                     <>
@@ -161,7 +186,6 @@ function GroupPage1() {
             </section>
         </div>
     );
-//TODO: aanpassen styling zodat de twee linkerkolommen niet groter worden. en Nadenken oplossing voor teveel berichten
 }
 
-export default GroupPage1;
+export default GroupPage;

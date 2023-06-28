@@ -1,29 +1,32 @@
 @media screen and (min-width: 576px) {
 
-
     .page-body {
         background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Achtergronddrie.png");
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: center;
-        /*overflow-y: scroll;*/
         width: 100vw;
+        min-height: 90vh;
     }
 
     .two-boxes {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
         height: 60vh;
         width: 100%;
-        border: dotted purple 1px;
         margin: 100px;
     }
 
-
-    .selection-field{
-        /*gap:20px;*/
+    .selection-field {
+        gap:30px;
     }
 }
 
+@media screen and (min-width: 1000px) {
+    .two-boxes {
+        display: flex;
+        flex-direction: row;
+    }
+}

@@ -1,5 +1,6 @@
 import styles from './AssignmentsAdmin.module.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import {AuthContext} from "../../context/AuthContext";
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import FormInput from "../../components/formInput/FormInput";
 import Button from "../../components/button/Button";
@@ -9,17 +10,47 @@ import axios from "axios";
 
 function AssignmentsAdmin() {
 
+    const {user, isAuth} = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
-    const [selectedAssignment, setSelectedAssignment] = useState('');
+    const [selectedAssignment, setSelectedAssignment] = useState('opdracht 1');
     const [error, toggleError] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState('');
+    const [selectedGroupId, setSelectedGroupId] = useState({});
+    const [selectedGroupId2, setSelectedGroupId2] = useState({});
     const [file, setFile] = useState([]);
+    const token = localStorage.getItem('token');
+    const [activeGroups, setActiveGroups] = useState([]);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
+
+    useEffect(() => {
+        fetchActiveGroups();
+    }, []);
+
+
+    useEffect(() => {
+        if (activeGroups.length > 0) {
+            setSelectedGroupId(activeGroups[0].id);
+        }
+    }, [activeGroups]);
+
+
+    useEffect(() => {
+        // if (selectedGroupId) {
+            fetchHomeworkAssignments();
+        console.log()
+    }, [selectedGroupId]);
 
 
     function handleGroupSelection(e) {
-        setSelectedGroup(e.target.value);
+        console.log(e.target.value);
+        setSelectedGroupId(e.target.value);
+        console.log(selectedGroupId);
+    }
+
+    function handleGroupSelection2(e) {
+        console.log(e.target.value)
+        setSelectedGroupId2(e.target.value);
     }
 
     function handleAssignmentSelection(e) {
@@ -27,6 +58,20 @@ function AssignmentsAdmin() {
         setSelectedAssignment(e.target.value);
     }
 
+    async function fetchActiveGroups() {
+        try {
+            const {data} = await axios.get(`http://localhost:8081/groups/admin/all`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            setActiveGroups(data);
+            console.log(activeGroups);
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     async function handleFormSubmit(data) {
         console.log(data)
@@ -36,7 +81,11 @@ function AssignmentsAdmin() {
 
         toggleError(false);
         try {
-            const response = await axios.post('http://localhost:8081/homeworkassignments/admin/groups/1', {
+            const response = await axios.post(`http://localhost:8081/homeworkassignments/admin/groups/${selectedGroupId2}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
                 info: data.info,
                 assignmentName: selectedAssignment,
             })
@@ -54,6 +103,7 @@ function AssignmentsAdmin() {
             console.log(result.data);
             setFile([]);
             reset();
+            setIsSubmitted(true);
         } catch (e) {
             console.error(e)
             toggleError(true);
@@ -62,23 +112,22 @@ function AssignmentsAdmin() {
     }
 
 
-    //TODO: aanpassen naar context! ipv 1 is het {groupId}
-
-    async function fetchHomeworkAssignments(selectedGroup) {
+    async function fetchHomeworkAssignments() {
         try {
-            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`);
+            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/${selectedGroupId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }
+            })
             console.log(data);
             setHomeworkAssignments(data);
+            console.log(homeworkAssignments);
+            console.log(selectedGroupId);
         } catch (e) {
             console.log(e)
         }
     }
-
-    //TODO: aanpassen naar context! In de context staan de groepen met groepId en kan je eruit halen. ipv 1 is het {groupId}
-
-    useEffect(() => {
-        fetchHomeworkAssignments(selectedGroup);
-    }, [selectedGroup]);
 
 
     return (
@@ -90,12 +139,17 @@ function AssignmentsAdmin() {
                             <h2> De volgende opdrachten staan online </h2>
                             <label htmlFor="group-field" className={styles["selection-field"]}>
                                 {"Selecteer een groep:      "}
-                                <select id="group-field" value={selectedGroup}
-                                        onChange={handleGroupSelection}>
-                                    <option value="groep 1">Groep1</option>
-                                    <option value="groep 2">Groep2</option>
-                                    <option value="groep 3">Groep3</option>
+                                <select
+                                    id="group-field"
+                                    onChange={handleGroupSelection}
+                                    value={selectedGroupId}
+                                >
+                                    {activeGroups.map((group) => (<option key={group.id} value={group.id}>
+                                        {group.groupName}
+                                    </option>
+                                    ))}
                                 </select>
+
 
                             </label>
                             {homeworkAssignments.map((assignment) => (
@@ -152,17 +206,20 @@ function AssignmentsAdmin() {
                                     errors={errors}
                                 />
 
-                                <FormInput
-                                    htmlFor="group-field"
-                                    labelText="Huiswerkopdracht voor groepId:"
-                                    type="number"
-                                    id="group-field"
-                                    register={register}
-                                    registerName="group"
-                                    validationRules={{}}
-                                    className="input-bigger"
-                                    errors={errors}
-                                />
+                                <label htmlFor="groupselection-field" className={styles["selection-field"]}>
+                                    {"Selecteer een groep:      "}
+                                    <select
+                                        id="groupselection-field"
+                                        onChange={handleGroupSelection2}
+                                        value={selectedGroupId2}
+                                    >
+                                        {activeGroups.map((group) => (<option key={group.id} value={group.id}>
+                                            {group.groupName}
+                                        </option>))}
+                                    </select>
+                                </label>
+                                <br></br>
+                                <br></br>
 
                                 <FormInput
                                     htmlFor="uploadfile-field"
@@ -175,15 +232,21 @@ function AssignmentsAdmin() {
                                     validationRules={{
                                         required: true,
                                         validate: {
-                                            // fileType: (value) =>
-                                            //     value[0] && ["pdf", "word", "docx"].includes(value[0].type) || "bestand moet een .Word of .Pdf zijn",
-                                            fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
+                                             fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                         },
                                     }}
                                     className="input-uploadfield"
-                                    accept=".pdf .word"
+                                    accept=".pdf, .doc, .docx"
                                 />
                                 <br></br>
+                                {isSubmitted && (
+                                    <p style={{ color: "green" }}>Opdracht is verzonden naar de groep</p>
+                                )}
+                                {error && (
+                                    <p style={{ color: "red" }}>
+                                        Er is een fout opgetreden bij het verzenden van de opdracht
+                                    </p>
+                                )}
                                 <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
                                 />
                             </form>
@@ -194,8 +257,5 @@ function AssignmentsAdmin() {
         </div>
     );
 }
-
-//TODO: in de context aantal actieve groepen ophalen en deze hierin zetten om optie mee te geven, kies groep
-
 
 export default AssignmentsAdmin;

@@ -2,19 +2,29 @@ import styles from './AssignmentsUser.module.css';
 import React, {useState} from 'react';
 import WhiteBox from "../../components/whiteBox/WhiteBox";
 import {useForm} from "react-hook-form";
-import {useEffect} from "react";
+import {useEffect, useContext} from "react";
 import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import Button from "../../components/button/Button";
 import FormInput from "../../components/formInput/FormInput";
 import axios from "axios";
 import formatSendDate from "../../helpers/formatSendDate";
+import {AuthContext} from "../../context/AuthContext";
+
 
 function AssignmentsUser() {
+    const {user, userGroup, isAuth} = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [error, toggleError] = useState(false);
     const [selectedAssignment, setSelectedAssignment] = useState("");
     const [file, setFile] = useState([]);
+    const token = localStorage.getItem('token');
+
+
+    useEffect(() => {
+        fetchHomeWorkAssignments();
+    }, []);
+
 
     function handleAssignmentSelection(e) {
         console.log(e)
@@ -29,7 +39,11 @@ function AssignmentsUser() {
 
        toggleError(false);
        try {
-           const response = await axios.post('http://localhost:8081/handinassignments/users/2', {
+           const response = await axios.post(`http://localhost:8081/handinassignments/users/${user.id}`, {
+               headers: {
+                   "Content-Type": "application/json",
+                   Authorization: `Bearer ${token}`,
+               },
                info:data.info,
                assignmentName: selectedAssignment,
            })
@@ -52,20 +66,20 @@ function AssignmentsUser() {
            toggleError(true);
        }
    }
-    //TODO:aanpassen naar useContext wanneer dat kan, nu is 1 maar is {userId}
 
     async function fetchHomeWorkAssignments() {
         try {
-            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/1`);
+            const {data} = await axios.get(`http://localhost:8081/homeworkassignments/groups/${userGroup.groupId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                }})
             console.log(data);
             setHomeworkAssignments(data);
         } catch (e) {
             console.log(e)
         }
      }
-
-    //TODO:aanpassen naar context, wie is er ingelogd en in welke groep zit die persoon? en de 1 aanpassen naar groepsId
-
 
     async function handleDownload(assignment) {
             try {
@@ -81,12 +95,8 @@ function AssignmentsUser() {
             } catch (e) {
                 console.log(e);
             }
-
     }
 
-    useEffect(() => {
-        fetchHomeWorkAssignments();
-    }, []);
 
 
     return (

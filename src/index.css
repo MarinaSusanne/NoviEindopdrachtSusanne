@@ -69,11 +69,6 @@ p{
   background-color: var(--grey);
 }
 
-.combine-nav-page{
-  display: flex;
-  flex-direction: column;
-}
-
 .inner-container {
   display:flex;
   flex-direction: column;
@@ -82,5 +77,4 @@ p{
   flex-shrink: 1;
   flex-grow: 1;
   margin: 0 10px 0 10px;
-  border:2px dotted purple;
 }
