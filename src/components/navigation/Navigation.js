@@ -75,7 +75,7 @@ function Navigation() {
                     Groep </NavLink>
                 <NavLink to="/opdrachten"
                          className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Opdrachten </NavLink>
-                <h2> Welkom, {user.firstname}</h2>
+                <p> Welkom, {user.firstname}</p>
             </>
         );
     }

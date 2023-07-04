@@ -1,4 +1,4 @@
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 400px) {
 
     .page-body {
         background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Backgorunimagegroups.png");
@@ -11,8 +11,8 @@
     }
 
     .custom-select {
-        width: 200px;
-        min-height: 150px;
+        width: 100px;
+        min-height: 75px;
     }
 
     .custom-select option:checked {
@@ -23,5 +23,13 @@
     .group-created-message {
         color: red;
     }
+}
+@media screen and (min-width: 600px) {
+
+    .custom-select {
+        width: 200px;
+        min-height: 150px;
+    }
+
 }
 

@@ -1,23 +1,31 @@
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 400px) {
 
     .navigation-bar {
         display: flex;
         justify-content: space-between;
         width: 100%;
         position: sticky;
-        height: 11vh;
+        height: 8vh;
+        align-items: center;
     }
 
     .navigation-text {
         font-family: "Dancing Script", serif;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-shrink: 1;
+        flex-grow: 0;
+        font-size: 1em;
+        padding-top: 5px;
     }
 
     .logo {
-        margin: 8px;
+        margin: 5px;
         display: flex;
         justify-content: space-evenly;
         align-items: flex-start;
-        max-width: 9vh;
+        max-width: 5vh;
         border-radius: 50%;
     }
 
@@ -41,19 +49,42 @@
     .default-menu-link {
         border-bottom: none;
     }
+
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 600px) {
+
+    .navigation-bar {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        position: sticky;
+        height: 11vh;
+        align-items: center;
+    }
 
     .navigation-text {
+        flex-basis: 1100px;
+        font-size: 1.0em;
+        padding-top: 20px;
+    }
+
+    .logo {
+        margin: 8px;
         display: flex;
         justify-content: space-evenly;
-        align-items: center;
+        align-items: flex-start;
+        max-width: 9vh;
+        border-radius: 50%;
+    }
+ }
+
+
+@media screen and (min-width: 900px) {
+
+    .navigation-text {
         flex-basis: 1100px;
-        flex-shrink: 1;
-        flex-grow: 0;
         font-size: 1.7em;
-        font-family: "Dancing Script", serif;
         padding-top: 20px;
     }
 }

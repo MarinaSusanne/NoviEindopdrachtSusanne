@@ -9,7 +9,6 @@ import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import axios from "axios";
 
 function AssignmentsAdmin() {
-
     const {user, isAuth} = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
@@ -46,7 +45,6 @@ function AssignmentsAdmin() {
             fetchHomeworkAssignments();
         }
     }, [selectedGroupId]);
-    //hierboven file weggehaald
 
 
     function handleGroupSelection(e) {
@@ -140,7 +138,7 @@ function AssignmentsAdmin() {
                                     id="group-field"
                                     onChange={handleGroupSelection}
                                     value={selectedGroupId}
-                                    >
+                                >
                                     {activeGroups.map((group) => (<option key={group.id} value={group.id}>
                                             {group.groupName}
                                         </option>

@@ -11,13 +11,11 @@ import axios from "axios";
 
 function LogIn() {
     const context = useContext(AuthContext);
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onChange"});
     const [error, toggleError] = useState(false);
-    const [loading, toggleLoading] = useState(false);
 
 
     async function handleFormSubmit(data) {
-        toggleLoading(true);
         try {
             const result = await axios.post('http://localhost:8081/authenticate', {
                 username: data.username,
@@ -31,9 +29,7 @@ function LogIn() {
             console.log(e)
             toggleError(true);
         }
-        toggleLoading(false);
     }
-
 
     return (
         <div className="outer-container">
@@ -89,6 +85,8 @@ function LogIn() {
                                     buttonStyle="buttonStyle"
                                 />
                                 <p> Heb je nog geen account? <Link to="/registreer"> Klik dan hier! </Link></p>
+
+                                {error && <p style={{color: 'red'}}> Usernaam en/of wachtwoord is incorrect</p>}
                             </form>
                         )}
                     </WhiteBox>

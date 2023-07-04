@@ -1,15 +1,35 @@
-.buttonStyle {
-    border: 2px solid white;
-    background-color: var(--darkgold);
-    color: black;
-    font-family: var(--font-family);
-    font-size: 20px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: block;
-    padding: 4px;
-}
+@media screen and (min-width: 400px) {
 
+    .buttonStyle {
+        border: 2px solid white;
+        background-color: var(--darkgold);
+        color: black;
+        font-family: var(--font-family);
+        font-size: 10px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: block;
+        padding: 2px;
+        height: fit-content;
+    }
+
+}
+@media screen and (min-width: 600px) {
+
+    .buttonStyle {
+        border: 2px solid white;
+        background-color: var(--darkgold);
+        color: black;
+        font-family: var(--font-family);
+        font-size: 20px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: block;
+        padding: 4px;
+    }
+}
 

@@ -36,6 +36,7 @@ function AuthContextProvider({children}) {
         console.log('gebruiker is ingelogd');
         localStorage.setItem('token', JWT);
         const decodedToken = jwt_decode(JWT);
+        console.log(decodedToken);
         fetchDataUser(JWT, decodedToken.id);
     }
 
@@ -47,6 +48,7 @@ function AuthContextProvider({children}) {
                     Authorization: `Bearer ${JWT}`,
                 },
             });
+            console.log(result);
             setAuthState({
                 ...authState,
                 isAuth: true,
@@ -57,8 +59,8 @@ function AuthContextProvider({children}) {
                     id: result.data.id,
                 },
                 status: 'done',
-                groupStatus: 'done'
             });
+            console.log(authState.user);
             if (result.data.username !== 'admin') {
                 console.log(result);
                 fetchGroup(JWT, result.data.id, result.data.username, result.data.firstName, result.data.lastName);
