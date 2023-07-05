@@ -40,7 +40,6 @@ function Navigation() {
 
         const isMaxActiveGroupsReached = activeGroups.length >= 3;
 
-
         return (
             <>
                 <NavLink to="/admin/lees-pagina"
@@ -70,9 +69,9 @@ function Navigation() {
         return (
             <>
                 {userGroup &&
-                <NavLink to={`/groepspagina/${userGroup.groupId}`}
-                         className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Mijn
-                    Groep </NavLink>
+                    <NavLink to={`/groepspagina/${userGroup.groupId}`}
+                             className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Mijn
+                        Groep </NavLink>
                 }
                 <NavLink to="/opdrachten"
                          className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Opdrachten </NavLink>
