@@ -12,7 +12,7 @@ import {useParams} from "react-router-dom";
 
 
 function GroupPage() {
-    const {user, userGroup, isAuth} = useContext(AuthContext);
+    const {user, userGroup, isAuth, info} = useContext(AuthContext);
     const [groupInfo, setGroupInfo] = useState({});
     const [messageBoardId, setMessageBoardId] = useState('');
     const [members, setMembers] = useState([]);
@@ -77,9 +77,13 @@ function GroupPage() {
 
     async function fetchGroupMembers() {
         toggleError(false);
+        console.log(groupId);
+        console.log(userGroup);
+        console.log(info);
         try {
             const {data} = await axios.get(`http://localhost:8081/groups/${groupId}`);
             setGroupInfo(data);
+            console.log(data);
             setMessageBoardId(data.messageBoardId);
             const outcome = data.userPictureOutputDtos;
             setMembers(outcome);

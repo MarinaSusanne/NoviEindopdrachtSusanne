@@ -57,12 +57,6 @@
         display: flex;
     }
 
-    /*.assignment-box-admin {*/
-    /*    width: 10vw;*/
-    /*    height: fit-content;*/
-    /*    display: flex;*/
-    /*}*/
-
     .reading-box {
         width: 70vw;
         min-height: fit-content;

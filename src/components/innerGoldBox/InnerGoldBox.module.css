@@ -33,6 +33,7 @@
     }
 }
 
+
 @media screen and (min-width: 600px) {
 
     .assignment-readingpage {
@@ -41,7 +42,7 @@
 }
 
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 900px) {
     .sent-message {
         width: 36vw;
         height: fit-content;

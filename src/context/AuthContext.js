@@ -60,7 +60,6 @@ function AuthContextProvider({children}) {
                 },
                 status: 'done',
             });
-            console.log(authState.user);
             if (result.data.username !== 'admin') {
                 console.log(result);
                 fetchGroup(JWT, result.data.id, result.data.username, result.data.firstName, result.data.lastName);
@@ -78,6 +77,7 @@ function AuthContextProvider({children}) {
                     Authorization: `Bearer ${JWT}`,
                 },
             });
+            console.log(response);
             setAuthState({
                 isAuth: true,
                 user: {
@@ -115,6 +115,7 @@ function AuthContextProvider({children}) {
         isAuth: authState.isAuth,
         user: authState.user,
         userGroup: authState.userGroup,
+        info:authState,
         logIn: logIn,
         logOut: logOut,
     };
