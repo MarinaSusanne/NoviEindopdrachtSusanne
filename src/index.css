@@ -32,35 +32,6 @@ h1, h2, h3, h4, h5, h6 {
   color: black;
 }
 
-body{
-  font-family: var(--font-family);
-  font-size:14px;
-}
-
-h1 {
-  font-size: 2rem;
-  padding: 16px 0;
-}
-
-h2 {
-  font-size: 1.3rem;
-  padding: 12px 0;
-}
-
-h3{
-  font-size: 0.8rem;
-  padding: 12px 0;
-}
-
-h4{
-  font-size: 0.4rem;
-  padding: 12px 0;
-}
-
-p{
-  margin:5px 0;
-}
-
 .outer-container {
   display: flex;
   justify-content: center;
@@ -77,4 +48,62 @@ p{
   flex-shrink: 1;
   flex-grow: 1;
   margin: 0 10px 0 10px;
+}
+
+@media screen and (min-width: 400px) {
+  body{
+    font-family: var(--font-family);
+    font-size:10px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+    padding: 10px 0;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    padding: 8px 0;
+  }
+
+  h3{
+    font-size: 0.6rem;
+    padding: 8px 0;
+  }
+
+  p{
+    margin:3px 0;
+  }
+}
+
+
+@media screen and (min-width: 600px) {
+
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    padding: 16px 0;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    padding: 12px 0;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+    padding: 12px 0;
+  }
+
+  h4 {
+    font-size: 0.4rem;
+    padding: 12px 0;
+  }
+
+  p {
+    margin: 5px 0;
+  }
 }

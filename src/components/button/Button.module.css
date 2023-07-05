@@ -1,15 +1,26 @@
-.buttonStyle {
-    border: 2px solid white;
-    background-color: var(--darkgold);
-    color: black;
-    font-family: var(--font-family);
-    font-size: 20px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top:10px;
-    margin-bottom:10px;
-    display: block;
-    padding:4px;
-}
+@media screen and (min-width: 400px) {
 
+    .buttonStyle {
+        border: 2px solid white;
+        background-color: var(--darkgold);
+        color: black;
+        font-family: var(--font-family);
+        font-size: 15px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin: 5px 0;
+        display: block;
+        padding: 2px;
+        height: fit-content;
+    }
+
+}
+@media screen and (min-width: 600px) {
+
+    .buttonStyle {
+        font-size:20px;
+        margin:10px 0;
+        padding: 4px;
+    }
+}
 

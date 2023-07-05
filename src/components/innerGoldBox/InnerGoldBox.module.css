@@ -1,4 +1,4 @@
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 400px) {
 
     .inner-box {
         display: flex;
@@ -24,7 +24,7 @@
 
     .assignment-readingpage {
         width: 60vw;
-        min-height: 100px;
+        min-height: 50px;
         max-height: fit-content;
     }
 
@@ -33,10 +33,19 @@
     }
 }
 
-@media screen and (min-width: 1000px) {
+
+@media screen and (min-width: 600px) {
+
+    .assignment-readingpage {
+        min-height: 100px;
+    }
+}
+
+
+@media screen and (min-width: 900px) {
     .sent-message {
         width: 36vw;
-        height: 20vw;
+        height: fit-content;
     }
 
     .assignment-readingpage {

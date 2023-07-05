@@ -1,5 +1,4 @@
-@media screen and (min-width: 576px) {
-
+@media screen and (min-width: 400px) {
     .page-body {
         background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Achtergronddrie.png");
         background-size: cover;
@@ -20,11 +19,11 @@
     }
 
     .selection-field {
-        gap:30px;
+        gap: 30px;
     }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 900px) {
     .two-boxes {
         display: flex;
         flex-direction: row;

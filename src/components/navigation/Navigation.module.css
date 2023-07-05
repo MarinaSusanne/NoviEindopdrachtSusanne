@@ -1,24 +1,32 @@
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 400px) {
 
     .navigation-bar {
         display: flex;
         justify-content: space-between;
         width: 100%;
         position: sticky;
-        height: 11vh;
+        height: 7vh;
+        align-items: center;
     }
 
     .navigation-text {
+        flex-basis: 700px;
         font-family: "Dancing Script", serif;
-
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-shrink: 1;
+        flex-grow: 0;
+        font-size: 1.2em;
+        padding-top: 5px;
     }
 
     .logo {
-        margin: 8px;
+        margin: 5px;
         display: flex;
         justify-content: space-evenly;
         align-items: flex-start;
-        max-width: 9vh;
+        max-width: 6vh;
         border-radius: 50%;
     }
 
@@ -42,20 +50,39 @@
     .default-menu-link {
         border-bottom: none;
     }
+
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 600px) {
+
+    .navigation-bar {
+        height: 10vh;
+    }
 
     .navigation-text {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
         flex-basis: 1100px;
-        flex-shrink: 1;
-        flex-grow: 0;
-        font-size: 1.7em;
-        font-family: "Dancing Script", serif;
+        font-size: 1.3em;
         padding-top: 20px;
+    }
+
+    .logo {
+        max-width: 9vh;
+    }
+ }
+
+
+@media screen and (min-width: 900px) {
+
+    .navigation-bar {
+        height: 12vh;
+    }
+
+    .navigation-text {
+        font-size: 1.7em;
+    }
+
+    .logo {
+        max-width: 11vh;
     }
 }
 

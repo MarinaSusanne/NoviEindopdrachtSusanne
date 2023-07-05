@@ -18,7 +18,6 @@ function AuthContextProvider({children}) {
             const token = localStorage.getItem('token');
             if (token && fromTokentoDate(token)) {
                 const decodedToken = jwt_decode(token);
-                console.log(decodedToken);
                 fetchDataUser(token, decodedToken.id);
             } else {
                 setAuthState({
@@ -60,16 +59,14 @@ function AuthContextProvider({children}) {
                     id: result.data.id,
                 },
                 status: 'done',
-                groupStatus: 'done'
             });
-            console.log(authState);
             if (result.data.username !== 'admin') {
                 console.log(result);
                 fetchGroup(JWT, result.data.id, result.data.username, result.data.firstName, result.data.lastName);
-                }
-            } catch (e) {
+            }
+        } catch (e) {
             console.log(e)
-         }
+        }
     }
 
     async function fetchGroup(JWT, id, userName, firstName, lastName) {
@@ -80,6 +77,7 @@ function AuthContextProvider({children}) {
                     Authorization: `Bearer ${JWT}`,
                 },
             });
+            console.log(response);
             setAuthState({
                 isAuth: true,
                 user: {
@@ -88,13 +86,12 @@ function AuthContextProvider({children}) {
                     lastname: lastName,
                     id: id
                 },
-                userGroup:{
+                userGroup: {
                     groupId: response.data.id,
                     groupName: response.data.groupName,
                 },
-                status:'done',
+                status: 'done',
             });
-            console.log(authState);
         } catch (e) {
             console.log(e)
         }
@@ -117,7 +114,8 @@ function AuthContextProvider({children}) {
     const data = {
         isAuth: authState.isAuth,
         user: authState.user,
-        userGroup:authState.userGroup,
+        userGroup: authState.userGroup,
+        info:authState,
         logIn: logIn,
         logOut: logOut,
     };

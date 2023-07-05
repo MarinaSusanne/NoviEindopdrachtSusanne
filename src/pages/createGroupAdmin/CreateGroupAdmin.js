@@ -51,20 +51,17 @@ function CreateGroupAdmin() {
 
     async function fetchMembersWithoutGroup() {
         try {
-            const response = await axios.get(`http://localhost:8081/users/nogroup`,{
+            const response = await axios.get(`http://localhost:8081/users/nogroup`, {
                 headers: {
-                "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
-            }});
-            console.log(response);
+                }
+            });
             setGrouplessMembers(response.data);
         } catch (e) {
             console.log(e)
         }
     }
-
-
-
 
     return (
         <div className="outer-container">
@@ -73,7 +70,8 @@ function CreateGroupAdmin() {
                     <WhiteBox className='register-box'>
                         <InnerGoldBox>
                             <h2> Groep aanmaken</h2>
-                            {groupCreatedMessage && <p className={styles["group-created-message"]}> {groupCreatedMessage}</p>}
+                            {groupCreatedMessage &&
+                                <p className={styles["group-created-message"]}> {groupCreatedMessage}</p>}
                             <form className="group-registration" onSubmit={handleSubmit(handleFormSubmit)}>
                                 <div>
                                     <label htmlFor="member-selector">Selecteer nieuwe leden:</label>
@@ -177,15 +175,17 @@ function CreateGroupAdmin() {
                                     buttonText="  Maak nieuwe groep aan  "
                                     buttonStyle="buttonStyle"
                                 />
-
                             </form>
+                            {error && (
+                                <p style={{color: "red"}}>
+                                    Er is een fout opgetreden </p>
+                            )}
                         </InnerGoldBox>
                     </WhiteBox>
                 </section>
             </section>
         </div>
     )
-
 }
 
 export default CreateGroupAdmin;

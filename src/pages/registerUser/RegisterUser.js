@@ -28,7 +28,6 @@ function RegisterUser() {
                 console.log(finalPhoto);
                 setPhoto(finalPhoto);
             };
-            console.log(formData);
             toggleLoading(true);
             toggleError(false);
             try {
@@ -45,7 +44,7 @@ function RegisterUser() {
                     password: formData.password,
                     username: formData.username,
                 });
-                navigate('/groepspagina1');
+                navigate('/');
                 setCreatedProfile(true);
                 setUsername(formData.username)
                 reset();
@@ -238,8 +237,8 @@ function RegisterUser() {
                                         message: 'Dit veld is verplicht',
                                     },
                                     minLength: {
-                                        value: 8,
-                                        message: 'Usernaam moet minstens 8 karakters lang zijn',
+                                        value: 5,
+                                        message: 'Usernaam moet minstens 5 karakters lang zijn',
                                     },
                                 }}
                                 className="input"
@@ -284,6 +283,8 @@ function RegisterUser() {
                                 errors={errors}
                             />
                             {createdProfile && <p> Profiel aangemaakt met de volgende usernaam: "${username}" </p>}
+                            {loading && <p>Loading...</p>}
+                            {error && <p style={{color: 'red'}} >Er is een fout opgetreden tijdens het registreren.</p>}
                             <Button
                                 buttonType="submit"
                                 buttonText="  Registreer  "

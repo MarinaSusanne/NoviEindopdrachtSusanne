@@ -16,7 +16,6 @@ function Navigation() {
         if (user && user.username === 'admin') {
             fetchActiveGroups();
         }
-        console.log(user);
     }, [user]);
 
 
@@ -38,12 +37,9 @@ function Navigation() {
         if (!user || !user.username) {
             return null;
         }
+
         const isMaxActiveGroupsReached = activeGroups.length >= 3;
-        //To prevent that the navigation will render to soon without all the information
-        if (activeGroups.length === 0) {
-            return <p>Loading...</p>;
-        }
-        console.log(activeGroups);
+
         return (
             <>
                 <NavLink to="/admin/lees-pagina"
@@ -52,14 +48,15 @@ function Navigation() {
                          className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Opdrachten </NavLink>
                 {!isMaxActiveGroupsReached && (
                     <NavLink to="/admin/groep-aanmaken"
-                             className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Groep aanmaken </NavLink>
+                             className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Groep
+                        aanmaken </NavLink>
                 )}
 
                 {activeGroups.map(group => (
                     <NavLink to={`/groepspagina/${group.id}`} key={group.id}
                              className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> {group.groupName} </NavLink>
                 ))}
-                <h2> Welkom, Admin</h2>
+                <p> Welkom, Admin</p>
             </>
         );
     }
@@ -71,11 +68,14 @@ function Navigation() {
 
         return (
             <>
-                <NavLink to={`/groepspagina/${1}`}
-                         className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Mijn Groep </NavLink>
+                {userGroup &&
+                    <NavLink to={`/groepspagina/${userGroup.groupId}`}
+                             className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Mijn
+                        Groep </NavLink>
+                }
                 <NavLink to="/opdrachten"
                          className={({isActive}) => isActive ? styles['active-menu-link'] : styles['default-menu-link']}> Opdrachten </NavLink>
-                <h2> Welkom, {user.firstname}</h2>
+                <p> Welkom, {user.firstname}</p>
             </>
         );
     }

@@ -9,14 +9,13 @@ import InnerGoldBox from "../../components/innerGoldBox/InnerGoldBox";
 import axios from "axios";
 
 function AssignmentsAdmin() {
-
     const {user, isAuth} = useContext(AuthContext);
     const [homeworkAssignments, setHomeworkAssignments] = useState([]);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: "onSubmit"});
     const [selectedAssignment, setSelectedAssignment] = useState('opdracht 1');
     const [error, toggleError] = useState(false);
-    const [selectedGroupId, setSelectedGroupId] = useState({});
-    const [selectedGroupId2, setSelectedGroupId2] = useState({});
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const [selectedGroupId2, setSelectedGroupId2] = useState(null);
     const [file, setFile] = useState([]);
     const token = localStorage.getItem('token');
     const [activeGroups, setActiveGroups] = useState([]);
@@ -29,32 +28,35 @@ function AssignmentsAdmin() {
 
 
     useEffect(() => {
-        if (activeGroups.length > 0) {
+        if (selectedGroupId2 === null && activeGroups.length > 0) {
+            setSelectedGroupId2(activeGroups[0].id);
+        }
+    }, [activeGroups, selectedGroupId2]);
+
+    useEffect(() => {
+        if (selectedGroupId === null && activeGroups.length > 0) {
             setSelectedGroupId(activeGroups[0].id);
         }
     }, [activeGroups]);
 
 
     useEffect(() => {
-        // if (selectedGroupId) {
+        if (selectedGroupId) {
             fetchHomeworkAssignments();
-        console.log()
+        }
     }, [selectedGroupId]);
 
 
     function handleGroupSelection(e) {
-        console.log(e.target.value);
-        setSelectedGroupId(e.target.value);
-        console.log(selectedGroupId);
+        const groupId = e.target.value;
+        setSelectedGroupId(groupId);
     }
 
     function handleGroupSelection2(e) {
-        console.log(e.target.value)
         setSelectedGroupId2(e.target.value);
     }
 
     function handleAssignmentSelection(e) {
-        console.log(e)
         setSelectedAssignment(e.target.value);
     }
 
@@ -74,11 +76,9 @@ function AssignmentsAdmin() {
     }
 
     async function handleFormSubmit(data) {
-        console.log(data)
+        console.log(data);
         const uploadedFile = data.uploadFile[0];
-        console.log(uploadedFile);
         setFile(uploadedFile);
-
         toggleError(false);
         try {
             const response = await axios.post(`http://localhost:8081/homeworkassignments/admin/groups/${selectedGroupId2}`, {
@@ -104,13 +104,12 @@ function AssignmentsAdmin() {
             setFile([]);
             reset();
             setIsSubmitted(true);
+            fetchHomeworkAssignments();
         } catch (e) {
             console.error(e)
             toggleError(true);
         }
-
     }
-
 
     async function fetchHomeworkAssignments() {
         try {
@@ -120,15 +119,11 @@ function AssignmentsAdmin() {
                     Authorization: `Bearer ${token}`,
                 }
             })
-            console.log(data);
             setHomeworkAssignments(data);
-            console.log(homeworkAssignments);
-            console.log(selectedGroupId);
         } catch (e) {
             console.log(e)
         }
     }
-
 
     return (
         <div className="outer-container">
@@ -145,11 +140,10 @@ function AssignmentsAdmin() {
                                     value={selectedGroupId}
                                 >
                                     {activeGroups.map((group) => (<option key={group.id} value={group.id}>
-                                        {group.groupName}
-                                    </option>
+                                            {group.groupName}
+                                        </option>
                                     ))}
                                 </select>
-
 
                             </label>
                             {homeworkAssignments.map((assignment) => (
@@ -230,9 +224,9 @@ function AssignmentsAdmin() {
                                     errors={errors}
                                     registerName="uploadFile"
                                     validationRules={{
-                                        required: true,
+                                        required: "Je moet een bestand uploaden",
                                         validate: {
-                                             fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
+                                            fileSize: (value) => value[0] && value[0].size <= 5000000 || "bestand moet  van maximaal 5MB",
                                         },
                                     }}
                                     className="input-uploadfield"
@@ -240,12 +234,11 @@ function AssignmentsAdmin() {
                                 />
                                 <br></br>
                                 {isSubmitted && (
-                                    <p style={{ color: "green" }}>Opdracht is verzonden naar de groep</p>
+                                    <p style={{color: "green"}}>Opdracht is verzonden naar de groep</p>
                                 )}
                                 {error && (
-                                    <p style={{ color: "red" }}>
-                                        Er is een fout opgetreden bij het verzenden van de opdracht
-                                    </p>
+                                    <p style={{color: "red"}}>
+                                        Er is een fout opgetreden bij het verzenden van de opdracht</p>
                                 )}
                                 <Button buttonType="submit" buttonText="Verzenden" buttonStyle="buttonStyle"
                                 />

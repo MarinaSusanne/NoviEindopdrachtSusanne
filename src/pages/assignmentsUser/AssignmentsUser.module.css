@@ -1,4 +1,4 @@
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 400px) {
 
     .page-body {
         background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6)), url("../../assets/images/Backgorunimagegroups.png");
@@ -10,23 +10,21 @@
         min-height: 90vh;
     }
 
-.two-boxes {
+    .two-boxes {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         min-height: 60vh;
-        width:100%;
-        margin:100px;
-
+        width: 100%;
+        margin: 100px;
     }
-
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 900px) {
+
     .two-boxes {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
     }
-
 }
